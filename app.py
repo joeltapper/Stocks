@@ -5,6 +5,9 @@ import requests
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
 
+# Alpha Vantage API Key is loaded from Streamlit secrets (set in your secrets.toml under [alpha_vantage])
+ALPHA_VANTAGE_KEY = st.secrets.alpha_vantage.key  # replace key or set in secrets
+
 # Streamlit setup
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
 st.title("📈 Insider Trading Dashboard")
@@ -129,9 +132,8 @@ refresh_clicked = st.sidebar.button("🔄 Refresh Data")
 
 # Separator
 st.sidebar.markdown("---")
-st.sidebar.markdown("---")
 
-# How to Use This Dashboard (moved below inputs)
+# How to Use This Dashboard
 st.sidebar.markdown(
     """
     ### How to Use This Dashboard
