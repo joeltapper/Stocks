@@ -2,17 +2,20 @@ import streamlit as st
 import pandas as pd
 import cloudscraper
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
+import plotly.graph_objects as go
 
 # Streamlit setup
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
 st.title("📈 Insider Trading Dashboard")
 
+# Alpha Vantage API Key
+ALPHA_VANTAGE_KEY = st.secrets.get("alpha_vantage_key", "DB0I9TW82MKUFXSS")
+
 st.markdown(
     """
-    This dashboard tracks insider trading activity from public companies, pulling live data from [OpenInsider](http://openinsider.com).
-    <br><br>
-    You can explore high-level executive purchases and sales, filtered by trade type and amount, to identify potential market signals.
+    This dashboard tracks insider trading activity from public companies, pulling live data from [OpenInsider](http://openinsider.com).  
+    New features: clustered insider trading detection, interactive price charts with cluster markers, and significance scoring.
     """,
     unsafe_allow_html=True
 )
@@ -21,31 +24,13 @@ st.markdown(
 FEEDS = {
     "Latest Insider Purchases":  "insider-purchases",
     "Latest Insider Sales":      "insider-sells",
-    "Purchases > $25 K":         "insider-purchases?pfl=25",
-    "Sales > $100 K":            "insider-sells?pfl=100",
-    "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
+    "Purchases > $25 K":         "insider-purchases?pfl=25",
+    "Sales > $100 K":            "insider-sells?pfl=100",
+    "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
 }
 
-# ✅ Telegram Notification Function
-def send_telegram_alert(message_body):
-    token = st.secrets["telegram"]["bot_token"]
-    chat_id = st.secrets["telegram"]["chat_id"]
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-
-    payload = {
-        "chat_id": chat_id,
-        "text": message_body,
-        "parse_mode": "Markdown"
-    }
-
-    try:
-        r = requests.post(url, json=payload)
-        r.raise_for_status()
-        st.success("✅ Telegram alert sent!")
-    except Exception as e:
-        st.error(f"❌ Telegram error: {e}")
-
 # Helper functions
+
 def normalize_cols(cols):
     return [str(c).replace("\xa0", " ").strip() for c in cols]
 
@@ -65,136 +50,186 @@ def find_col(cols, *keywords):
                 return c
     return None
 
+# Basic signal strength per trade
+
 def calculate_signal_strength(row):
     score = 0
-    if row["Shares"] >= 1_000_000:
+    # size weight
+    if row['Shares'] >= 1_000_000:
         score += 35
-    elif row["Shares"] >= 500_000:
+    elif row['Shares'] >= 500_000:
         score += 25
-    elif row["Shares"] >= 100_000:
+    elif row['Shares'] >= 100_000:
         score += 15
-    elif row["Shares"] >= 25_000:
+    elif row['Shares'] >= 25_000:
         score += 5
-
-    title = row["Title"].lower()
-    if "ceo" in title or "chief executive" in title:
+    # seniority
+    title = row['Title'].lower()
+    if 'ceo' in title or 'chief executive' in title:
         score += 30
-    elif "cfo" in title:
+    elif 'cfo' in title:
         score += 20
-    elif "director" in title or "officer" in title:
+    elif 'director' in title or 'officer' in title:
         score += 10
-
-    if row["Price"] <= 2:
+    # price marker
+    if row['Price'] <= 2:
         score += 10
-    elif row["Price"] <= 5:
+    elif row['Price'] <= 5:
         score += 5
-
     return score
 
-# Streamlit UI
-feeds = st.multiselect(
-    "Select OpenInsider feeds to include",
-    options=list(FEEDS),
-    default=["Latest Insider Purchases"],
+# Cluster detection: group buys by ticker within window
+
+def detect_clusters(df, days_window=7, min_insiders=3):
+    clusters = []
+    for ticker, group in df.groupby('Ticker'):
+        grp = group.sort_values('TradeDate')
+        for idx, row in grp.iterrows():
+            window_start = row['TradeDate'] - timedelta(days=days_window)
+            window_df = grp[(grp['TradeDate'] >= window_start) & (grp['TradeDate'] <= row['TradeDate'])]
+            insiders = window_df['InsiderName'].nunique()
+            if insiders >= min_insiders:
+                total_shares = window_df['Shares'].sum()
+                cluster_score = window_df['SignalStrength'].sum() + insiders * 5
+                clusters.append({
+                    'Ticker': ticker,
+                    'EndDate': row['TradeDate'],
+                    'NumInsiders': insiders,
+                    'TotalShares': total_shares,
+                    'ClusterScore': cluster_score,
+                    'WindowStart': window_start
+                })
+    return pd.DataFrame(clusters)
+
+# Fetch price data from Alpha Vantage
+def fetch_price_data(symbol):
+    url = 'https://www.alphavantage.co/query'
+    params = {
+        'function': 'TIME_SERIES_DAILY_ADJUSTED',
+        'symbol': symbol,
+        'outputsize': 'compact',
+        'apikey': ALPHA_VANTAGE_KEY
+    }
+    r = requests.get(url, params=params)
+    data = r.json().get('Time Series (Daily)', {})
+    df = pd.DataFrame.from_dict(data, orient='index')
+    df.index = pd.to_datetime(df.index)
+    df = df.rename(columns={'5. adjusted close': 'AdjClose'})
+    return df[['AdjClose']].sort_index()
+
+# Sidebar controls
+feeds = st.sidebar.multiselect(
+    "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
 )
+min_insiders = st.sidebar.number_input("Min insiders for cluster", min_value=2, max_value=10, value=3)
+days_window = st.sidebar.number_input("Cluster window days", min_value=1, max_value=30, value=7)
 
-# 📤 Manual Telegram Test Section
-st.markdown("---")
-st.subheader("📤 Test Telegram Notification")
+# Data fetch and pagination for 300 buys
+if st.sidebar.button("🔄 Refresh Data"):
+    scraper = cloudscraper.create_scraper(
+        browser={"browser": "chrome", "platform": "windows", "desktop": True}
+    )
+    all_dfs = []
+    for name in feeds:
+        endpoint = FEEDS[name]
+        feed_dfs = []
+        # paginate offsets: 0,100,200 to get ~300 rows
+        for offset in [0, 100, 200]:
+            sep = '&' if '?' in endpoint else '?'
+            url = f"http://openinsider.com/{endpoint}{sep}o={offset}"
+            resp = scraper.get(url)
+            resp.raise_for_status()
+            tables = pd.read_html(resp.text, flavor='bs4')
+            df0 = find_table_with_filing(tables)
+            if df0 is None:
+                continue
+            cols = df0.columns.tolist()
+            mapping = {
+                'FilingDate': find_col(cols, 'filing date'),
+                'TradeDate':  find_col(cols, 'trade date'),
+                'Ticker':     find_col(cols, 'ticker'),
+                'InsiderName':find_col(cols, 'insider name'),
+                'Title':      find_col(cols, 'title'),
+                'TradeType':  find_col(cols, 'trade type'),
+                'Shares':     find_col(cols, 'qty', 'share'),
+                'Price':      find_col(cols, 'price'),
+            }
+            if any(v is None for v in mapping.values()):
+                continue
+            df = pd.DataFrame({
+                'FilingDate': df0[mapping['FilingDate']],
+                'TradeDate':  pd.to_datetime(df0[mapping['TradeDate']]),
+                'Ticker':     df0[mapping['Ticker']],
+                'InsiderName':df0[mapping['InsiderName']],
+                'Title':      df0[mapping['Title']],
+                'TradeType':  df0[mapping['TradeType']],
+                'Shares':     df0[mapping['Shares']].astype(str).replace(r"[+,]","",regex=True).astype(int),
+                'Price':      df0[mapping['Price']].astype(str).replace(r"[\$,]","",regex=True).astype(float)
+            })
+            df = df[df['TradeType'].str.contains('purchase', case=False, na=False)]
+            df['Source'] = name
+            df['SignalStrength'] = df.apply(calculate_signal_strength, axis=1)
+            feed_dfs.append(df)
+        if feed_dfs:
+            all_dfs.append(pd.concat(feed_dfs, ignore_index=True))
+    if not all_dfs:
+        st.error("🚫 No data fetched — try a different feed or check your connection.")
+        st.stop()
+    data = pd.concat(all_dfs, ignore_index=True)
+    st.session_state['data'] = data
+    st.success(f"✅ Fetched {len(data)} insider buys (up to ~300 per feed).")
+else:
+    data = st.session_state.get('data', pd.DataFrame())
 
+if data.empty:
+    st.info("No data to display. Please refresh.")
+    st.stop()
+
+# Display insider buys and top signals
+col1, col2 = st.columns((2,1))
+with col1:
+    st.markdown("### 📋 All Insider Buys")
+    st.dataframe(data[['FilingDate','TradeDate','Ticker','InsiderName','Title','Shares','Price','SignalStrength','Source']], use_container_width=True)
+with col2:
+    st.markdown("### 🏆 Top 5 by Signal Strength")
+    st.dataframe(data.nlargest(5,'SignalStrength')[['Ticker','InsiderName','Shares','Price','SignalStrength','Source']], use_container_width=True)
+
+# Cluster detection and visualization remains the same
+clusters = detect_clusters(data, days_window=days_window, min_insiders=min_insiders)
+if not clusters.empty:
+    st.markdown("---")
+    st.markdown("## 🔍 Clustered Insider Trading Analysis")
+    st.dataframe(clusters.sort_values('ClusterScore', ascending=False), use_container_width=True)
+    ticker_choice = st.selectbox("Select ticker for cluster visualization", options=clusters['Ticker'].unique())
+    price_df = fetch_price_data(ticker_choice)
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=price_df.index, y=price_df['AdjClose'], mode='lines', name='Adj Close'))
+    for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
+        fig.add_trace(go.Scatter(
+            x=[cl['EndDate']],
+            y=[price_df.loc[cl['EndDate'],'AdjClose'] if cl['EndDate'] in price_df.index else None],
+            mode='markers', marker=dict(size=10+cl['NumInsiders']*3, opacity=0.7),
+            name=f"Cluster {cl['NumInsiders']} insiders"
+        ))
+    st.plotly_chart(fig, use_container_width=True)
+    sel = clusters.sort_values('ClusterScore', ascending=False).iloc[0]
+    st.markdown(
+        f"**Top Cluster**: {sel['Ticker']} from {sel['WindowStart'].date()} to {sel['EndDate'].date()} - "  
+        f"Insiders: {sel['NumInsiders']}, Shares: {sel['TotalShares']:,}, Score: {sel['ClusterScore']}"
+    )
+
+# Test Telegram notification unchanged
 if st.button("Send Test Notification"):
-    test_message = (
+    test_msg = (
         f"🚨 TEST ALERT ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
         f"CEO John Doe bought 1,000,000 shares of TEST at $2.00\n"
         f"Score: 95/100"
     )
-    send_telegram_alert(test_message)
-
-# 🔄 Refresh Data Button and Logic
-if st.button("🔄 Refresh Data"):
-    scraper = cloudscraper.create_scraper(
-        browser={"browser": "chrome", "platform": "windows", "desktop": True}
-    )
-
-    all_dfs = []
-    for name in feeds:
-        endpoint = FEEDS[name]
-        url = f"http://openinsider.com/{endpoint}"
-        resp = scraper.get(url)
-        resp.raise_for_status()
-        tables = pd.read_html(resp.text, flavor="bs4")
-        df0 = find_table_with_filing(tables)
-        if df0 is None:
-            st.warning(f"Feed {name} — no table with Filing Date found")
-            continue
-
-        cols = df0.columns.tolist()
-        col_map = {
-            "FilingDate":  find_col(cols, "filing date"),
-            "TradeDate":   find_col(cols, "trade date"),
-            "Ticker":      find_col(cols, "ticker"),
-            "InsiderName": find_col(cols, "insider name"),
-            "Title":       find_col(cols, "title"),
-            "TradeType":   find_col(cols, "trade type"),
-            "Shares":      find_col(cols, "qty", "share"),
-            "Price":       find_col(cols, "price"),
-        }
-
-        if any(v is None for v in col_map.values()):
-            st.warning(f"Feed {name} missing columns: {col_map}")
-            continue
-
-        df = pd.DataFrame({
-            "FilingDate":  df0[col_map["FilingDate"]],
-            "TradeDate":   df0[col_map["TradeDate"]],
-            "Ticker":      df0[col_map["Ticker"]],
-            "InsiderName": df0[col_map["InsiderName"]],
-            "Title":       df0[col_map["Title"]],
-            "TradeType":   df0[col_map["TradeType"]],
-            "Shares": df0[col_map["Shares"]].astype(str).str.replace(r"[+,]", "", regex=True).astype(int),
-            "Price":  df0[col_map["Price"]].astype(str).str.replace(r"[\$,]", "", regex=True).astype(float),
-        })
-        df["Source"] = name
-        all_dfs.append(df)
-
-    if not all_dfs:
-        st.error("🚫 No data fetched — try a different feed or check your connection.")
-        st.stop()
-
-    data = pd.concat(all_dfs, ignore_index=True)
-    data = data[data["TradeType"].str.contains("purchase", case=False, na=False)]
-    data["SignalStrength"] = data.apply(calculate_signal_strength, axis=1)
-
-    top = data.loc[data["SignalStrength"].idxmax()]
-    st.success(f"✅ Fetched {len(data)} insider buys.")
-
-    st.markdown(
-        f"<b>{top.InsiderName}</b> bought <b>{top.Shares:,}</b> shares of "
-        f"<b>{top.Ticker}</b> at <b>${top.Price:.2f}</b> on <b>{top.FilingDate}</b> "
-        f"(Signal Score: <b>{top.SignalStrength}/100</b>)",
-        unsafe_allow_html=True
-    )
-
-    message = (
-        f"📈 *Top Insider Buy Signal* ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
-        f"{top.InsiderName} bought {top.Shares:,} shares of {top.Ticker} at ${top.Price:.2f}\n"
-        f"Score: {top.SignalStrength}/100"
-    )
-
-    if top.SignalStrength >= 80:
-        send_telegram_alert(message)
-
-    # Display in dashboard
-    c1, c2 = st.columns((2, 1))
-    with c1:
-        st.markdown("### 📋 All Insider Buys")
-        st.dataframe(data[[
-            "FilingDate", "TradeDate", "Ticker", "InsiderName",
-            "Title", "Shares", "Price", "SignalStrength", "Source"
-        ]], use_container_width=True)
-
-    with c2:
-        st.markdown("### 🏆 Top 5 by Signal Strength")
-        st.dataframe(data.nlargest(5, "SignalStrength")[[
-            "Ticker", "InsiderName", "Shares", "Price", "SignalStrength", "Source"
-        ]], use_container_width=True)
+    try:
+        token = st.secrets['telegram']['bot_token']
+        chat_id = st.secrets['telegram']['chat_id']
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        requests.post(url, json={"chat_id":chat_id, "text":test_msg, "parse_mode":"Markdown"})
+        st.success("✅ Telegram test sent!")
+    except Exception as e:
+        st.error(f"❌ Telegram error: {e}")
