@@ -133,16 +133,16 @@ st.sidebar.markdown(
     """,
     unsafe_allow_html=True
 )
+# Sidebar inputs
 feeds = st.sidebar.multiselect(
     "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
 )
-min_insiders = st.sidebar.number_input("Min insiders for cluster", min_value=2, max_value=10, value=3)
-days_window = st.sidebar.number_input("Cluster window days", min_value=1, max_value=30, value=7)
-feeds = st.sidebar.multiselect(
-    "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
+min_insiders = st.sidebar.number_input(
+    "Min insiders for cluster", min_value=2, max_value=10, value=3
 )
-min_insiders = st.sidebar.number_input("Min insiders for cluster", min_value=2, max_value=10, value=3)
-days_window = st.sidebar.number_input("Cluster window days", min_value=1, max_value=30, value=7)
+days_window = st.sidebar.number_input(
+    "Cluster window days", min_value=1, max_value=30, value=7
+)
 
 # Data fetch and pagination for 300 buys
 if st.sidebar.button("🔄 Refresh Data"):
