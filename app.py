@@ -87,7 +87,7 @@ def send_sms_via_email(phone_number, carrier, message):
         return
 
     email = "sms.insidertrading@gmail.com"
-    app_password = "xisqa1-Kimtuk-werweh"
+    app_password = "qkwg otpz vzfq uksr"
 
     msg = MIMEMultipart()
     msg['From'] = email
