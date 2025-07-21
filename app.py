@@ -211,11 +211,12 @@ if not clusters.empty:
     st.markdown("## 🔍 Clustered Insider Trading Analysis")
     st.dataframe(clusters.sort_values('ClusterScore', ascending=False), use_container_width=True)
     ticker_choice = st.selectbox("Select ticker for price chart", clusters['Ticker'].unique())
-    # Fetch intraday data
+    # Attempt intraday data
     price_df = fetch_intraday_data(ticker_choice, interval)
-    # Check for required columns
     required_cols = ['open', 'high', 'low', 'AdjClose']
     missing = [c for c in required_cols if c not in price_df.columns]
+    # Always fetch daily for fallback
+    daily_df = fetch_price_data(ticker_choice)
     fig = go.Figure()
     if not price_df.empty and not missing:
         # intraday candlesticks
@@ -227,19 +228,16 @@ if not clusters.empty:
         ))
     else:
         # fallback to daily line chart
-        daily = fetch_price_data(ticker_choice)
-        fig = go.Figure()
         fig.add_trace(go.Scatter(
-            x=daily.index, y=daily['AdjClose'], mode='lines', name='Adj Close'
+            x=daily_df.index, y=daily_df['AdjClose'], mode='lines', name='Adj Close'
         ))
-        if missing:
+        if missing and not price_df.empty:
             st.warning(f"Missing intraday columns {missing}, showing daily data instead.")
         elif price_df.empty:
             st.warning(f"No intraday data for {ticker_choice}, showing daily instead.")
-    # Overlay clusters on whichever chart
+    # Overlay clusters
+    df_plot = price_df if not price_df.empty and not missing else daily_df
     for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
-        # use AdjClose from whichever df is plotted
-        df_plot = price_df if not price_df.empty and not missing else daily
         val = df_plot['AdjClose'].get(cl['EndDate'])
         if val is not None:
             fig.add_trace(go.Scatter(
@@ -249,8 +247,8 @@ if not clusters.empty:
     # Buy/sell simulation
     buy_price = st.number_input(f"Enter BUY price for {ticker_choice}", min_value=0.0, step=0.01)
     sell_price = st.number_input(f"Enter SELL price for {ticker_choice}", min_value=0.0, step=0.01)
-    if buy_price>0 and sell_price>0:
-        ret = (sell_price - buy_price)/buy_price*100
+    if buy_price > 0 and sell_price > 0:
+        ret = (sell_price - buy_price) / buy_price * 100
         st.metric("Simulated Net Return", f"{ret:.2f}%")
         fig.add_hline(y=buy_price, line_dash='dash', annotation_text='BUY At', line_color='green')
         fig.add_hline(y=sell_price, line_dash='dash', annotation_text='SELL At', line_color='red')
