@@ -14,7 +14,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# we’re hitting the HTML pages over HTTP only
 FEEDS = {
     "Latest Insider Purchases":  "insider-purchases",
     "Latest Insider Sales":      "insider-sells",
@@ -56,14 +55,13 @@ if st.button("🔄 Refresh Data"):
     all_dfs = []
     for name in feeds:
         endpoint = FEEDS[name]
-        url      = f"http://openinsider.com/{endpoint}"
+        url = f"http://openinsider.com/{endpoint}"
 
         resp = scraper.get(url)
         resp.raise_for_status()
 
-        # parse ALL tables, then pick the one with our headers
         tables = pd.read_html(resp.text, flavor="bs4")
-        df0    = find_table_with_filing(tables)
+        df0 = find_table_with_filing(tables)
         if df0 is None:
             st.warning(f"Feed {name} — no table with Filing Date found")
             continue
@@ -79,7 +77,7 @@ if st.button("🔄 Refresh Data"):
             "Shares":      find_col(cols, "qty", "share"),
             "Price":       find_col(cols, "price"),
         }
-        missing = [k for k,v in col_map.items() if v is None]
+        missing = [k for k, v in col_map.items() if v is None]
         if missing:
             st.warning(f"Feed {name} missing columns: {missing}")
             continue
@@ -93,15 +91,15 @@ if st.button("🔄 Refresh Data"):
             "TradeType":   df0[col_map["TradeType"]],
             "Shares": (
                 df0[col_map["Shares"]]
-                    .astype(str)
-                    .str.replace(r"[+,]", "", regex=True)
-                    .astype(int)
+                .astype(str)
+                .str.replace(r"[+,]", "", regex=True)
+                .astype(int)
             ),
             "Price": (
                 df0[col_map["Price"]]
-                    .astype(str)
-                    .str.replace(r"[\$,]", "", regex=True)
-                    .astype(float)
+                .astype(str)
+                .str.replace(r"[\$,]", "", regex=True)
+                .astype(float)
             )
         })
         df["Source"] = name
@@ -124,14 +122,14 @@ if st.button("🔄 Refresh Data"):
         unsafe_allow_html=True
     )
 
-       c1, c2 = st.columns((2,1))
+    c1, c2 = st.columns((2, 1))
 
     with c1:
         st.markdown("### 📋 All Insider Buys")
         st.dataframe(
             data[[
-                "FilingDate","TradeDate","Ticker","InsiderName",
-                "Title","Shares","Price","Source"
+                "FilingDate", "TradeDate", "Ticker", "InsiderName",
+                "Title", "Shares", "Price", "Source"
             ]],
             use_container_width=True
         )
@@ -139,8 +137,8 @@ if st.button("🔄 Refresh Data"):
     with c2:
         st.markdown("### 🏆 Top 5 by Shares Purchased")
         st.dataframe(
-            data.nlargest(5,"Shares")[
-                ["Ticker","InsiderName","Shares","Price","Source"]
+            data.nlargest(5, "Shares")[
+                ["Ticker", "InsiderName", "Shares", "Price", "Source"]
             ],
             use_container_width=True
         )
