@@ -6,6 +6,7 @@ import requests
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from io import StringIO
 
 # Load environment variables
 load_dotenv(dotenv_path="env")
@@ -27,7 +28,7 @@ def send_telegram_alert(message_body):
     except Exception as e:
         print(f"❌ Telegram error: {e}")
 
-# Insider trade feed
+# Insider trade feeds
 FEEDS = {
     "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
 }
@@ -42,7 +43,8 @@ def calculate_signal_strength(row):
     title = row["Title"].lower()
     if "ceo" in title:                score += 30
     elif "cfo" in title:               score += 20
-    elif "director" in title or "officer" in title: score += 10
+    elif "director" in title or "officer" in title:
+        score += 10
 
     if row["Price"] <= 2:             score += 10
     elif row["Price"] <= 5:           score += 5
@@ -52,7 +54,8 @@ def calculate_signal_strength(row):
 def run_alert_check(label):
     scraper = cloudscraper.create_scraper()
     url     = f"http://openinsider.com/{FEEDS[label]}"
-    tables  = pd.read_html(scraper.get(url).text, flavor="bs4")
+    html    = scraper.get(url).text
+    tables  = pd.read_html(StringIO(html), flavor="bs4")
 
     for tbl in tables:
         if "Filing Date" in tbl.columns and "Trade Date" in tbl.columns:
@@ -62,6 +65,7 @@ def run_alert_check(label):
         print("❌ No valid table found")
         return
 
+    # clean and score
     df["Shares"] = (
         df["Shares"]
         .astype(str)
@@ -80,15 +84,16 @@ def run_alert_check(label):
     top = df.sort_values("SignalStrength", ascending=False).iloc[0]
 
     message = (
-        f"📈 *{label} Insider Trade Alert* ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
-        f"{top['Insider Name']} bought {top['Shares']:,} shares of {top['Ticker']} at ${top['Price']:.2f}\n"
+        f"📈 *{label} Insider Trade Alert* "
+        f"({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
+        f"{top['Insider Name']} bought {top['Shares']:,} shares of "
+        f"{top['Ticker']} at ${top['Price']:.2f}\n"
         f"Score: {top['SignalStrength']}/100"
     )
 
     send_telegram_alert(message)
     print(f"✅ Sent {label} alert")
 
-# Run once on script invocation
 if __name__ == "__main__":
     # 1) Startup confirmation
     send_telegram_alert(
@@ -96,5 +101,5 @@ if __name__ == "__main__":
         "You'll receive your next insider-trade alerts at market open and close."
     )
 
-    # 2) Then immediately run your feed check:
+    # 2) Run your one-off check immediately
     run_alert_check(label="CEO/CFO Purchases > $25 K")
