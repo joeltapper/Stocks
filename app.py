@@ -196,12 +196,15 @@ if st.button("🔄 Refresh Data"):
             "Ticker", "InsiderName", "Shares", "Price", "SignalStrength", "Source"
         ]], use_container_width=True)
 
-if st.button("📤 Send Test SMS"):
+# 📤 Manual SMS Test Section
+st.markdown("---")
+st.subheader("📤 Test SMS Alert")
+
+if st.button("Send Test SMS"):
     test_message = (
         f"🚨 TEST ALERT ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
         f"CEO John Doe bought 1,000,000 shares of TEST at $2.00\n"
         f"Score: 95/100"
     )
     send_sms_via_email("9198848184", "att", test_message)
-    st.success("✅ Test SMS sent!")
-    
+    st.success("✅ Test SMS sent to 9198848184 (ATT)")
