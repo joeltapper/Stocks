@@ -1,4 +1,4 @@
-#scheduler.py
+# scheduler.py
 
 import schedule
 import time
@@ -7,25 +7,27 @@ import pandas as pd
 import cloudscraper
 import requests
 import os
-import toml
+from dotenv import load_dotenv
 
-# Load secrets manually (outside Streamlit)
-secrets = toml.load(".streamlit/secrets.toml")
+# Load credentials from env file
+load_dotenv(dotenv_path="env")
+token = os.getenv("TELEGRAM_BOT_TOKEN")
+chat_id = os.getenv("TELEGRAM_CHAT_ID")
 
 # --- Telegram Alert ---
 def send_telegram_alert(message_body):
-    token = secrets["telegram"]["bot_token"]
-    chat_id = secrets["telegram"]["chat_id"]
     url = f"https://api.telegram.org/bot{token}/sendMessage"
-
     payload = {
         "chat_id": chat_id,
         "text": message_body,
         "parse_mode": "Markdown"
     }
-
-    requests.post(url, json=payload)
-
+    try:
+        r = requests.post(url, json=payload)
+        r.raise_for_status()
+        print("✅ Telegram alert sent!")
+    except Exception as e:
+        print(f"❌ Telegram error: {e}")
 
 # --- Insider Trade Scrape ---
 FEEDS = {
@@ -53,7 +55,7 @@ def run_alert_check(label):
     scraper = cloudscraper.create_scraper()
     url = f"http://openinsider.com/{FEEDS['CEO/CFO Purchases > $25 K']}"
     tables = pd.read_html(scraper.get(url).text, flavor="bs4")
-    
+
     for tbl in tables:
         if "Filing Date" in tbl.columns and "Trade Date" in tbl.columns:
             df = tbl.copy()
@@ -74,22 +76,14 @@ def run_alert_check(label):
         f"{top['Insider Name']} bought {top['Shares']:,} shares of {top['Ticker']} at ${top['Price']:.2f}\n"
         f"Score: {top['SignalStrength']}/100"
     )
-    
+
     send_telegram_alert(message)
     print(f"✅ Sent {label} alert")
 
 # --- Schedule ---
-schedule.every().monday.at("09:30").do(run_alert_check, label="Market Open")
-schedule.every().tuesday.at("09:30").do(run_alert_check, label="Market Open")
-schedule.every().wednesday.at("09:30").do(run_alert_check, label="Market Open")
-schedule.every().thursday.at("09:30").do(run_alert_check, label="Market Open")
-schedule.every().friday.at("09:30").do(run_alert_check, label="Market Open")
-
-schedule.every().monday.at("16:00").do(run_alert_check, label="Market Close")
-schedule.every().tuesday.at("16:00").do(run_alert_check, label="Market Close")
-schedule.every().wednesday.at("16:00").do(run_alert_check, label="Market Close")
-schedule.every().thursday.at("16:00").do(run_alert_check, label="Market Close")
-schedule.every().friday.at("16:00").do(run_alert_check, label="Market Close")
+for day in ["monday", "tuesday", "wednesday", "thursday", "friday"]:
+    getattr(schedule.every(), day).at("09:30").do(run_alert_check, label="Market Open")
+    getattr(schedule.every(), day).at("16:00").do(run_alert_check, label="Market Close")
 
 # --- Main Loop ---
 print("📆 Scheduler started. Waiting for next run...")
