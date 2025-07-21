@@ -1,8 +1,10 @@
+# app.py
+
 import streamlit as st
 import pandas as pd
 import cloudscraper
+import requests
 from datetime import datetime
-import requests  # 👈 for TextBelt
 
 # Streamlit setup
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
@@ -26,22 +28,27 @@ FEEDS = {
     "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
 }
 
-# ✅ TextBelt SMS function (free version)
-def send_sms_textbelt(to_number, message_body):
-    try:
-        resp = requests.post('https://textbelt.com/text', {
-            'phone': to_number,
-            'message': message_body,
-            'key': 'textbelt',  # free plan = 1 text/day
-        })
+# ✅ Pushcut Notification Function
+def send_pushcut_notification(message_body):
+    api_key = st.secrets["pushcut"]["api_key"]
+    notification = st.secrets["pushcut"]["notification_name"]
 
-        result = resp.json()
-        if result.get("success"):
-            st.success("✅ SMS sent successfully!")
-        else:
-            st.error(f"❌ Failed to send: {result.get('error')}")
-    except Exception as e:
-        st.error(f"⚠️ SMS send error: {e}")
+    url = f"https://api.pushcut.io/v1/notifications/{notification}"
+    headers = {
+        "Content-Type": "application/json",
+        "API-Key": api_key,
+    }
+    payload = {
+        "text": "📈 Insider Trade Alert",
+        "body": message_body,
+    }
+
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+        st.success("✅ Pushcut notification sent!")
+    except requests.exceptions.RequestException as e:
+        st.error(f"❌ Pushcut error: {e}")
 
 # Helper functions
 def normalize_cols(cols):
@@ -96,17 +103,17 @@ feeds = st.multiselect(
     default=["Latest Insider Purchases"],
 )
 
-# 📤 Manual SMS Test Section
+# 📤 Manual Pushcut Test Section
 st.markdown("---")
-st.subheader("📤 Test SMS Alert")
+st.subheader("📤 Test Pushcut Notification")
 
-if st.button("Send Test SMS"):
+if st.button("Send Test Notification"):
     test_message = (
         f"🚨 TEST ALERT ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
         f"CEO John Doe bought 1,000,000 shares of TEST at $2.00\n"
         f"Score: 95/100"
     )
-    send_sms_textbelt("+19198848184", test_message)
+    send_pushcut_notification(test_message)
 
 # 🔄 Refresh Data Button and Logic
 if st.button("🔄 Refresh Data"):
@@ -173,14 +180,15 @@ if st.button("🔄 Refresh Data"):
         unsafe_allow_html=True
     )
 
-    # Text message format
     message = (
         f"Top Buy Signal ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
         f"{top.InsiderName} bought {top.Shares:,} shares of {top.Ticker} at ${top.Price:.2f}\n"
         f"Score: {top.SignalStrength}/100"
     )
 
-    send_sms_textbelt("+19198848184", message)
+    # ✅ Pushcut Alert if Score >= 80
+    if top.SignalStrength >= 80:
+        send_pushcut_notification(message)
 
     # Display in dashboard
     c1, c2 = st.columns((2, 1))
