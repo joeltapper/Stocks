@@ -1,11 +1,18 @@
-# app.py
-
 import streamlit as st
 import pandas as pd
 import cloudscraper
 
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
 st.title("📈 Insider Trading Dashboard")
+
+st.markdown(
+    """
+    This dashboard tracks insider trading activity from public companies, pulling live data from [OpenInsider](http://openinsider.com).
+    <br><br>
+    You can explore high-level executive purchases and sales, filtered by trade type and amount, to identify potential market signals.
+    """,
+    unsafe_allow_html=True
+)
 
 # we’re hitting the HTML pages over HTTP only
 FEEDS = {
@@ -17,7 +24,6 @@ FEEDS = {
 }
 
 def normalize_cols(cols):
-    # force to str, replace non‑breaking spaces, strip
     return [str(c).replace("\xa0", " ").strip() for c in cols]
 
 def find_table_with_filing(tables):
@@ -63,7 +69,6 @@ if st.button("🔄 Refresh Data"):
             continue
 
         cols = df0.columns.tolist()
-        # dynamically locate each column
         col_map = {
             "FilingDate":  find_col(cols, "filing date"),
             "TradeDate":   find_col(cols, "trade date"),
@@ -79,7 +84,6 @@ if st.button("🔄 Refresh Data"):
             st.warning(f"Feed {name} missing columns: {missing}")
             continue
 
-        # build a normalized DataFrame
         df = pd.DataFrame({
             "FilingDate":  df0[col_map["FilingDate"]],
             "TradeDate":   df0[col_map["TradeDate"]],
@@ -110,13 +114,14 @@ if st.button("🔄 Refresh Data"):
     data = pd.concat(all_dfs, ignore_index=True)
     data = data[data["TradeType"].str.contains("purchase", case=False, na=False)]
 
-    # show summary + tables
     top = data.loc[data["Shares"].idxmax()]
     st.success(f"✅ Fetched {len(data)} insider buys.")
+
     st.markdown(
-        f"**{top.InsiderName}** bought **{top.Shares:,}** shares of "
-        f"**{top.Ticker}** at **${top.Price:.2f}** on **{top.FilingDate}** "
-        f"(feed: *{top.Source}*)."
+        f"<b>{top.InsiderName}</b> bought <b>{top.Shares:,}</b> shares of "
+        f"<b>{top.Ticker}</b> at <b>${top.Price:.2f}</b> on <b>{top.FilingDate}</b> "
+        f"(feed: <i>{top.Source}</i>)",
+        unsafe_allow_html=True
     )
 
     c1, c2 = st.columns((2,1))
