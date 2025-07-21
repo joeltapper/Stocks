@@ -1,5 +1,3 @@
-# app.py
-
 import streamlit as st
 import pandas as pd
 import cloudscraper
@@ -28,27 +26,24 @@ FEEDS = {
     "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
 }
 
-# ✅ Pushcut Notification Function
-def send_pushcut_notification(message_body):
-    api_key = st.secrets["pushcut"]["api_key"]
-    notification = st.secrets["pushcut"]["notification_name"]
+# ✅ Telegram Notification Function
+def send_telegram_alert(message_body):
+    token = st.secrets["telegram"]["bot_token"]
+    chat_id = st.secrets["telegram"]["chat_id"]
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
 
-    url = f"https://api.pushcut.io/v1/notifications/{notification}"
-    headers = {
-        "Content-Type": "application/json",
-        "API-Key": api_key,
-    }
     payload = {
-        "text": "📈 Insider Trade Alert",
-        "body": message_body,
+        "chat_id": chat_id,
+        "text": message_body,
+        "parse_mode": "Markdown"
     }
 
     try:
-        response = requests.post(url, headers=headers, json=payload)
-        response.raise_for_status()
-        st.success("✅ Pushcut notification sent!")
-    except requests.exceptions.RequestException as e:
-        st.error(f"❌ Pushcut error: {e}")
+        r = requests.post(url, json=payload)
+        r.raise_for_status()
+        st.success("✅ Telegram alert sent!")
+    except Exception as e:
+        st.error(f"❌ Telegram error: {e}")
 
 # Helper functions
 def normalize_cols(cols):
@@ -103,9 +98,9 @@ feeds = st.multiselect(
     default=["Latest Insider Purchases"],
 )
 
-# 📤 Manual Pushcut Test Section
+# 📤 Manual Telegram Test Section
 st.markdown("---")
-st.subheader("📤 Test Pushcut Notification")
+st.subheader("📤 Test Telegram Notification")
 
 if st.button("Send Test Notification"):
     test_message = (
@@ -113,7 +108,7 @@ if st.button("Send Test Notification"):
         f"CEO John Doe bought 1,000,000 shares of TEST at $2.00\n"
         f"Score: 95/100"
     )
-    send_pushcut_notification(test_message)
+    send_telegram_alert(test_message)
 
 # 🔄 Refresh Data Button and Logic
 if st.button("🔄 Refresh Data"):
@@ -181,14 +176,13 @@ if st.button("🔄 Refresh Data"):
     )
 
     message = (
-        f"Top Buy Signal ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
+        f"📈 *Top Insider Buy Signal* ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
         f"{top.InsiderName} bought {top.Shares:,} shares of {top.Ticker} at ${top.Price:.2f}\n"
         f"Score: {top.SignalStrength}/100"
     )
 
-    # ✅ Pushcut Alert if Score >= 80
     if top.SignalStrength >= 80:
-        send_pushcut_notification(message)
+        send_telegram_alert(message)
 
     # Display in dashboard
     c1, c2 = st.columns((2, 1))
