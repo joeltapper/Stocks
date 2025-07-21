@@ -1,5 +1,5 @@
 streamlit
 pandas
 cloudscraper
-requests
 beautifulsoup4
+html5lib
