@@ -204,6 +204,7 @@ col2.markdown("### 🏆 Top 5 by Signal Strength")
 col2.dataframe(data.nlargest(5,'SignalStrength')[['Ticker','InsiderName','Shares','Price','SignalStrength']], use_container_width=True)
 
 # Cluster analysis & price chart
+from plotly.graph_objects import Candlestick
 clusters = detect_clusters(data, days_window=days_window, min_insiders=min_insiders)
 if not clusters.empty:
     st.markdown("---")
@@ -212,34 +213,48 @@ if not clusters.empty:
     ticker_choice = st.selectbox("Select ticker for price chart", clusters['Ticker'].unique())
     # Fetch intraday data
     price_df = fetch_intraday_data(ticker_choice, interval)
-    # Guard missing data
-    if price_df.empty or 'AdjClose' not in price_df.columns:
-        st.warning(f"No price data available for {ticker_choice}.")
-    else:
-        fig = go.Figure()
+    # Check for required columns
+    required_cols = ['open', 'high', 'low', 'AdjClose']
+    missing = [c for c in required_cols if c not in price_df.columns]
+    fig = go.Figure()
+    if not price_df.empty and not missing:
         # intraday candlesticks
-        fig.add_trace(go.Candlestick(
+        fig.add_trace(Candlestick(
             x=price_df.index,
             open=price_df['open'], high=price_df['high'],
             low=price_df['low'], close=price_df['AdjClose'],
             name='Intraday'
         ))
-        # Overlay clusters
-        for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
-            val = price_df['AdjClose'].get(cl['EndDate'])
+    else:
+        # fallback to daily line chart
+        daily = fetch_price_data(ticker_choice)
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(
+            x=daily.index, y=daily['AdjClose'], mode='lines', name='Adj Close'
+        ))
+        if missing:
+            st.warning(f"Missing intraday columns {missing}, showing daily data instead.")
+        elif price_df.empty:
+            st.warning(f"No intraday data for {ticker_choice}, showing daily instead.")
+    # Overlay clusters on whichever chart
+    for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
+        # use AdjClose from whichever df is plotted
+        df_plot = price_df if not price_df.empty and not missing else daily
+        val = df_plot['AdjClose'].get(cl['EndDate'])
+        if val is not None:
             fig.add_trace(go.Scatter(
                 x=[cl['EndDate']], y=[val], mode='markers',
                 marker=dict(size=8+cl['NumInsiders']*2), name='Cluster'
             ))
-        # Buy/sell simulation
-        buy_price = st.number_input(f"Enter BUY price for {ticker_choice}", min_value=0.0, step=0.01)
-        sell_price = st.number_input(f"Enter SELL price for {ticker_choice}", min_value=0.0, step=0.01)
-        if buy_price>0 and sell_price>0:
-            ret = (sell_price - buy_price)/buy_price*100
-            st.metric("Simulated Net Return", f"{ret:.2f}%")
-            fig.add_hline(y=buy_price, line_dash='dash', annotation_text='BUY At', line_color='green')
-            fig.add_hline(y=sell_price, line_dash='dash', annotation_text='SELL At', line_color='red')
-        st.plotly_chart(fig, use_container_width=True)
+    # Buy/sell simulation
+    buy_price = st.number_input(f"Enter BUY price for {ticker_choice}", min_value=0.0, step=0.01)
+    sell_price = st.number_input(f"Enter SELL price for {ticker_choice}", min_value=0.0, step=0.01)
+    if buy_price>0 and sell_price>0:
+        ret = (sell_price - buy_price)/buy_price*100
+        st.metric("Simulated Net Return", f"{ret:.2f}%")
+        fig.add_hline(y=buy_price, line_dash='dash', annotation_text='BUY At', line_color='green')
+        fig.add_hline(y=sell_price, line_dash='dash', annotation_text='SELL At', line_color='red')
+    st.plotly_chart(fig, use_container_width=True)
 
 # Test Telegram notification unchanged
 if st.button("Send Test Notification"):
