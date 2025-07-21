@@ -15,8 +15,9 @@ st.title("📈 Insider Trading Dashboard")
 # Intro blurb explaining platform
 st.markdown(
     """
-    This dashboard aggregates insider trading data from OpenInsider and overlays it with price charts, helping you spot significant buy/sell clusters and signals.
-    Use the controls on the left to customize feeds, cluster criteria, and price data views.
+    This dashboard aggregates insider trading data from OpenInsider and overlays it with price charts,
+    helping you spot significant buy/sell clusters and signals. Use the controls on the left to fetch data,
+    set cluster criteria, and simulate trades using buy/sell inputs.
     """,
     unsafe_allow_html=True
 )
@@ -32,7 +33,7 @@ FEEDS = {
 
 # Helper functions
 
-def normalize_cols(cols): return [str(c).replace("\xa0"," ").strip() for c in cols]
+def normalize_cols(cols): return [str(c).replace("\xa0", " ").strip() for c in cols]
 
 def find_table_with_filing(tables):
     for tbl in tables:
@@ -67,6 +68,7 @@ def calculate_signal_strength(row):
     return score
 
 # Cluster detection
+
 def detect_clusters(df, days_window=7, min_insiders=3):
     clusters = []
     for ticker, grp in df.groupby('Ticker'):
@@ -87,6 +89,7 @@ def detect_clusters(df, days_window=7, min_insiders=3):
     return pd.DataFrame(clusters)
 
 # Fetch daily adjusted close data
+
 def fetch_price_data(symbol):
     params = {
         'function': 'TIME_SERIES_DAILY_ADJUSTED',
@@ -104,17 +107,14 @@ def fetch_price_data(symbol):
     return df[['AdjClose']].sort_index()
 
 # Fetch intraday OHLCV data
-from plotly.graph_objects import Candlestick
 
-def fetch_intraday_data(symbol, interval='5min', outputsize='compact', adjusted=True, extended_hours=True):
+def fetch_intraday_data(symbol, interval='5min'):
     params = {
         'function': 'TIME_SERIES_INTRADAY',
         'symbol': symbol,
         'interval': interval,
-        'outputsize': outputsize,
         'apikey': ALPHA_VANTAGE_KEY,
-        'adjusted': str(adjusted).lower(),
-        'extended_hours': str(extended_hours).lower()
+        'outputsize': 'compact'
     }
     r = requests.get('https://www.alphavantage.co/query', params=params).json()
     key = f'Time Series ({interval})'
@@ -124,37 +124,30 @@ def fetch_intraday_data(symbol, interval='5min', outputsize='compact', adjusted=
         return pd.DataFrame()
     df.index = pd.to_datetime(df.index)
     df.columns = [c.split('. ')[1] for c in df.columns]
-    df = df.rename(columns={'close': 'AdjClose'})
-    return df.sort_index()
+    return df.rename(columns={'close': 'AdjClose'}).sort_index()
 
 # Sidebar controls
 feeds = st.sidebar.multiselect(
     "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
 )
-min_insiders = st.sidebar.number_input(
-    "Min insiders for cluster", min_value=2, max_value=10, value=3
-)
-days_window = st.sidebar.number_input(
-    "Cluster window days", min_value=1, max_value=30, value=7
-)
-use_intraday = st.sidebar.checkbox("Use Intraday Data", value=False)
-interval = st.sidebar.selectbox(
-    "Intraday interval",
-    ["1min", "5min", "15min", "30min", "60min"],
-    index=1
-)
+min_insiders = st.sidebar.number_input("Min insiders for cluster", 2, 10, 3)
+days_window = st.sidebar.number_input("Cluster window days", 1, 30, 7)
+# Default intraday 5min
+interval = '5min'
 refresh = st.sidebar.button("🔄 Refresh Data")
 st.sidebar.markdown("---")
 st.sidebar.markdown(
     """
     ### How to Use This Dashboard
     - Select feeds and cluster settings.
-    - Toggle Intraday and choose interval for OHLCV.
-    - Click Refresh to fetch insider trades and price data.
-    """
+    - Chart shows 5‑min intraday candlesticks by default.
+    - Enter buy/sell prices below to simulate returns.
+    - Click Refresh to fetch data.
+    """,
+    unsafe_allow_html=True
 )
 
-# Data fetch and load
+# Data fetch
 if refresh:
     scraper = cloudscraper.create_scraper(
         browser={"browser": "chrome", "platform": "windows", "desktop": True}
@@ -171,16 +164,11 @@ if refresh:
             if df0 is None:
                 continue
             cols = df0.columns.tolist()
-            mapping = {
-                'FilingDate': find_col(cols, 'filing date'),
-                'TradeDate': find_col(cols, 'trade date'),
-                'Ticker': find_col(cols, 'ticker'),
-                'InsiderName': find_col(cols, 'insider name'),
-                'Title': find_col(cols, 'title'),
-                'TradeType': find_col(cols, 'trade type'),
-                'Shares': find_col(cols, 'qty', 'share'),
-                'Price': find_col(cols, 'price'),
-            }
+            mapping = {k: find_col(cols, *v) for k,v in {
+                'FilingDate':['filing date'], 'TradeDate':['trade date'], 'Ticker':['ticker'],
+                'InsiderName':['insider name'], 'Title':['title'], 'TradeType':['trade type'],
+                'Shares':['qty','share'], 'Price':['price']
+            }.items()}
             if any(v is None for v in mapping.values()):
                 continue
             d = pd.DataFrame({
@@ -190,14 +178,8 @@ if refresh:
                 'InsiderName': df0[mapping['InsiderName']],
                 'Title': df0[mapping['Title']],
                 'TradeType': df0[mapping['TradeType']],
-                'Shares': df0[mapping['Shares']]
-                    .astype(str)
-                    .replace(r"[+,]", "", regex=True)
-                    .astype(int),
-                'Price': df0[mapping['Price']]
-                    .astype(str)
-                    .replace(r"[\$,]", "", regex=True)
-                    .astype(float),
+                'Shares': df0[mapping['Shares']].astype(str).replace(r"[+,]","",regex=True).astype(int),
+                'Price': df0[mapping['Price']].astype(str).replace(r"[\$,]","",regex=True).astype(float),
             })
             d = d[d['TradeType'].str.contains('purchase', case=False, na=False)]
             d['SignalStrength'] = d.apply(calculate_signal_strength, axis=1)
@@ -216,46 +198,56 @@ if data.empty:
 
 # Display tables
 col1, col2 = st.columns((2,1))
-col1.markdown("### All Insider Buys")
-col1.dataframe(data[['FilingDate', 'TradeDate', 'Ticker', 'InsiderName', 'Title', 'Shares', 'Price', 'SignalStrength']], use_container_width=True)
-col2.markdown("### Top 5 by Signal Strength")
-col2.dataframe(data.nlargest(5, 'SignalStrength')[['Ticker', 'InsiderName', 'Shares', 'Price', 'SignalStrength']], use_container_width=True)
+col1.markdown("### 📋 All Insider Buys")
+col1.dataframe(data[['FilingDate','TradeDate','Ticker','InsiderName','Title','Shares','Price','SignalStrength']], use_container_width=True)
+col2.markdown("### 🏆 Top 5 by Signal Strength")
+col2.dataframe(data.nlargest(5,'SignalStrength')[['Ticker','InsiderName','Shares','Price','SignalStrength']], use_container_width=True)
 
 # Cluster analysis & price chart
 clusters = detect_clusters(data, days_window=days_window, min_insiders=min_insiders)
 if not clusters.empty:
     st.markdown("---")
-    st.markdown("## Clustered Insider Trading Analysis")
+    st.markdown("## 🔍 Clustered Insider Trading Analysis")
     st.dataframe(clusters.sort_values('ClusterScore', ascending=False), use_container_width=True)
-    ticker_choice = st.selectbox("Select ticker for price chart", options=clusters['Ticker'].unique())
-        # Fetch price data
-    if use_intraday:
-        price_df = fetch_intraday_data(ticker_choice, interval)
-        chart_type = 'intraday'
-    else:
-        price_df = fetch_price_data(ticker_choice)
-        chart_type = 'daily'
-
-    # Handle missing price data
+    ticker_choice = st.selectbox("Select ticker for price chart", clusters['Ticker'].unique())
+    # Fetch intraday data
+    price_df = fetch_intraday_data(ticker_choice, interval)
+    # Guard missing data
     if price_df.empty or 'AdjClose' not in price_df.columns:
         st.warning(f"No price data available for {ticker_choice}.")
     else:
         fig = go.Figure()
-        if chart_type == 'intraday':
-            fig.add_trace(Candlestick(
-                x=price_df.index,
-                open=price_df['open'], high=price_df['high'],
-                low=price_df['low'], close=price_df['AdjClose'],
-                name='Intraday'
-            ))
-        else:
-            fig.add_trace(go.Scatter(
-                x=price_df.index, y=price_df['AdjClose'], mode='lines', name='Adj Close'
-            ))
+        # intraday candlesticks
+        fig.add_trace(go.Candlestick(
+            x=price_df.index,
+            open=price_df['open'], high=price_df['high'],
+            low=price_df['low'], close=price_df['AdjClose'],
+            name='Intraday'
+        ))
         # Overlay clusters
-        for _, cl in clusters[clusters['Ticker'] == ticker_choice].iterrows():
+        for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
             val = price_df['AdjClose'].get(cl['EndDate'])
             fig.add_trace(go.Scatter(
-                x=[cl['EndDate']], y=[val], mode='markers', marker=dict(size=8 + cl['NumInsiders'] * 2), name='Cluster'
+                x=[cl['EndDate']], y=[val], mode='markers',
+                marker=dict(size=8+cl['NumInsiders']*2), name='Cluster'
             ))
+        # Buy/sell simulation
+        buy_price = st.number_input(f"Enter BUY price for {ticker_choice}", min_value=0.0, step=0.01)
+        sell_price = st.number_input(f"Enter SELL price for {ticker_choice}", min_value=0.0, step=0.01)
+        if buy_price>0 and sell_price>0:
+            ret = (sell_price - buy_price)/buy_price*100
+            st.metric("Simulated Net Return", f"{ret:.2f}%")
+            fig.add_hline(y=buy_price, line_dash='dash', annotation_text='BUY At', line_color='green')
+            fig.add_hline(y=sell_price, line_dash='dash', annotation_text='SELL At', line_color='red')
         st.plotly_chart(fig, use_container_width=True)
+
+# Test Telegram notification unchanged
+if st.button("Send Test Notification"):
+    msg = f"🚨 TEST ALERT ({datetime.now():%m/%d %I:%M%p}): Sample alert"
+    try:
+        token = st.secrets['telegram']['bot_token']
+        chat_id = st.secrets['telegram']['chat_id']
+        requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id":chat_id, "text":msg, "parse_mode":"Markdown"})
+        st.success("✅ Telegram test sent!")
+    except Exception as e:
+        st.error(f"❌ Telegram error: {e}")
