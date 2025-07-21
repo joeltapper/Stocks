@@ -1,20 +1,18 @@
 # scheduler.py
 
-import schedule
-import time
-from datetime import datetime
 import pandas as pd
 import cloudscraper
 import requests
+from datetime import datetime
 import os
 from dotenv import load_dotenv
 
-# Load credentials from env file
+# Load environment variables
 load_dotenv(dotenv_path="env")
 token = os.getenv("TELEGRAM_BOT_TOKEN")
 chat_id = os.getenv("TELEGRAM_CHAT_ID")
 
-# --- Telegram Alert ---
+# Send Telegram Alert
 def send_telegram_alert(message_body):
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     payload = {
@@ -29,7 +27,7 @@ def send_telegram_alert(message_body):
     except Exception as e:
         print(f"❌ Telegram error: {e}")
 
-# --- Insider Trade Scrape ---
+# Insider trade feed
 FEEDS = {
     "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
 }
@@ -42,7 +40,7 @@ def calculate_signal_strength(row):
     elif row["Shares"] >= 25_000: score += 5
 
     title = row["Title"].lower()
-    if "ceo" in title or "chief executive" in title: score += 30
+    if "ceo" in title: score += 30
     elif "cfo" in title: score += 20
     elif "director" in title or "officer" in title: score += 10
 
@@ -80,13 +78,6 @@ def run_alert_check(label):
     send_telegram_alert(message)
     print(f"✅ Sent {label} alert")
 
-# --- Schedule ---
-for day in ["monday", "tuesday", "wednesday", "thursday", "friday"]:
-    getattr(schedule.every(), day).at("09:30").do(run_alert_check, label="Market Open")
-    getattr(schedule.every(), day).at("16:00").do(run_alert_check, label="Market Close")
-
-# --- Main Loop ---
-print("📆 Scheduler started. Waiting for next run...")
-while True:
-    schedule.run_pending()
-    time.sleep(30)
+# Run once
+if __name__ == "__main__":
+    run_alert_check(label="Market Auto Trigger")
