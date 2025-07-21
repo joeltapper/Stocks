@@ -9,17 +9,7 @@ import plotly.graph_objects as go
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
 st.title("📈 Insider Trading Dashboard")
 
-# Alpha Vantage API Key
-ALPHA_VANTAGE_KEY = st.secrets.get("alpha_vantage_key", "DB0I9TW82MKUFXSS")
-
-st.markdown(
-    """
-    This dashboard aggregates and analyzes insider trading activity from public companies, providing you clear signals on significant buy/sell events.  
-    It integrates data from [OpenInsider](http://openinsider.com) and overlays it with historical price charts.  
-    New features: clustered insider trading detection, interactive price charts with cluster markers, and significance scoring.
-    """,
-    unsafe_allow_html=True
-)
+# (Feeds are selected via sidebar now)
 
 # Feed definitions
 FEEDS = {
@@ -147,17 +137,6 @@ st.sidebar.markdown(
     - **Refresh Data**: Click to fetch the latest insider trades (up to ~300 entries per feed) and update the tables and charts.
     """,
     unsafe_allow_html=True
-)
-
-# Data fetch and pagination for 300 buys
-feeds = st.sidebar.multiselect(
-    "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
-)
-min_insiders = st.sidebar.number_input(
-    "Min insiders for cluster", min_value=2, max_value=10, value=3
-)
-days_window = st.sidebar.number_input(
-    "Cluster window days", min_value=1, max_value=30, value=7
 )
 
 # Data fetch and pagination for 300 buys
