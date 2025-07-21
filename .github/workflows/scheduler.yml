@@ -2,16 +2,18 @@ name: Run Scheduler
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # every 15 minutes
-  workflow_dispatch:        # allows manual runs
+    # Run at 9:30 AM ET (13:30 UTC)
+    - cron: '30 13 * * 1-5'
+    # Run at 4:00 PM ET (20:00 UTC)
+    - cron: '0 20 * * 1-5'
+  workflow_dispatch:
 
 jobs:
   run-scheduler:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -20,12 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run scheduler.py
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          python scheduler.py
+        run: python scheduler.py
