@@ -258,4 +258,4 @@ if not clusters.empty:
             fig.add_trace(go.Scatter(
                 x=[cl['EndDate']], y=[val], mode='markers', marker=dict(size=8 + cl['NumInsiders'] * 2), name='Cluster'
             ))
-        st.plotly_chart(fig, use_container_width=True)(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
