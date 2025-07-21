@@ -107,6 +107,20 @@ feeds = st.multiselect(
     default=["Latest Insider Purchases"],
 )
 
+# 📤 Manual SMS Test Section (placed BEFORE refresh button block)
+st.markdown("---")
+st.subheader("📤 Test SMS Alert")
+
+if st.button("Send Test SMS"):
+    test_message = (
+        f"🚨 TEST ALERT ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
+        f"CEO John Doe bought 1,000,000 shares of TEST at $2.00\n"
+        f"Score: 95/100"
+    )
+    send_sms_via_email("9198848184", "att", test_message)
+    st.success("✅ Test SMS sent to 9198848184 (ATT)")
+
+# 🔄 Refresh Data Button and Logic
 if st.button("🔄 Refresh Data"):
     scraper = cloudscraper.create_scraper(
         browser={"browser": "chrome", "platform": "windows", "desktop": True}
@@ -178,7 +192,6 @@ if st.button("🔄 Refresh Data"):
         f"Score: {top.SignalStrength}/100"
     )
 
-    # 🔔 Enable this to send SMS
     send_sms_via_email("9198848184", "att", message)
 
     # Display in dashboard
@@ -195,16 +208,3 @@ if st.button("🔄 Refresh Data"):
         st.dataframe(data.nlargest(5, "SignalStrength")[[
             "Ticker", "InsiderName", "Shares", "Price", "SignalStrength", "Source"
         ]], use_container_width=True)
-
-# 📤 Manual SMS Test Section
-st.markdown("---")
-st.subheader("📤 Test SMS Alert")
-
-if st.button("Send Test SMS"):
-    test_message = (
-        f"🚨 TEST ALERT ({datetime.now().strftime('%m/%d %I:%M%p')}):\n"
-        f"CEO John Doe bought 1,000,000 shares of TEST at $2.00\n"
-        f"Score: 95/100"
-    )
-    send_sms_via_email("9198848184", "att", test_message)
-    st.success("✅ Test SMS sent to 9198848184 (ATT)")
