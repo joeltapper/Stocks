@@ -14,7 +14,8 @@ ALPHA_VANTAGE_KEY = st.secrets.get("alpha_vantage_key", "DB0I9TW82MKUFXSS")
 
 st.markdown(
     """
-    This dashboard tracks insider trading activity from public companies, pulling live data from [OpenInsider](http://openinsider.com).  
+    This dashboard aggregates and analyzes insider trading activity from public companies, providing you clear signals on significant buy/sell events.  
+    It integrates data from [OpenInsider](http://openinsider.com) and overlays it with historical price charts.  
     New features: clustered insider trading detection, interactive price charts with cluster markers, and significance scoring.
     """,
     unsafe_allow_html=True
@@ -122,7 +123,18 @@ def fetch_price_data(symbol):
     df = df.rename(columns={'5. adjusted close': 'AdjClose'})
     return df[['AdjClose']].sort_index()
 
-# Sidebar controls
+# Sidebar inputs
+feeds = st.sidebar.multiselect(
+    "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
+)
+min_insiders = st.sidebar.number_input(
+    "Min insiders for cluster", min_value=2, max_value=10, value=3
+)
+days_window = st.sidebar.number_input(
+    "Cluster window days", min_value=1, max_value=30, value=7
+)
+
+# How to Use This Dashboard (moved below inputs)
 st.sidebar.markdown(
     """
     ### How to Use This Dashboard
@@ -133,7 +145,8 @@ st.sidebar.markdown(
     """,
     unsafe_allow_html=True
 )
-# Sidebar inputs
+
+# Data fetch and pagination for 300 buys
 feeds = st.sidebar.multiselect(
     "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
 )
