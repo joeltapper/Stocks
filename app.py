@@ -134,6 +134,9 @@ days_window = st.sidebar.number_input(
     "Cluster window days", min_value=1, max_value=30, value=7
 )
 
+# Separator
+st.sidebar.markdown("---")
+
 # How to Use This Dashboard (moved below inputs)
 st.sidebar.markdown(
     """
