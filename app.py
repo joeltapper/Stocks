@@ -124,7 +124,11 @@ days_window = st.sidebar.number_input(
     "Cluster window days", min_value=1, max_value=30, value=7
 )
 
+# Refresh control button placed under inputs
+refresh_clicked = st.sidebar.button("🔄 Refresh Data")
+
 # Separator
+st.sidebar.markdown("---")
 st.sidebar.markdown("---")
 
 # How to Use This Dashboard (moved below inputs)
@@ -140,7 +144,7 @@ st.sidebar.markdown(
 )
 
 # Data fetch and pagination for 300 buys
-if st.sidebar.button("🔄 Refresh Data"):
+if refresh_clicked:
     scraper = cloudscraper.create_scraper(
         browser={"browser": "chrome", "platform": "windows", "desktop": True}
     )
