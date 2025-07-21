@@ -5,14 +5,12 @@ import requests
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
 
-# Alpha Vantage API Key is loaded from Streamlit secrets (set in your secrets.toml under [alpha_vantage])
+# Alpha Vantage API Key
 ALPHA_VANTAGE_KEY = st.secrets.alpha_vantage.key
 
 # Streamlit setup
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
 st.title("📈 Insider Trading Dashboard")
-
-# (Feeds are selected via sidebar now)
 
 # Feed definitions
 FEEDS = {
@@ -25,8 +23,7 @@ FEEDS = {
 
 # Helper functions
 
-def normalize_cols(cols):
-    return [str(c).replace("\xa0", " ").strip() for c in cols]
+def normalize_cols(cols): return [str(c).replace("\xa0"," ").strip() for c in cols]
 
 def find_table_with_filing(tables):
     for tbl in tables:
@@ -36,7 +33,7 @@ def find_table_with_filing(tables):
             return tbl
     return None
 
-def find_col(cols, *keywords):
+def find_col(cols,*keywords):
     for c in cols:
         low = c.lower()
         for kw in keywords:
@@ -44,193 +41,201 @@ def find_col(cols, *keywords):
                 return c
     return None
 
-# Basic signal strength per trade
+# Signal strength calculation
 
 def calculate_signal_strength(row):
     score = 0
-    if row['Shares'] >= 1_000_000:
-        score += 35
-    elif row['Shares'] >= 500_000:
-        score += 25
-    elif row['Shares'] >= 100_000:
-        score += 15
-    elif row['Shares'] >= 25_000:
-        score += 5
+    if row['Shares'] >= 1_000_000: score += 35
+    elif row['Shares'] >= 500_000: score += 25
+    elif row['Shares'] >= 100_000: score += 15
+    elif row['Shares'] >= 25_000: score += 5
     title = row['Title'].lower()
-    if 'ceo' in title or 'chief executive' in title:
-        score += 30
-    elif 'cfo' in title:
-        score += 20
-    elif 'director' in title or 'officer' in title:
-        score += 10
-    if row['Price'] <= 2:
-        score += 10
-    elif row['Price'] <= 5:
-        score += 5
+    if 'ceo' in title: score += 30
+    elif 'cfo' in title: score += 20
+    elif 'director' in title or 'officer' in title: score += 10
+    if row['Price'] <= 2: score += 10
+    elif row['Price'] <= 5: score += 5
     return score
 
 # Cluster detection
-
 def detect_clusters(df, days_window=7, min_insiders=3):
     clusters = []
-    for ticker, group in df.groupby('Ticker'):
-        grp = group.sort_values('TradeDate')
-        for idx, row in grp.iterrows():
-            window_start = row['TradeDate'] - timedelta(days=days_window)
-            window_df = grp[(grp['TradeDate'] >= window_start) & (grp['TradeDate'] <= row['TradeDate'])]
-            insiders = window_df['InsiderName'].nunique()
-            if insiders >= min_insiders:
-                total_shares = window_df['Shares'].sum()
-                cluster_score = window_df['SignalStrength'].sum() + insiders * 5
+    for ticker, grp in df.groupby('Ticker'):
+        grp = grp.sort_values('TradeDate')
+        for _, r in grp.iterrows():
+            start = r['TradeDate'] - timedelta(days=days_window)
+            window = grp[(grp['TradeDate'] >= start) & (grp['TradeDate'] <= r['TradeDate'])]
+            ins = window['InsiderName'].nunique()
+            if ins >= min_insiders:
                 clusters.append({
                     'Ticker': ticker,
-                    'EndDate': row['TradeDate'],
-                    'NumInsiders': insiders,
-                    'TotalShares': total_shares,
-                    'ClusterScore': cluster_score,
-                    'WindowStart': window_start
+                    'WindowStart': start,
+                    'EndDate': r['TradeDate'],
+                    'NumInsiders': ins,
+                    'TotalShares': window['Shares'].sum(),
+                    'ClusterScore': window['SignalStrength'].sum() + ins * 5
                 })
     return pd.DataFrame(clusters)
 
-# Fetch daily data
-
+# Fetch daily adjusted close data
 def fetch_price_data(symbol):
-    url = 'https://www.alphavantage.co/query'
     params = {
         'function': 'TIME_SERIES_DAILY_ADJUSTED',
         'symbol': symbol,
         'outputsize': 'compact',
         'apikey': ALPHA_VANTAGE_KEY
     }
-    r = requests.get(url, params=params)
-    data = r.json().get('Time Series (Daily)', {})
+    r = requests.get('https://www.alphavantage.co/query', params=params).json()
+    data = r.get('Time Series (Daily)', {})
     df = pd.DataFrame.from_dict(data, orient='index')
-    if df.empty or '5. adjusted close' not in df.columns:
+    if '5. adjusted close' not in df.columns:
         return pd.DataFrame()
     df.index = pd.to_datetime(df.index)
     df = df.rename(columns={'5. adjusted close': 'AdjClose'})
     return df[['AdjClose']].sort_index()
 
-# Fetch intraday data
+# Fetch intraday OHLCV data
+from plotly.graph_objects import Candlestick
 
 def fetch_intraday_data(symbol, interval='5min', outputsize='compact', adjusted=True, extended_hours=True):
-    url = 'https://www.alphavantage.co/query'
     params = {
         'function': 'TIME_SERIES_INTRADAY',
         'symbol': symbol,
         'interval': interval,
-        'apikey': ALPHA_VANTAGE_KEY,
         'outputsize': outputsize,
+        'apikey': ALPHA_VANTAGE_KEY,
         'adjusted': str(adjusted).lower(),
-        'extended_hours': str(extended_hours).lower(),
+        'extended_hours': str(extended_hours).lower()
     }
-    r = requests.get(url, params=params)
+    r = requests.get('https://www.alphavantage.co/query', params=params).json()
     key = f'Time Series ({interval})'
-    data = r.json().get(key, {})
+    data = r.get(key, {})
     df = pd.DataFrame.from_dict(data, orient='index')
     if df.empty:
         return pd.DataFrame()
     df.index = pd.to_datetime(df.index)
-    df.columns = [col.split('. ')[1] for col in df.columns]
-    return df.rename(columns={'close':'AdjClose'}).sort_index()
+    df.columns = [c.split('. ')[1] for c in df.columns]
+    df = df.rename(columns={'close': 'AdjClose'})
+    return df.sort_index()
 
-# Sidebar inputs
-feeds = st.sidebar.multiselect("Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"])
-min_insiders = st.sidebar.number_input("Min insiders for cluster", min_value=2, max_value=10, value=3)
-days_window = st.sidebar.number_input("Cluster window days", min_value=1, max_value=30, value=7)
+# Sidebar controls
+feeds = st.sidebar.multiselect(
+    "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
+)
+min_insiders = st.sidebar.number_input(
+    "Min insiders for cluster", min_value=2, max_value=10, value=3
+)
+days_window = st.sidebar.number_input(
+    "Cluster window days", min_value=1, max_value=30, value=7
+)
 use_intraday = st.sidebar.checkbox("Use Intraday Data", value=False)
-interval = st.sidebar.selectbox("Intraday interval", ["1min","5min","15min","30min","60min"], index=1)
-refresh_clicked = st.sidebar.button("🔄 Refresh Data")
+interval = st.sidebar.selectbox(
+    "Intraday interval",
+    ["1min", "5min", "15min", "30min", "60min"],
+    index=1
+)
+refresh = st.sidebar.button("🔄 Refresh Data")
 st.sidebar.markdown("---")
 st.sidebar.markdown(
     """
     ### How to Use This Dashboard
-    - Select your desired feeds and cluster settings.
-    - Toggle intraday to see OHLCV candles intraday or daily adjusted close.
-    - Pick an interval when using intraday (1–60 minute bars).
-    - Hit Refresh to fetch the latest insider trades and price series.
-    """,
-    unsafe_allow_html=True
+    - Select feeds and cluster settings.
+    - Toggle Intraday and choose interval for OHLCV.
+    - Click Refresh to fetch insider trades and price data.
+    """
 )
 
-# Data fetch
-if refresh_clicked:
-    scraper = cloudscraper.create_scraper(browser={"browser":"chrome","platform":"windows","desktop":True})
-    all_dfs=[]
+# Data fetch and load
+if refresh:
+    scraper = cloudscraper.create_scraper(
+        browser={"browser": "chrome", "platform": "windows", "desktop": True}
+    )
+    all_dfs = []
     for name in feeds:
-        endpoint=FEEDS[name]
-        feed_dfs=[]
-        for offset in [0,100,200]:
-            sep='&' if '?' in endpoint else '?'
-            resp=scraper.get(f"http://openinsider.com/{endpoint}{sep}o={offset}")
-            tables=pd.read_html(resp.text,flavor='bs4')
-            df0=find_table_with_filing(tables)
-            if not df0: continue
-            cols=df0.columns.tolist()
-            mapping={k:find_col(cols,*v) for k,v in {
-                'FilingDate':['filing date'], 'TradeDate':['trade date'], 'Ticker':['ticker'],
-                'InsiderName':['insider name'], 'Title':['title'], 'TradeType':['trade type'],
-                'Shares':['qty','share'], 'Price':['price']
-            }.items()}
-            if any(v is None for v in mapping.values()): continue
-            df=pd.DataFrame({
-                'FilingDate':df0[mapping['FilingDate']],
-                'TradeDate':pd.to_datetime(df0[mapping['TradeDate']]),
-                'Ticker':df0[mapping['Ticker']],
-                'InsiderName':df0[mapping['InsiderName']],
-                'Title':df0[mapping['Title']],
-                'TradeType':df0[mapping['TradeType']],
-                'Shares':df0[mapping['Shares']].astype(str).replace(r"[+,]","",regex=True).astype(int),
-                'Price':df0[mapping['Price']].astype(str).replace(r"[\$,]","",regex=True).astype(float)
+        ep = FEEDS[name]
+        dfs = []
+        for off in [0, 100, 200]:
+            sep = '&' if '?' in ep else '?'
+            url = f"http://openinsider.com/{ep}{sep}o={off}"
+            tables = pd.read_html(scraper.get(url).text, flavor='bs4')
+            df0 = find_table_with_filing(tables)
+            if df0 is None:
+                continue
+            cols = df0.columns.tolist()
+            mapping = {
+                'FilingDate': find_col(cols, 'filing date'),
+                'TradeDate': find_col(cols, 'trade date'),
+                'Ticker': find_col(cols, 'ticker'),
+                'InsiderName': find_col(cols, 'insider name'),
+                'Title': find_col(cols, 'title'),
+                'TradeType': find_col(cols, 'trade type'),
+                'Shares': find_col(cols, 'qty', 'share'),
+                'Price': find_col(cols, 'price'),
+            }
+            if any(v is None for v in mapping.values()):
+                continue
+            d = pd.DataFrame({
+                'FilingDate': df0[mapping['FilingDate']],
+                'TradeDate': pd.to_datetime(df0[mapping['TradeDate']]),
+                'Ticker': df0[mapping['Ticker']],
+                'InsiderName': df0[mapping['InsiderName']],
+                'Title': df0[mapping['Title']],
+                'TradeType': df0[mapping['TradeType']],
+                'Shares': df0[mapping['Shares']]
+                    .astype(str)
+                    .replace(r"[+,]", "", regex=True)
+                    .astype(int),
+                'Price': df0[mapping['Price']]
+                    .astype(str)
+                    .replace(r"[\$,]", "", regex=True)
+                    .astype(float),
             })
-            df=df[df['TradeType'].str.contains('purchase',case=False,na=False)]
-            df['SignalStrength']=df.apply(calculate_signal_strength,axis=1)
-            feed_dfs.append(df)
-        if feed_dfs: all_dfs.append(pd.concat(feed_dfs,ignore_index=True))
-    if not all_dfs: st.error("No data fetched"); st.stop()
-    data=pd.concat(all_dfs,ignore_index=True)
-    st.session_state['data']=data
-    st.success(f"✅ Fetched {len(data)} insider trades.")
+            d = d[d['TradeType'].str.contains('purchase', case=False, na=False)]
+            d['SignalStrength'] = d.apply(calculate_signal_strength, axis=1)
+            dfs.append(d)
+        if dfs:
+            all_dfs.append(pd.concat(dfs, ignore_index=True))
+    data = pd.concat(all_dfs, ignore_index=True) if all_dfs else pd.DataFrame()
+    st.session_state['data'] = data
+    st.success(f"✅ Fetched {len(data)} insider buys.")
 else:
-    data=st.session_state.get('data',pd.DataFrame())
+    data = st.session_state.get('data', pd.DataFrame())
 
 if data.empty:
-    st.info("No data — please refresh."); st.stop()
+    st.info("No data to display. Please refresh.")
+    st.stop()
 
 # Display tables
-c1,c2=st.columns((2,1))
-c1.markdown("### All Insider Buys")
-c1.dataframe(data[['FilingDate','TradeDate','Ticker','InsiderName','Title','Shares','Price','SignalStrength']],use_container_width=True)
-c2.markdown("### Top 5 by Signal Strength")
-c2.dataframe(data.nlargest(5,'SignalStrength')[['Ticker','InsiderName','Shares','Price','SignalStrength']],use_container_width=True)
+col1, col2 = st.columns((2,1))
+col1.markdown("### All Insider Buys")
+col1.dataframe(data[['FilingDate', 'TradeDate', 'Ticker', 'InsiderName', 'Title', 'Shares', 'Price', 'SignalStrength']], use_container_width=True)
+col2.markdown("### Top 5 by Signal Strength")
+col2.dataframe(data.nlargest(5, 'SignalStrength')[['Ticker', 'InsiderName', 'Shares', 'Price', 'SignalStrength']], use_container_width=True)
 
-# Cluster analysis
-clusters=detect_clusters(data,days_window,min_insiders)
+# Cluster analysis & price chart
+clusters = detect_clusters(data, days_window=days_window, min_insiders=min_insiders)
 if not clusters.empty:
     st.markdown("---")
-    st.markdown("## Clustered Trading Analysis")
-    st.dataframe(clusters.sort_values('ClusterScore',ascending=False),use_container_width=True)
-    ticker_choice=st.selectbox("Select ticker for price chart",options=clusters['Ticker'].unique())
+    st.markdown("## Clustered Insider Trading Analysis")
+    st.dataframe(clusters.sort_values('ClusterScore', ascending=False), use_container_width=True)
+    ticker_choice = st.selectbox("Select ticker for price chart", options=clusters['Ticker'].unique())
     if use_intraday:
-        price_df=fetch_intraday_data(ticker_choice,interval)
-    else:
-        price_df=fetch_price_data(ticker_choice)
-    if price_df.empty:
-        st.warning(f"No price data for {ticker_choice}.")
-    else:
-        fig=go.Figure(); fig.add_trace(go.Candlestick(
+        price_df = fetch_intraday_data(ticker_choice, interval)
+        fig = go.Figure()
+        fig.add_trace(Candlestick(
             x=price_df.index,
-            open=price_df['open'] if use_intraday else price_df['AdjClose'],
-            high=price_df['high'] if use_intraday else price_df['AdjClose'],
-            low=price_df['low'] if use_intraday else price_df['AdjClose'],
-            close=price_df['AdjClose'], name='Price'
+            open=price_df['open'], high=price_df['high'],
+            low=price_df['low'], close=price_df['AdjClose'],
+            name='Intraday'
         ))
-        for _,cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
-            point=cl['EndDate']; val=price_df['AdjClose'].get(point)
-            fig.add_trace(go.Scatter(x=[point],y=[val],mode='markers',marker=dict(size=10+cl['NumInsiders']*3),name=f"Cluster {cl['NumInsiders']}"))
-        st.plotly_chart(fig,use_container_width=True)
-
-# Test notification remains
-if st.button("Send Test Notification"):
-    # ... unchanged ...
-    pass
+    else:
+        price_df = fetch_price_data(ticker_choice)
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=price_df.index, y=price_df['AdjClose'], mode='lines', name='Adj Close'))
+    # Overlay clusters
+    for _, cl in clusters[clusters['Ticker'] == ticker_choice].iterrows():
+        val = price_df['AdjClose'].get(cl['EndDate'])
+        fig.add_trace(go.Scatter(
+            x=[cl['EndDate']], y=[val], mode='markers', marker=dict(size=8 + cl['NumInsiders'] * 2), name='Cluster'
+        ))
+    st.plotly_chart(fig, use_container_width=True)
