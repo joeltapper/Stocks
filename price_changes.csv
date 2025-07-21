@@ -1,0 +1,136 @@
+Ticker,FilingDate,Pct_5d_Change
+BRCC,2025-07-18,"Ticker
+BRCC    0.0
+Name: 2025-07-18 00:00:00, dtype: float64"
+BRCC,2025-07-18,"Ticker
+BRCC    0.0
+Name: 2025-07-18 00:00:00, dtype: float64"
+BRCC,2025-07-18,"Ticker
+BRCC    0.0
+Name: 2025-07-18 00:00:00, dtype: float64"
+UTGN,2025-07-18,"Ticker
+UTGN    0.0
+Name: 2025-07-18 00:00:00, dtype: float64"
+ELV,2025-07-18,"Ticker
+ELV    0.0
+Name: 2025-07-18 00:00:00, dtype: float64"
+NEGG,2025-07-18,"Ticker
+NEGG    0.0
+Name: 2025-07-18 00:00:00, dtype: float64"
+PETS,2025-07-18,"Ticker
+PETS    0.0
+Name: 2025-07-18 00:00:00, dtype: float64"
+ASAN,2025-07-17,"Ticker
+ASAN    4.16
+dtype: float64"
+LIEN,2025-07-17,"Ticker
+LIEN   -0.57
+dtype: float64"
+CRSP,2025-07-17,"Ticker
+CRSP    18.22
+dtype: float64"
+DLHC,2025-07-17,"Ticker
+DLHC   -2.44
+dtype: float64"
+REPX,2025-07-17,"Ticker
+REPX    3.24
+dtype: float64"
+SHEN,2025-07-17,"Ticker
+SHEN    0.0
+dtype: float64"
+SHEN,2025-07-17,"Ticker
+SHEN    0.0
+dtype: float64"
+OMCC,2025-07-17,"Ticker
+OMCC    1.88
+dtype: float64"
+GRX,2025-07-17,"Ticker
+GRX   -0.85
+dtype: float64"
+YORW,2025-07-17,"Ticker
+YORW   -0.19
+dtype: float64"
+RVYL,2025-07-17,"Ticker
+RVYL    6.45
+dtype: float64"
+SSGC,2025-07-16,"Ticker
+SSGC    23.23
+dtype: float64"
+REPX,2025-07-16,"Ticker
+REPX    8.55
+dtype: float64"
+PAPL,2025-07-16,"Ticker
+PAPL    57.5
+dtype: float64"
+BXSY,2025-07-16,"Ticker
+BXSY    0.22
+dtype: float64"
+KFS,2025-07-16,"Ticker
+KFS    0.07
+dtype: float64"
+NEGG,2025-07-16,"Ticker
+NEGG    8.96
+dtype: float64"
+CALC,2025-07-15,"Ticker
+CALC    46.83
+dtype: float64"
+HELE,2025-07-15,"Ticker
+HELE    9.43
+dtype: float64"
+DYN,2025-07-15,"Ticker
+DYN    8.94
+dtype: float64"
+ASAN,2025-07-15,"Ticker
+ASAN    9.56
+dtype: float64"
+SHEN,2025-07-15,"Ticker
+SHEN    2.15
+dtype: float64"
+SHEN,2025-07-15,"Ticker
+SHEN    2.15
+dtype: float64"
+VIRC,2025-07-15,"Ticker
+VIRC    0.77
+dtype: float64"
+NTWK,2025-07-15,"Ticker
+NTWK    2.66
+dtype: float64"
+CIVB,2025-07-15,"Ticker
+CIVB   -0.33
+dtype: float64"
+CIVB,2025-07-15,"Ticker
+CIVB   -0.33
+dtype: float64"
+RVP,2025-07-15,"Ticker
+RVP   -1.49
+dtype: float64"
+NEGG,2025-07-15,"Ticker
+NEGG    0.75
+dtype: float64"
+DLPN,2025-07-15,"Ticker
+DLPN   -4.07
+dtype: float64"
+NTWK,2025-07-15,"Ticker
+NTWK    2.66
+dtype: float64"
+NEGG,2025-07-14,"Ticker
+NEGG   -18.42
+dtype: float64"
+CELFX,2025-07-14,"Ticker
+CELFX    0.09
+dtype: float64"
+CCLFX,2025-07-14,"Ticker
+CCLFX    0.19
+dtype: float64"
+CPEFX,2025-07-14,"Ticker
+CPEFX    0.47
+dtype: float64"
+BMNR,2025-07-14,"Ticker
+BMNR    3.24
+dtype: float64"
+BXSY,2025-07-14,"Ticker
+BXSY    0.0
+dtype: float64"
+COGT,2025-07-14,"Ticker
+COGT    12.62
+dtype: float64"

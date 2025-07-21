@@ -1,0 +1,960 @@
+<!doctype html> 
+<html lang=en>
+<head>
+<script type="text/javascript" src="/js/sic.js" async></script>
+<meta charset=utf-8>
+<title>Latest Insider Purchases -  - OpenInsider</title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta name="description" content="Latest Insider Purchases. Monitor SEC Form 4 Insider Trading Filings for Insider Buying and Selling. Real-time Insider Trading Stock Screener. Long and Short Trading Ideas using Insider Transaction Data." />
+<meta name="keywords" content="insider buying, insider trading, insider transactions, Form 4, insider score, insider monitor, gurufocus, insider selling, stocks to buy, stocks to sell, stocks to short" />
+<style type="text/css">
+#logotext { margin:0px;padding:0px 3px;font-size:16px;
+}
+.menu{
+	border:0px;
+	margin:0px;
+	padding:0px;
+	font-family:sans-serif,arial,verdana,geneva,helvetica,sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	}
+.menu ul{
+	height:28px;
+	list-style:none;
+	margin:0px;
+	padding:0px;
+	}
+	.menu li{
+		background:#222244;
+		border-top:1px solid #ddd;
+		border-left:1px solid #ccc;
+		border-right:1px solid #555;
+		border-bottom:1px solid #555;
+		float:left;
+		height:28px;
+		margin:0px 0px 0px 0px;
+		padding:0px;
+		}
+	.menu li a{
+		color:#fff;
+		display:block;
+		font-weight:normal;
+		line-height:28px;
+		margin:0px;
+		padding:0px 7px;
+		text-align:center;
+		text-decoration:none;
+		}
+	.menu li a:hover{
+		background:#ff6600;
+		color:#fff;
+		text-decoration:none;
+		}
+	.menu li ul{
+		background:#333;
+		margin:0px;
+		padding:0px;
+		border-top:1px solid #ccc;
+		border-left:1px solid #ccc;
+		border-right:1px solid #555;
+		border-bottom:1px solid #555;
+		display:none;
+		line-height:auto;
+		height:auto;
+		filter:alpha(opacity=95);
+		opacity:0.95;
+		position:absolute;
+		width:340px;
+		z-index:200;
+		/*top:1em;
+		/*left:0;*/
+		}
+	.menu li:hover ul{
+		display:block;
+		}
+	.menu li li {
+		margin:0px;
+		padding:0px;
+		border:0px;
+		display:block;
+		float:none;
+		width:340px;
+		}
+	.menu li ul a{
+		height:26px;
+		margin:0px;
+		padding:0px;
+		border:0px;
+		display:block;
+		font-size:14px;
+		font-style:normal;
+		padding:0px 0px 0px 7px;
+		text-align:left;
+		}
+	.menu li ul a:hover{
+		background:#ff6600;
+		color:#fff;
+		opacity:1.0;
+		filter:alpha(opacity=100);
+		}
+	.menu p{
+		clear:left;
+		}	
+	.menu #current{
+		background:#333366;
+		color:#ffffff;
+		}
+	.menu #current:hover{
+		background:#ff6600;
+		color:#ffffff;
+		}
+</style>
+	
+<style type="text/css">
+.box{
+    display: none;
+    width: 100%;
+}
+
+a:hover + .box,.box:hover{
+    display: block;
+    position: relative;
+    z-index: 100;
+}
+
+#menuwrapper { position: fixed; top: 0; width:100%; background:#000000; }
+#maxmin { max-width: 1200px; min-width:600px; margin: 0 auto; border: none; padding: 0; }
+  a:link { color:#1a0dab; text-decoration:none; }
+  a:visited { color:#660066; text-decoration:none; }
+  a:hover { color:#1a0dab; text-decoration:underline; }
+
+* {margin:0; padding:0; outline:0;}
+#branding {font:11px Arial,Verdana;}
+body {font:11px sans-serif,Arial,Verdana; font-weight:400; color:#242424; margin:0px 1px 5px; background:#f5f9fc; text-align:left;}
+.h1title h1 {margin:0px 0px 2px; padding:2px 6px; color:#fff; background:#333366; font:16px sans-serif,Arial,Verdana; font-weight:600; text-decoration:none; text-align:left;}
+.h1title h1 a {margin:0px 0px 2px; padding:2px 6px; color:#fff; background:#333366; font:16px sans-serif,Arial,Verdana; font-weight:600; text-decoration:none; text-align:left;}
+.h1title h1 a:hover {color:#ff6600; text-decoration:none;}
+.h2title h2 {clear:both; margin:0px; padding:4px 6px; color:#eee; background:#222; font:16px sans-serif,Arial,Verdana; text-decoration:none; text-align:left;}
+.h2title h2:hover {color:#fff; background:#ff6600; text-decoration:none;}
+#titlelink {text-decoration:none;}
+img { border:none; vertical-align:top;}
+#tablewrapper { max-width:1230px; min-width:760px; margin:0 auto;}
+#tableheader {height:55px;}
+.search {float:left; padding:6px; border:1px solid #c6d5e1; background:#fff;}
+#tableheader select {float:left; font-size:11px; width:125px; padding:2px 4px 4px;}
+#tableheader input {float:left; font-size:11px; width:225px; padding:2px 4px 4px; margin-left:4px;}
+.details {float:right; padding-top:12px;}
+.details div {float:left; margin-left:15px; font-size:11px;}
+.tinytable { max-width:1230px; min-width:760px; solid #c6d5e1; solid #c6d5e1; border-bottom:none;}
+.tinytable th {background:#cce6ff; text-align:left; color:#000; border:1px solid #fff;}
+.tinytable th h3 {font:12px sans-serif,Arial,Verdana; font-weight:400; padding:2px 1px;}
+.tinytable td {padding:5px 2px; border-bottom:1px solid #c6d5e1; border-right:1px solid #c6d5e1;}
+.tinytable td div {overflow: hidden; white-space: nowrap;}
+.tinytable .head h3 {background:url(/images/sort.gif) 7px center no-repeat; cursor:pointer; padding-left:18px;}
+.tinytable .desc {background:#12648a;color:#fff;}
+.tinytable .asc {background:#12648a;color:#fff;}
+.tinytable .desc h3 {background:url(/images/desc.gif) 7px center no-repeat; cursor:pointer; padding-left:18px;}
+.tinytable .asc h3 {background:url(/images/asc.gif) 7px  center no-repeat; cursor:pointer; padding-left:18px;}
+.tinytable .head:hover {background:#12648a;color:#fff;}
+.tinytable .desc:hover {background:#12648a;color:#fff;}
+.tinytable .asc:hover {background:#12648a;color:#fff;}
+.tinytable .evenrow td {background:#fff}
+.tinytable .oddrow td {background:#ecf2f6}
+.tinytable td.evenselected {background:#ecf2f6}
+.tinytable td.oddselected {background:#dce6ee}
+.tinytable tfoot {background:#fff; font-weight:bold;}
+.tinytable tfoot td {text-align:right; padding:2px 3px 2px 0px;}
+#tablefooter {height:15px; margin-top:20px;}
+#tablenav {float:left;}
+#tablenav img {cursor:pointer;}
+#tablenav div {float:left; margin-right:15px;}
+#tablelocation {float:right; font-size:11px;}
+#tablelocation select {margin-right:3px;}
+#tablelocation div {float:left; margin-left:15px;}
+.page {margin-top:2px; font-style:italic;}
+#selectedrow td {background:#c6d5e1;}
+.tinytable tr:hover td {background-color:#cce6ff; }
+.tinytable th:hover {background-color:#cce6ff; }
+
+#chart {
+    line-height:30px;
+    background-color:#f5f9fc;
+    height:280px;
+    width:560px;
+    float:left;
+    padding:0px 5px; 
+}
+#adLgRect {
+    width:356px;
+    float:left;
+    padding:0px 5px; 
+}
+#results {
+    clear:both;
+    padding:0px; 
+}
+</style>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NV4RCJYE6Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NV4RCJYE6Q');
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-25031931-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4513325110590560"
+     crossorigin="anonymous"></script>
+
+</head>
+
+<body onload="initDropDown(-100)">
+
+<div id="tablewrapper">
+<div class="menu" style="position:fixed; width:100%; z-index:100;">
+<ul>
+<li><a id="logotext" href="/" ><b>OpenInsider</b></a>
+</li>
+<li><a href="#" id="current">Latest</a>
+	<ul>
+	<li><a href="/latest-cluster-buys" >Latest Cluster Buys</a></li>
+	<li><a href="/latest-penny-stock-buys" >Latest Penny Stock Buys</a></li>
+	<li><a href="/latest-insider-trading" >Latest Insider Trading (all filings)</a></li>
+	<li><a href="/insider-purchases" id="current">Latest Insider Purchases</a></li>
+	<li><a href="/latest-insider-purchases-25k" >Latest Insider Purchases $25k+</a></li>
+	<li><a href="/latest-officer-purchases-25k" >Latest Officer Purchases $25k+</a></li>
+	<li><a href="/latest-ceo-cfo-purchases-25k" >Latest CEO/CFO Purchases $25k+</a></li>
+	<li><a href="/insider-sales" >Latest Insider Sales</a></li>
+	<li><a href="/latest-insider-sales-100k" >Latest Insider Sales $100k+</a></li>
+	<li><a href="/latest-officer-sales-100k" >Latest Officer Sales $100k+</a></li>
+	<li><a href="/latest-ceo-cfo-sales-100k" >Latest CEO/CFO Sales $100k+</a></li>
+	</ul>
+</li>
+<li><a href="#" >Top</a>
+	<ul>
+	<li><a href="/top-officer-purchases-of-the-day" >Top Officer Purchases Today</a></li>
+	<li><a href="/top-officer-purchases-of-the-week" >Top Officer Purchases Past Week</a></li>
+	<li><a href="/top-officer-purchases-of-the-month" >Top Officer Purchases Past Month</a></li>
+	<li><a href="/top-insider-purchases-of-the-day" >Top Insider Purchases Today</a></li>
+	<li><a href="/top-insider-purchases-of-the-week" >Top Insider Purchases Past Week</a></li>
+	<li><a href="/top-insider-purchases-of-the-month" >Top Insider Purchases Past Month</a></li>
+	<li><a href="/top-insider-sales-of-the-day" >Top Insider Sales Today</a></li>
+	<li><a href="/top-insider-sales-of-the-week" >Top Insider Sales Past Week</a></li>
+	<li><a href="/top-insider-sales-of-the-month" >Top Insider Sales Past Month</a></li>
+	</ul>
+</li>
+<li><a href="/charts" >Charts</a>
+</li>
+<li>
+<div id="searchbox" style="margin:6px 3px;">
+<form action="/search" method="GET">
+<input type="search" name="q" style="font-size:14px;" placeholder="Tickers" maxlength="20000" size="8" />
+<input type="submit" value="Go" />
+</form>
+</div>
+</li>
+</ul>
+
+</div>
+
+<br><br><br><div class="h1title" style="clear:both;"><h1>Latest Insider Purchases - </h1></div><div id="subjectDetails" style="clear:both;"></div><div id="screener" style="clear:both;">
+
+<form action="/screener" method="GET">
+<table cellpadding="2" cellspacing="2">
+<tr><td>
+
+<fieldset>
+<legend><strong>General</strong></legend>
+<table cellpadding="4" cellspacing="4" border="0">
+<tr><td align=right>Tickers</td><td><input type="text" name="s" placeholder="Symbols or CIKs" value="" maxlength="20000" size="16" /></td></tr>
+<tr><td align=right>Insider</td><td><input type="text" name="o" placeholder="Insider Name or CIK" value="" maxlength="80" size="16" /></td></tr>
+<tr><td align=right>Sh Price $</td><td>
+<input type="number" name="pl" placeholder="Min" value="" min=0 max=9999 step=1 maxlength="4" size="3" />
+<input type="number" name="ph" placeholder="Max" value="" min=0 max=9999 step=1 maxlength="4" size="3" />
+</td></tr>
+<tr><td align=right>Lqdty M$</td><td>
+<input type="number" name="ll" placeholder="Min" value="" min=0 max=999 step=0.1 maxlength="3" size="3" />
+<input type="number" name="lh" placeholder="Max" value="" min=0 max=999 step=1 maxlength="3" size="3" />
+</td></tr>
+
+</table>
+</fieldset>
+
+<fieldset>
+<legend><strong>Date</strong></legend>
+<table cellpadding="4" cellspacing="4" border="0">
+<tr><td align=right>Filing Date</td><td>
+<select name="fd" id="dropdownFD">
+	<option value="0" >All dates</option>
+	<option value="-1" >Custom</option>
+	<option value="1" >Latest day</option>
+	<option value="3" >Last 3 days</option>
+	<option value="7" >Last 1 week</option>
+	<option value="14" >Last 2 weeks</option>
+	<option value="30" >Last 1 month</option>
+	<option value="60" >Last 2 months</option>
+	<option value="90" >Last 3 months</option>
+	<option value="180" >Last 6 months</option>
+	<option value="365" >Last 1 year</option>
+	<option value="730"  selected>Last 2 years</option>
+	<option value="1461" >Last 4 years</option>
+</select>
+</td></tr>
+<tr><td colspan="2">
+&nbsp;&nbsp;
+<input type="text" id="textboxFD" name="fdr" placeholder="Filing Date Range" size=27 value="">
+</td></tr>
+<script type="text/javascript">
+    var textboxFD = document.getElementById('textboxFD');
+    var dropdownFD = document.getElementById('dropdownFD');
+
+    dropdownFD.onchange = function(){
+          if (this.value!=-1) textboxFD.value = '';
+    }
+    textboxFD.onfocus = function(){
+          if (this.value!='') dropdownFD.value = '-1';
+    }
+</script>
+
+<tr><td align=right>Trade Date</td><td>
+<select name="td" id="dropdownTD">
+	<option value="0"  selected>All dates</option>
+	<option value="-1" >Custom</option>
+	<option value="1" >Latest day</option>
+	<option value="3" >Last 3 days</option>
+	<option value="7" >Last 1 week</option>
+	<option value="14" >Last 2 weeks</option>
+	<option value="30" >Last 1 month</option>
+	<option value="60" >Last 2 months</option>
+	<option value="90" >Last 3 months</option>
+	<option value="180" >Last 6 months</option>
+	<option value="365" >Last 1 year</option>
+	<option value="730" >Last 2 years</option>
+	<option value="1461" >Last 4 years</option>
+</select>
+</td></tr>
+<tr><td colspan="2">
+&nbsp;&nbsp;<input type="text" id="textboxTD" name="tdr" placeholder="Trade Date Range" size=27 value="" />
+</td></tr>
+
+<script type="text/javascript">
+    var textboxTD = document.getElementById('textboxTD');
+    var dropdownTD = document.getElementById('dropdownTD');
+
+    dropdownTD.onchange = function(){
+          if (this.value!=-1) textboxTD.value = '';
+    }
+    textboxTD.onfocus = function(){
+          if (this.value!='') dropdownTD.value = '-1';
+    }
+</script>
+<tr><td align=right>Filing Delay</td><td>
+<input type="number" name="fdlyl" placeholder="Min" value="" min=0 max=99 step=1 maxlength="1" size="1" />
+<input type="number" name="fdlyh" placeholder="Max" value="" min=0 max=9999 step=1 maxlength="1" size="1" />
+</td></tr>
+<tr><td align=right>N Days Ago</td><td><input type="number" name="daysago" value="" min=0 max=9999 step=1 maxlength="4" size="4" />
+</td></tr>
+
+</table>
+</fieldset>
+
+</td>
+<td>
+<table>
+
+<tr><td colspan=2>
+<fieldset>
+<legend><strong>Transaction Filing</strong></legend>
+<table><tr><td>
+<input type=checkbox name=xp value=1  checked>&nbsp;P&nbsp;-&nbsp;Purchase<br><input type=checkbox name=xs value=1 >&nbsp;S&nbsp;-&nbsp;Sale<br><input type=checkbox name=xa value=1 >&nbsp;A&nbsp;-&nbsp;Grant<br><input type=checkbox name=xd value=1 >&nbsp;D&nbsp;-&nbsp;Sale to Iss<br><input type=checkbox name=xg value=1 >&nbsp;G&nbsp;-&nbsp;Gift<br></td><td><input type=checkbox name=xf value=1 >&nbsp;F&nbsp;-&nbsp;Tax<br><input type=checkbox name=xm value=1 >&nbsp;M&nbsp;-&nbsp;Option Ex<br><input type=checkbox name=xx value=1 >&nbsp;X&nbsp;-&nbsp;Option Ex<br><input type=checkbox name=xc value=1 >&nbsp;C&nbsp;-&nbsp;Cnv Deriv<br><input type=checkbox name=xw value=1 >&nbsp;W&nbsp;-&nbsp;Inherited<br></td></tr>
+<tr><td>
+<input type="checkbox" name="excludeDerivRelated" value=1  /> No deriv
+</td>
+<td>
+<input type="checkbox" name="tmult" value=1  /> Multiple Days
+</td></tr>
+
+<tr><td align=right>Traded K$</td><td>
+<input type="number" name="vl" placeholder="Min" value="" min=0 max=2147483 step=5 maxlength="4" size="4" />
+<input type="number" name="vh" placeholder="Max" value="" min=0 max=2147483 step=5 maxlength="4" size="4" />
+</td></tr>
+<tr><td align=right>Own Chg %</td><td>
+<input type="number" name="ocl" placeholder="Min" value="" min=-100 max=999 step=1 maxlength="3" size="3" />
+<input type="number" name="och" placeholder="Max" value="" min=-100 max=999 step=1 maxlength="3" size="3" />
+</td></tr>
+
+</table>
+</fieldset>
+</td></tr>
+<tr><td colspan=2>
+
+<fieldset style="width: 220px;">
+<legend><strong>Industry</strong></legend>
+<table>
+<tr>
+<td style="text-align: left;">
+<select name="sic1" id="sector" onchange="setSubsectors();">
+<option value="-1" selected>All Sectors (except Funds)</option>
+<option value="1">Agriculture, Forestry, Fish</option>
+<option value="10">Mining</option>
+<option value="15">Construction</option>
+<option value="20">Manufacturing</option>
+<option value="40">Transportation & Utilities</option>
+<option value="50">Wholesale Trade</option>
+<option value="52">Retail Trade</option>
+<option value="60">Financial</option>
+<option value="70">Services</option>
+<option value="0">Closed-End Funds</option>
+</select>
+</td>
+</tr><tr>
+<td style="text-align: left;">
+<select name="sic2" id="subsector" onchange="setIndustries();">
+</select>
+</td>
+</tr><tr>
+<td style="text-align: left;">
+<select name="sic3"  id="industry" onchange="setSicMinMax();">
+</select>
+</td>
+</tr>
+
+<tr><td>
+<input type="hidden" name="sicl" id="sicMin" placeholder="Min" value="" min=0 max=9999 step=1 maxlength="4" size="4" />
+<input type="hidden" name="sich" id="sicMax" placeholder="Max" value="" min=0 max=9999 step=1 maxlength="4" size="4" />
+</td></tr>
+
+</table>
+</fieldset>
+
+
+</td></tr>
+
+</table>
+</td>
+<td>
+<table cellpadding="4" cellspacing="4" border="0">
+
+<tr><td>
+<fieldset>
+<legend><strong>Insider&nbsp;Title&nbsp;&nbsp;</strong></legend>
+<script>
+function isoffCheck() {
+    var o = document.getElementById("isofficer");
+    document.getElementById("iscob").checked = o.checked;
+    document.getElementById("isceo").checked = o.checked;
+    document.getElementById("ispres").checked = o.checked;
+    document.getElementById("iscoo").checked = o.checked;
+    document.getElementById("iscfo").checked = o.checked;
+    document.getElementById("isgc").checked = o.checked;
+    document.getElementById("isvp").checked = o.checked;
+}
+function isoffClear() {
+    document.getElementById("isofficer").checked = false;
+}
+</script>
+&nbsp;<input type="checkbox" name="isofficer" id="isofficer" value=1 onclick="isoffCheck()"  /> Officer<br>
+&nbsp;&nbsp;&nbsp;<input type="checkbox" name="iscob" id="iscob" value=1 onclick="isoffClear()"  /> COB<br>
+&nbsp;&nbsp;&nbsp;<input type="checkbox" name="isceo" id="isceo" value=1 onclick="isoffClear()"  /> CEO<br>
+&nbsp;&nbsp;&nbsp;<input type="checkbox" name="ispres" id="ispres" value=1 onclick="isoffClear()"  /> Pres<br>
+&nbsp;&nbsp;&nbsp;<input type="checkbox" name="iscoo" id="iscoo" value=1 onclick="isoffClear()"  /> COO<br>
+&nbsp;&nbsp;&nbsp;<input type="checkbox" name="iscfo" id="iscfo" value=1 onclick="isoffClear()"  /> CFO<br>
+&nbsp;&nbsp;&nbsp;<input type="checkbox" name="isgc" id="isgc" value=1 onclick="isoffClear()"  /> GC<br>
+&nbsp;&nbsp;&nbsp;<input type="checkbox" name="isvp" id="isvp" value=1 onclick="isoffClear()"  /> VP<br>
+&nbsp;<input type="checkbox" name="isdirector" value=1  /> Director<br>
+&nbsp;<input type="checkbox" name="istenpercent" value=1  /> 10%own<br>
+&nbsp;<input type="checkbox" name="isother" value=1  /> Other
+</fieldset>
+</td></tr>
+
+</table>
+</td>
+<td>
+
+<table>
+
+<tr><td align=right>Group by</td><td>
+<script type="text/javascript">
+function toggleGrp2() {
+	var sel = document.getElementById("grpsel").value;
+	document.getElementById("grp2").disabled = (sel==0) ? true: false;
+	document.getElementById("grp2set").style.visibility = (sel==0) ? 'hidden': 'visible';
+}
+</script>
+<select id="grpsel" name="grp" onchange="toggleGrp2();">
+	<option value="0"  selected>Filing</option>
+	<option value="2" >Company</option>
+</select>
+</td></tr>
+</table>
+
+<div id="grp2set" style="visibility:hidden">
+<fieldset>
+<legend><strong>Company Totals</strong></legend>
+<table cellpadding="4" cellspacing="4" border="0">
+
+<tr><td align=right>Filings</td><td>
+<input type="number" name="nfl" id="grp2" placeholder="Min" value="" min=0 max=99 step=1 maxlength="2" size="2" />
+<input type="number" name="nfh" id="grp2" placeholder="Max" value="" min=0 max=99 step=1 maxlength="2" size="2" />
+</td></tr>
+<tr><td align=right>Insiders</td><td>
+<input type="number" name="nil" id="grp2" placeholder="Min" value="" min=0 max=9 step=1 maxlength="1" size="1" />
+<input type="number" name="nih" id="grp2" placeholder="Max" value="" min=0 max=9 step=1 maxlength="1" size="1" />
+</td></tr>
+<tr><td align=right>Officers</td><td>
+<input type="number" name="nol" id="grp2" placeholder="Min" value="" min=0 max=9 step=1 maxlength="1" size="1" />
+<input type="number" name="noh" id="grp2" placeholder="Max" value="" min=0 max=9 step=1 maxlength="1" size="1" />
+</td></tr>
+<tr><td align=right>Traded K$</td><td>
+<input type="number" name="v2l" id="grp2" placeholder="Min" value="" min=0 max=2147483 step=5 maxlength="4" size="4" />
+<input type="number" name="v2h" id="grp2" placeholder="Max" value="" min=0 max=2147483 step=5 maxlength="4" size="4" />
+</td></tr>
+<tr><td align=right>Own Chg %</td><td>
+<input type="number" name="oc2l" id="grp2" placeholder="Min" value="" min=-100 max=999 step=1 maxlength="3" size="3" />
+<input type="number" name="oc2h" id="grp2" placeholder="Max" value="" min=-100 max=999 step=1 maxlength="3" size="3" />
+</td></tr>
+
+</table>
+</fieldset>
+</div>
+
+<table>
+<tr><td align=right>Sort by</td><td>
+<select name="sortcol">
+	<option value="0" >Filing Date</option>
+	<option value="1" >Trade Date</option>
+	<option value="2" >Ticker Symbol</option>
+	<option value="8" >Trade Value</option>
+</select>
+</td></tr>
+<tr><td align=right>Max Results</td><td><input type="number" name="cnt" value="100" min=100 max=1000 step=100 maxlength="5" size="5" /></td></tr>
+<tr><td align=right>Page</td><td><input type="number" name="page" value="1" min=1 max=99 step=1 maxlength="2" size="2" /></td></tr>
+<tr><td>
+</td><td><input type="submit" value="Search" />
+&nbsp;&nbsp;&nbsp;<a href="/screener">clear</a>
+</td></tr>
+
+</table>
+</td>
+<td valign="top">
+</td></tr>
+</table>
+</form>
+</div>
+
+<div id="results">100 results. <a href="https://finviz.com/quote.ashx?a=30565236&t=BRCC,CBAN,BXSY,PAPL,UTGN,STSS,RFMZ,CALC,ELV,NEGG,RCG,TPL,GALT,PETS,ASAN,LIEN,CRSP,DLHC,GABC,REPX,SHEN,BMNR,FIS,OMCC,JMSB,GRX,YORW,MHH,RVYL,ISBA,HELE,SSGC,KFS,IAF,FDBC,MDBH,DYN,HIO,SCD,XIVYX,VIRC,NTWK,CIVB,MEGI,RVP,DLPN,ANIX,CELFX,CCLFX,CPEFX,COGT,VBIX" target="_blank">Finviz</a><br><table cellpadding=0 cellspacing=2 border=0><thead><tr align=right><td>TC</td><td>cnt</td><td>1d</td><td>1w</td><td>1m</td><td>6m</td></tr></thead><tbody></tbody></table></div>			<table width="100%" cellpadding="0" cellspacing="0" border="0" class="tinytable">
+			<thead>
+			<tr>
+			<th width="31"><h3>X</h3></th>
+			<th width="108"><h3>Filing&nbsp;Date</h3></th>
+			<th width="64"><h3>Trade&nbsp;Date</h3></th>
+			<th width="45"><h3>Ticker</h3></th>
+			<th width="190"><h3>Company&nbsp;Name</h3></th><th width="180"><h3>Insider&nbsp;Name</h3></th><th width="100"><h3>Title</h3></th> 
+			<th><h3>Trade&nbsp;Type&nbsp;&nbsp;</h3></th>
+			<th><h3>Price</h3></th>
+			<th><h3>Qty</h3></th>
+			<th><h3>Owned</h3></th>
+			<th><h3>&Delta;Own</h3></th>
+			<th><h3>Value</h3></th>
+			<th><h3>1d</h3></th>
+			<th><h3>1w</h3></th>
+			<th><h3>1m</h3></th>
+			<th><h3>6m</h3></th>
+			</tr>
+			</thead>
+			<tbody>
+<tr style="background:#efffef"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1891101/000114036125026476/xslF345X03/form4.xml" title="SEC Form 4" target="_blank">2025-07-18 20:40:25</a></div></td><td align=right><div>2025-07-18</div></td><td><b> <a href="/BRCC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=BRCC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">BRCC</a></b></td><td><a href="/BRCC">Brc Inc.</a></td><td><a href="/insider/Hafer-Evan/1908407" title="80,000 direct shares
+C/O Brc Inc., 1144 S 500 W
+Salt Lake City, UT 84101">Hafer Evan</a></td><td>Dir, 10%</td><td>P - Purchase</td><td align=right>$1.25</td><td align=right>+80,000</td><td align=right>80,000</td><td align=right>New</td><td align=right>+$100,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#efffef"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1891101/000114036125026474/xslF345X03/form4.xml" title="SEC Form 4" target="_blank">2025-07-18 20:36:11</a></div></td><td align=right><div>2025-07-18</div></td><td><b> <a href="/BRCC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=BRCC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">BRCC</a></b></td><td><a href="/BRCC">Brc Inc.</a></td><td><a href="/insider/Kadenacy-Stephen-M/1519030" title="1,408,435 direct shares
+C/O Brc Inc., 1144 S 500 W
+Salt Lake City, UT 84101">Kadenacy Stephen M</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$1.25</td><td align=right>+80,000</td><td align=right>1,408,435</td><td align=right>+6%</td><td align=right>+$100,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1891101/000114036125026472/xslF345X03/form4.xml" title="SEC Form 4" target="_blank">2025-07-18 20:32:13</a></div></td><td align=right><div>2025-07-18</div></td><td><b> <a href="/BRCC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=BRCC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">BRCC</a></b></td><td><a href="/BRCC">Brc Inc.</a></td><td><a href="/insider/Dickson-Kathryn-P/1756867" title="392,045 direct shares
+C/O Brc Inc., 1144 S 500 W
+Salt Lake City, UT 84101">Dickson Kathryn P</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$1.25</td><td align=right>+16,000</td><td align=right>392,045</td><td align=right>+4%</td><td align=right>+$20,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f1fff1"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/711669/000071166925000119/xslF345X03/wk-form4_1752870256.xml" title="SEC Form 4" target="_blank">2025-07-18 16:24:22</a></div></td><td align=right><div>2025-03-13</div></td><td><b> <a href="/CBAN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CBAN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CBAN</a></b></td><td><a href="/CBAN">Colony Bankcorp Inc</a></td><td><a href="/insider/Canup-Edward-G/2051327" title="21,532 indirect shares
+115 South Grant Street
+Fitzgerald, GA 31750">Canup Edward G</a></td><td>CHIEF BANKING OFFICER</td><td>P - Purchase</td><td align=right>$16.28</td><td align=right>+3,146</td><td align=right>21,532</td><td align=right>+17%</td><td align=right>+$51,215</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1059213/000105921325000007/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-18 16:11:01</a></div></td><td align=right><div>2025-07-17</div></td><td><b> <a href="/BXSY" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=BXSY&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">BXSY</a></b></td><td><a href="/BXSY">Bexil Investment Trust</a></td><td><a href="/insider/Winmill---Co.-Inc/52234" title="205,703 direct shares
+2255 Buffalo Road
+Rochester, NY 14624">Winmill & Co. Inc</a></td><td>See "Explanation of Responses"</td><td>P - Purchase</td><td align=right>$13.56</td><td align=right>+1,673</td><td align=right>205,703</td><td align=right>+1%</td><td align=right>+$22,678</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fbfffb"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1938109/000164117225020210/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-18 16:05:21</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/PAPL" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=PAPL&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">PAPL</a></b></td><td><a href="/PAPL">Pineapple Financial Inc.</a></td><td><a href="/insider/Marin-Kendall-Leo/1954945" title="2,382,098 direct shares
+1 Country Club Crecent
+Uxbridge, A6 L9P 0B8">Marin Kendall Leo</a></td><td>COO, 10%</td><td>P - Purchase</td><td align=right>$2.48</td><td align=right>+1,175</td><td align=right>2,382,098</td><td align=right>0%</td><td align=right>+$2,909</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/832480/000106489225000005/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-18 16:02:45</a></div></td><td align=right><div>2025-07-18</div></td><td><b> <a href="/UTGN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=UTGN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">UTGN</a></b></td><td><a href="/UTGN">Utg Inc</a></td><td><a href="/insider/Correll-Jesse-T/1064892" title="2,048,054 indirect shares
+Po Box 328
+Stanford, KY 40484">Correll Jesse T</a></td><td>COB, CEO, 10%</td><td>P - Purchase</td><td align=right>$0.00</td><td align=right>+12,039</td><td align=right>2,048,054</td><td align=right>+1%</td><td align=right>+$0</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1737995/000164117225020186/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-18 14:48:21</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/STSS" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=STSS&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">STSS</a></b></td><td><a href="/STSS">Sharps Technology Inc.</a></td><td><a href="/insider/Danner-Paul-K/1179803" title="5 direct shares
+C/O Sharps Technology, Inc.
+105 Maxess Road, Ste. 124
+Melville, NY 11747">Danner Paul K</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$20.00</td><td align=right>+5</td><td align=right>5</td><td align=right>New</td><td align=right>+$100</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f0fff0"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1870833/000139834425013328/xslF345X03/fp0094574-1_4.xml" title="SEC Form 4" target="_blank">2025-07-18 14:44:46</a></div></td><td align=right><div>2025-07-17</div></td><td><b> <a href="/RFMZ" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RFMZ&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RFMZ</a></b></td><td><a href="/RFMZ">Rivernorth Managed Duration Municipal Income Fund Ii, Inc.</a></td><td><a href="/insider/O%27Neill-Stephen-Andrew/1662140" title="25,000 direct shares
+360 S. Rosemary Ave.
+Suite 1420
+West Palm Beach, FL 33401">O'Neill Stephen Andrew</a></td><td>Portfolio Manager</td><td>P - Purchase</td><td align=right>$12.60</td><td align=right>+5,000</td><td align=right>25,000</td><td align=right>+25%</td><td align=right>+$63,024</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f6fff6"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1534133/000141588925019998/xslF345X03/form4-07182025_060737.xml" title="SEC Form 4" target="_blank">2025-07-18 14:42:42</a></div></td><td align=right><div>2025-07-18</div></td><td><b> <a href="/CALC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CALC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CALC</a></b></td><td><a href="/CALC">Calcimedica, Inc.</a></td><td><a href="/insider/Wilson-Robert-N/1189022" title="422,029 direct shares
+C/O Calcimedica, Inc.
+505 Coast Blvd. S. #307
+La Jolla, CA 92037">Wilson Robert N</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$2.87</td><td align=right>+4,500</td><td align=right>422,029</td><td align=right>+1%</td><td align=right>+$12,915</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f8fff8"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1534133/000141588925019997/xslF345X03/form4-07182025_060757.xml" title="SEC Form 4" target="_blank">2025-07-18 14:36:02</a></div></td><td align=right><div>2025-07-18</div></td><td><b> <a href="/CALC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CALC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CALC</a></b></td><td><a href="/CALC">Calcimedica, Inc.</a></td><td><a href="/insider/Roberts-Eric-W/1576244" title="1,010,910 indirect shares
+C/O Calcimedica, Inc.
+505 Coast Blvd. S. #307
+La Jolla, CA 92037">Roberts Eric W</a></td><td>CHIEF BUSINESS OFFICER, 10%</td><td>P - Purchase</td><td align=right>$2.88</td><td align=right>+2,000</td><td align=right>1,010,910</td><td align=right>0%</td><td align=right>+$5,760</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e4ffe4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1156039/000128792025000005/xslF345X03/wk-form4_1752860565.xml" title="SEC Form 4" target="_blank">2025-07-18 13:42:51</a></div></td><td align=right><div>2025-07-18</div></td><td><b> <a href="/ELV" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=ELV&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">ELV</a></b></td><td><a href="/ELV">Elevance Health, Inc.</a></td><td><a href="/insider/Boudreaux-Gail/1287920" title="151,080 direct shares
+220 Virginia Avenue
+Indianapolis, IN 46204">Boudreaux Gail</a></td><td>Pres, CEO</td><td>P - Purchase</td><td align=right>$286.94</td><td align=right>+8,500</td><td align=right>151,080</td><td align=right>+6%</td><td align=right>+$2,438,951</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e0ffe0"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1474627/000137647425000637/xslF345X03/filing.xml" title="SEC Form 4" target="_blank">2025-07-18 13:14:07</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/NEGG" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=NEGG&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">NEGG</a></b></td><td><a href="/NEGG">Newegg Commerce, Inc.</a></td><td><a href="/insider/Galkin-Vladimir/2020621" title="2,777,777 direct shares
+10900 N.W. 97Th. Street, Suite #102
+Miami, FL 33178">Galkin Vladimir</a></td><td>10%</td><td>P - Purchase</td><td align=right>$28.79</td><td align=right>+222,222</td><td align=right>2,777,777</td><td align=right>+9%</td><td align=right>+$6,397,772</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fbfffb"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/919567/000143774925022972/xslF345X03/rdgdoc.xml" title="SEC Form 4" target="_blank">2025-07-18 11:44:12</a></div></td><td align=right><div>2025-07-17</div></td><td><b> <a href="/RCG" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RCG&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RCG</a></b></td><td><a href="/RCG">Renn Fund, Inc.</a></td><td><a href="/insider/Stahl-Murray/1207097" title="871,582 indirect shares
+470 Park Avenue South
+4Th Floor South
+New York, NY 10016">Stahl Murray</a></td><td>Pres, Co-Portfolio Manager, 10%</td><td>P - Purchase</td><td align=right>$2.65</td><td align=right>+1,130</td><td align=right>871,582</td><td align=right>0%</td><td align=right>+$2,995</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1811074/000143774925022968/xslF345X03/rdgdoc.xml" title="SEC Form 4" target="_blank">2025-07-18 11:22:38</a></div></td><td align=right><div>2025-07-17</div></td><td><b> <a href="/TPL" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=TPL&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">TPL</a></b></td><td><a href="/TPL">Texas Pacific Land Corp</a></td><td><a href="/insider/Horizon-Kinetics-Asset-Management-LLC/1056823" title="1,163,955 direct shares
+470 Park Avenue South
+4Th Floor South
+New York, NY 10016">Horizon Kinetics Asset Management LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$992.87</td><td align=right>+1</td><td align=right>1,163,955</td><td align=right>0%</td><td align=right>+$993</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f5fff5"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1133416/000113341625000033/xslF345X03/form4.xml" title="SEC Form 4" target="_blank">2025-07-18 10:38:28</a></div></td><td align=right><div>2025-07-17</div></td><td><b> <a href="/GALT" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=GALT&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">GALT</a></b></td><td><a href="/GALT">Galectin Therapeutics Inc</a></td><td><a href="/insider/Freeman-Kevin-D/1522478" title="147,832 direct shares
+C/o Galectin Therapeutics Inc.
+4960 Peachtree Industrial Blvd., Ste 240
+Norcross, GA 30071">Freeman Kevin D</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$2.90</td><td align=right>+5,000</td><td align=right>147,832</td><td align=right>+4%</td><td align=right>+$14,495</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#efffef"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1040130/000190359625000346/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-18 06:02:37</a></div></td><td align=right><div>2025-07-17</div></td><td><b> <a href="/PETS" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=PETS&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">PETS</a></b></td><td><a href="/PETS">Petmed Express Inc</a></td><td><a href="/insider/Silvercape-Investments-Ltd/2059711" title="2,342,931 direct shares
+C/O Trident Trust Company
+Limited,Fourth Floor, One Capital Place
+George Town, E9 KY1-1103">Silvercape Investments Ltd</a></td><td>10%</td><td>P - Purchase</td><td align=right>$3.15</td><td align=right>+31,701</td><td align=right>2,342,931</td><td align=right>+1%</td><td align=right>+$99,858</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e0ffe0"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1477720/000147772025000148/xslF345X03/wk-form4_1752791692.xml" title="SEC Form 4" target="_blank">2025-07-17 18:34:57</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/ASAN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=ASAN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">ASAN</a></b></td><td><a href="/ASAN">Asana, Inc.</a></td><td><a href="/insider/Moskovitz-Dustin-A./1549917" title="57,430,138 direct shares
+C/O Asana, Inc.
+633 Folsom Street, Suite 100
+San Francisco, CA 94107">Moskovitz Dustin A.</a></td><td>Pres, CEO, Chair, 10%</td><td>P - Purchase</td><td align=right>$13.98</td><td align=right>+450,000</td><td align=right>57,430,138</td><td align=right>+1%</td><td align=right>+$6,289,245</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#eeffee"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1817159/000139834425013286/xslF345X03/fp0094558-1_4.xml" title="SEC Form 4" target="_blank">2025-07-17 18:14:23</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/RFMZ" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RFMZ&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RFMZ</a></b></td><td><a href="/RFMZ">Rivernorth Flexible Municipal Income Fund Ii, Inc.</a></td><td><a href="/insider/O%27Neill-Stephen-Andrew/1662140" title="20,000 direct shares
+360 S. Rosemary Ave.
+Suite 1420
+West Palm Beach, FL 33401">O'Neill Stephen Andrew</a></td><td>Portfolio Manager</td><td>P - Purchase</td><td align=right>$12.69</td><td align=right>+8,500</td><td align=right>20,000</td><td align=right>+74%</td><td align=right>+$107,895</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f6fff6"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1843162/000095017025096680/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-17 18:04:59</a></div></td><td align=right><div>2025-07-17</div></td><td><b> <a href="/LIEN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=LIEN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">LIEN</a></b></td><td><a href="/LIEN">Chicago Atlantic Bdc, Inc.</a></td><td><a href="/insider/Sack-Peter/1897415" title="5,468 direct shares
+600 Madison Avenue
+Suite 1800
+New York, NY 10022">Sack Peter</a></td><td>CEO</td><td>P - Purchase</td><td align=right>$10.47</td><td align=right>+1,000</td><td align=right>5,468</td><td align=right>+22%</td><td align=right>+$10,470</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#dfffdf"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1674416/000095017025096666/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-17 17:19:13</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/CRSP" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CRSP&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CRSP</a></b></td><td><a href="/CRSP">Crispr Therapeutics AG</a></td><td><a href="/insider/George-Simeon/1595117" title="2,038,763 indirect shares
+985 Old Eagle School Road Suite 511
+Wayne, PA 19087">George Simeon</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$52.03</td><td align=right>+989,812</td><td align=right>2,038,763</td><td align=right>+94%</td><td align=right>+$51,499,918</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#efffef"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/785557/000078555725000073/xslF345X03/wk-form4_1752786333.xml" title="SEC Form 4" target="_blank">2025-07-17 17:05:41</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/DLHC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=DLHC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">DLHC</a></b></td><td><a href="/DLHC">Dlh Holdings Corp.</a></td><td><a href="/insider/Mink-Brook-Asset-Management-LLC/2052205" title="2,383,450 indirect shares
+201 Summa Street
+West Palm Beach, FL 33405">Mink Brook Asset Management LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$5.50</td><td align=right>+16,685</td><td align=right>2,383,450</td><td align=right>+1%</td><td align=right>+$91,768</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/714395/000141588925019959/xslF345X03/form4-07172025_080759.xml" title="SEC Form 4" target="_blank">2025-07-17 16:59:03</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/GABC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=GABC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">GABC</a></b></td><td><a href="/GABC">German American Bancorp, Inc.</a></td><td><a href="/insider/Sheidler-Jack/1379195" title="65,938 direct shares
+711 Main Street
+P O Box 810
+Jasper, IN 47546">Sheidler Jack</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$40.49</td><td align=right>+494</td><td align=right>65,938</td><td align=right>+1%</td><td align=right>+$20,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/714395/000141588925019958/xslF345X03/form4-07172025_080733.xml" title="SEC Form 4" target="_blank">2025-07-17 16:57:37</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/GABC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=GABC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">GABC</a></b></td><td><a href="/GABC">German American Bancorp, Inc.</a></td><td><a href="/insider/Ryan-Christina-M/1791771" title="16,408 direct shares
+711 Main Street
+P O Box 810
+Jasper, IN 47546">Ryan Christina M</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$40.49</td><td align=right>+494</td><td align=right>16,408</td><td align=right>+3%</td><td align=right>+$20,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/714395/000141588925019957/xslF345X03/form4-07172025_080753.xml" title="SEC Form 4" target="_blank">2025-07-17 16:55:57</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/GABC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=GABC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">GABC</a></b></td><td><a href="/GABC">German American Bancorp, Inc.</a></td><td><a href="/insider/Kelly-Jason-M/1764530" title="13,559 direct shares
+711 Main St
+P O Box 810
+Jasper, IN 47546">Kelly Jason M</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$40.49</td><td align=right>+494</td><td align=right>13,559</td><td align=right>+4%</td><td align=right>+$20,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/714395/000141588925019956/xslF345X03/form4-07172025_080725.xml" title="SEC Form 4" target="_blank">2025-07-17 16:54:28</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/GABC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=GABC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">GABC</a></b></td><td><a href="/GABC">German American Bancorp, Inc.</a></td><td><a href="/insider/Ellspermann-Susan-J/1872989" title="10,716 direct shares
+711 Main St
+P O Box 810
+Jasper, IN 47546">Ellspermann Susan J</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$40.49</td><td align=right>+494</td><td align=right>10,716</td><td align=right>+5%</td><td align=right>+$20,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#eaffea"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1001614/000206349325000003/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 16:53:31</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/REPX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=REPX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">REPX</a></b></td><td><a href="/REPX">Riley Exploration Permian, Inc.</a></td><td><a href="/insider/Libin-Alvin-Gerald/1849442" title="2,236,921 indirect shares
+3200 255 5Th Avenue Sw
+Calgary, A0 T2P 3G6">Libin Alvin Gerald</a></td><td>10%</td><td>P - Purchase</td><td align=right>$25.39</td><td align=right>+15,000</td><td align=right>2,236,921</td><td align=right>+1%</td><td align=right>+$380,850</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/714395/000141588925019952/xslF345X03/form4-07172025_080750.xml" title="SEC Form 4" target="_blank">2025-07-17 16:52:58</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/GABC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=GABC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">GABC</a></b></td><td><a href="/GABC">German American Bancorp, Inc.</a></td><td><a href="/insider/Bawel-Zachary-W/1746448" title="25,546 direct shares
+711 Main St
+P O Box 810
+Jasper, IN 47546">Bawel Zachary W</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$40.49</td><td align=right>+494</td><td align=right>25,546</td><td align=right>+2%</td><td align=right>+$20,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e8ffe8"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/354963/000164117225020062/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-17 16:30:37</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/SHEN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=SHEN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">SHEN</a></b></td><td><a href="/SHEN">Shenandoah Telecommunications Co/Va/</a></td><td><a href="/insider/Ecp-Fiber-Holdings-Gp--LLC/2032452" title="2,873,506 indirect shares
+40 Beechwood Road
+Summit,, NJ 07901">Ecp Fiber Holdings Gp, LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$14.65</td><td align=right>+51,354</td><td align=right>2,873,506</td><td align=right>+2%</td><td align=right>+$752,146</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e8ffe8"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/354963/000164117225020060/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-17 16:30:35</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/SHEN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=SHEN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">SHEN</a></b></td><td><a href="/SHEN">Shenandoah Telecommunications Co/Va/</a></td><td><a href="/insider/Ecp-Controlco--LLC/1707921" title="2,873,506 indirect shares
+40 Beechwood Road
+Summit,, NJ 07901">Ecp Controlco, LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$14.65</td><td align=right>+51,354</td><td align=right>2,873,506</td><td align=right>+2%</td><td align=right>+$752,146</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ecffec"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1829311/000164117225020047/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-17 16:10:10</a></div></td><td align=right><div>2025-07-17</div></td><td><b> <a href="/BMNR" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=BMNR&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">BMNR</a></b></td><td><a href="/BMNR">Bitmine Immersion Technologies, Inc.</a></td><td><a href="/insider/Lee-Thomas-Jong/1858492" title="448,944 direct shares
+10845 Griffith Peak Drive #2
+Las Vegas, NV 89135">Lee Thomas Jong</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$44.00</td><td align=right>+4,500</td><td align=right>448,944</td><td align=right>+1%</td><td align=right>+$198,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f0fff0"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1136893/000113689325000110/xslF345X03/wk-form4_1752782913.xml" title="SEC Form 4" target="_blank">2025-07-17 16:08:39</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/FIS" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=FIS&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">FIS</a></b></td><td><a href="/FIS">Fidelity National Information Services, Inc.</a></td><td><a href="/insider/Goldstein-Jeffrey-A/1375299" title="12,699 direct shares
+347 Riverside Ave
+Jacksonville, FL 32202">Goldstein Jeffrey A</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$79.29</td><td align=right>+757</td><td align=right>12,699</td><td align=right>+6%</td><td align=right>+$60,023</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#efffef"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1000045/000190360125000065/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 16:04:14</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/OMCC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=OMCC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">OMCC</a></b></td><td><a href="/OMCC">Old Market Capital Corp</a></td><td><a href="/insider/Radabaugh-Mark-R./2059615" title="29,970 direct shares
+1601 Dodge Street
+Suite 3350
+Omaha, NE 68102">Radabaugh Mark R.</a></td><td>Pres, CEO OF AMPLEX</td><td>P - Purchase</td><td align=right>$6.49</td><td align=right>+14,688</td><td align=right>29,970</td><td align=right>+96%</td><td align=right>+$95,325</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f6fff6"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1710482/000141588925019916/xslF345X03/form4-07172025_080733.xml" title="SEC Form 4" target="_blank">2025-07-17 16:03:37</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/JMSB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=JMSB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">JMSB</a></b></td><td><a href="/JMSB">John Marshall Bancorp, Inc.</a></td><td><a href="/insider/Mahan-Oscar-Leland/1898828" title="92,901 direct shares
+1943 Isaac Newton Square East
+Suite 100
+Reston, VA 20190">Mahan Oscar Leland</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$18.63</td><td align=right>+712</td><td align=right>92,901</td><td align=right>+1%</td><td align=right>+$13,265</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1817159/000139834425013260/xslF345X03/fp0094549-1_4.xml" title="SEC Form 4" target="_blank">2025-07-17 15:07:36</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/RFMZ" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RFMZ&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RFMZ</a></b></td><td><a href="/RFMZ">Rivernorth Flexible Municipal Income Fund Ii, Inc.</a></td><td><a href="/insider/O%27Neill-Stephen-Andrew/1662140" title="11,500 direct shares
+360 S. Rosemary Ave.
+Suite 1420
+West Palm Beach, FL 33401">O'Neill Stephen Andrew</a></td><td>Portfolio Manager</td><td>P - Purchase</td><td align=right>$12.71</td><td align=right>+1,500</td><td align=right>11,500</td><td align=right>+15%</td><td align=right>+$19,064</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1811074/000143774925022923/xslF345X03/rdgdoc.xml" title="SEC Form 4" target="_blank">2025-07-17 14:28:31</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/TPL" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=TPL&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">TPL</a></b></td><td><a href="/TPL">Texas Pacific Land Corp</a></td><td><a href="/insider/Horizon-Kinetics-Asset-Management-LLC/1056823" title="1,163,954 direct shares
+470 Park Avenue South
+4Th Floor South
+New York, NY 10016">Horizon Kinetics Asset Management LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$961.67</td><td align=right>+1</td><td align=right>1,163,954</td><td align=right>0%</td><td align=right>+$962</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fbfffb"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/919567/000143774925022910/xslF345X03/rdgdoc.xml" title="SEC Form 4" target="_blank">2025-07-17 12:38:22</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/RCG" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RCG&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RCG</a></b></td><td><a href="/RCG">Renn Fund, Inc.</a></td><td><a href="/insider/Stahl-Murray/1207097" title="870,452 indirect shares
+470 Park Avenue South
+4Th Floor South
+New York, NY 10016">Stahl Murray</a></td><td>Pres, Co-Portfolio Manager, 10%</td><td>P - Purchase</td><td align=right>$2.65</td><td align=right>+1,130</td><td align=right>870,452</td><td align=right>0%</td><td align=right>+$2,995</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#eeffee"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1391437/000151028125000388/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 10:44:54</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/GRX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=GRX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">GRX</a></b></td><td><a href="/GRX">Gabelli Healthcare &amp; Wellnessrx Trust</a></td><td><a href="/insider/Saba-Capital-Management--L.P./1510281" title="2,006,725 indirect shares
+405 Lexington Avenue
+58Th Floor
+New York, NY 10174">Saba Capital Management, L.P.</a></td><td>10%</td><td>P - Purchase</td><td align=right>$9.38</td><td align=right>+12,924</td><td align=right>2,006,725</td><td align=right>+1%</td><td align=right>+$121,227</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/108985/000010898525000066/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 10:43:54</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/YORW" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=YORW&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">YORW</a></b></td><td><a href="/YORW">York Water Co</a></td><td><a href="/insider/Snyder-Mark-S/1463117" title="4,442 direct shares
+130 East Market Street
+York, PA 17401-1219">Snyder Mark S</a></td><td>VP- Engineering</td><td>P - Purchase</td><td align=right>$29.89</td><td align=right>+11</td><td align=right>4,442</td><td align=right>0%</td><td align=right>+$325</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/108985/000010898525000065/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 10:29:02</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/YORW" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=YORW&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">YORW</a></b></td><td><a href="/YORW">York Water Co</a></td><td><a href="/insider/Scarpato-Matthew-J/1984229" title="826 direct shares
+130 East Market Street
+York, PA 17401">Scarpato Matthew J</a></td><td>VP- Operations</td><td>P - Purchase</td><td align=right>$29.89</td><td align=right>+33</td><td align=right>826</td><td align=right>+4%</td><td align=right>+$975</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/108985/000010898525000064/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 09:48:46</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/YORW" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=YORW&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">YORW</a></b></td><td><a href="/YORW">York Water Co</a></td><td><a href="/insider/Poff-Matthew-E/1727090" title="8,082 direct shares
+130 East Market Street
+York, PA 17401-1219">Poff Matthew E</a></td><td>CFO</td><td>P - Purchase</td><td align=right>$29.89</td><td align=right>+4</td><td align=right>8,082</td><td align=right>0%</td><td align=right>+$130</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f7fff7"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/108985/000010898525000063/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 09:41:37</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/YORW" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=YORW&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">YORW</a></b></td><td><a href="/YORW">York Water Co</a></td><td><a href="/insider/Hand-Joseph-Thomas/1434722" title="38,236 direct shares
+130 East Market Street
+York, PA 17401-1219">Hand Joseph Thomas</a></td><td>CEO, Pres</td><td>P - Purchase</td><td align=right>$29.89</td><td align=right>+326</td><td align=right>38,236</td><td align=right>+1%</td><td align=right>+$9,750</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/108985/000010898525000062/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 09:34:31</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/YORW" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=YORW&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">YORW</a></b></td><td><a href="/YORW">York Water Co</a></td><td><a href="/insider/Grimm-Ashley-M/2019031" title="303 direct shares
+130 E Market Street
+York, PA 17403">Grimm Ashley M</a></td><td>VP- HR</td><td>P - Purchase</td><td align=right>$29.89</td><td align=right>+13</td><td align=right>303</td><td align=right>+5%</td><td align=right>+$390</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fefffe"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/108985/000010898525000061/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-17 09:20:10</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/YORW" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=YORW&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">YORW</a></b></td><td><a href="/YORW">York Water Co</a></td><td><a href="/insider/Chiaruttini-Alexandra-C/1828738" title="4,717 direct shares
+130 East Market Street
+York, PA 17401">Chiaruttini Alexandra C</a></td><td>CAO, GC</td><td>P - Purchase</td><td align=right>$29.89</td><td align=right>+43</td><td align=right>4,717</td><td align=right>+1%</td><td align=right>+$1,300</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f3fff3"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1437226/000095017025096448/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-17 09:14:50</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/MHH" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=MHH&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">MHH</a></b></td><td><a href="/MHH">Mastech Digital, Inc.</a></td><td><a href="/insider/Shaw-Steven-A/1190614" title="1,323,268 indirect shares
+346 Claypool Drive
+Warwick, RI 02886">Shaw Steven A</a></td><td>10%</td><td>P - Purchase</td><td align=right>$7.91</td><td align=right>+3,868</td><td align=right>1,323,268</td><td align=right>0%</td><td align=right>+$30,583</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f0fff0"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1419275/000164117225019991/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-17 09:00:26</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/RVYL" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RVYL&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RVYL</a></b></td><td><a href="/RVYL">Ryvyl Inc.</a></td><td><a href="/insider/S8-Global-Fintech---Regtech-Fund/2073859" title="3,604,845 direct shares
+2C Parc D Activites
+Capellen, N4 8308">S8 Global Fintech & Regtech Fund</a></td><td>10%</td><td>P - Purchase</td><td align=right>$0.36</td><td align=right>+200,000</td><td align=right>3,604,845</td><td align=right>+6%</td><td align=right>+$71,180</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/842517/000084251725000129/xslF345X03/wk-form4_1752755123.xml" title="SEC Form 4" target="_blank">2025-07-17 08:25:27</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/ISBA" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=ISBA&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">ISBA</a></b></td><td><a href="/ISBA">Isabella Bank Corp</a></td><td><a href="/insider/Bourland-Jill/1715727" title="5,500 direct shares
+619 S. Mission St.
+Mount Pleasant, MI 48858">Bourland Jill</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$32.02</td><td align=right>+9</td><td align=right>5,500</td><td align=right>0%</td><td align=right>+$300</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f7fff7"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/916789/000091678925000046/xslF345X03/wk-form4_1752707960.xml" title="SEC Form 4" target="_blank">2025-07-16 19:19:24</a></div></td><td align=right><div>2025-07-16</div></td><td><b> <a href="/HELE" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=HELE&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">HELE</a></b></td><td><a href="/HELE">Helen of Troy Ltd</a></td><td><a href="/insider/Judge-Tessa/1916417" title="24,812 direct shares
+201 E. Main Street
+Suite 300
+El Paso, TX 79901">Judge Tessa</a></td><td>GC</td><td>P - Purchase</td><td align=right>$22.87</td><td align=right>+435</td><td align=right>24,812</td><td align=right>+2%</td><td align=right>+$9,948</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f1fff1"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1584693/000164117225019935/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-16 17:46:26</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/SSGC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=SSGC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">SSGC</a></b></td><td><a href="/SSGC">Safespace Global Corp</a></td><td><a href="/insider/Hillis-Dustin-Michael/2032455" title="7,254,500 direct shares
+4978 Toney Carroll Rd
+Ashland City, TN 37015">Hillis Dustin Michael</a></td><td>Pres, Chief Strat Officer</td><td>P - Purchase</td><td align=right>$0.42</td><td align=right>+122,500</td><td align=right>7,254,500</td><td align=right>+2%</td><td align=right>+$51,536</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1000045/000190360125000064/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-16 17:05:17</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/OMCC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=OMCC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">OMCC</a></b></td><td><a href="/OMCC">Old Market Capital Corp</a></td><td><a href="/insider/Krebs-Charles/2037950" title="10,306 direct shares
+1601 Dodge St., Suite 3350
+Omaha, NE 68102">Krebs Charles</a></td><td>CFO</td><td>P - Purchase</td><td align=right>$6.16</td><td align=right>+39</td><td align=right>10,306</td><td align=right>0%</td><td align=right>+$240</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#eaffea"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1001614/000206349325000002/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-16 16:52:55</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/REPX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=REPX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">REPX</a></b></td><td><a href="/REPX">Riley Exploration Permian, Inc.</a></td><td><a href="/insider/Libin-Alvin-Gerald/1849442" title="2,221,921 indirect shares
+3200 255 5Th Avenue Sw
+Calgary, A0 T2P 3G6">Libin Alvin Gerald</a></td><td>10%</td><td>P - Purchase</td><td align=right>$27.27</td><td align=right>+15,000</td><td align=right>2,221,921</td><td align=right>+1%</td><td align=right>+$409,050</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f7fff7"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1938109/000164117225019907/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-16 16:31:41</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/PAPL" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=PAPL&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">PAPL</a></b></td><td><a href="/PAPL">Pineapple Financial Inc.</a></td><td><a href="/insider/Marin-Kendall-Leo/1954945" title="2,380,923 direct shares
+1 Country Club Crecent
+Uxbridge, A6 L9P 0B8">Marin Kendall Leo</a></td><td>COO, 10%</td><td>P - Purchase</td><td align=right>$0.09</td><td align=right>+89,000</td><td align=right>2,380,923</td><td align=right>+4%</td><td align=right>+$8,378</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ebffeb"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1059213/000105921325000006/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-16 16:21:30</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/BXSY" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=BXSY&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">BXSY</a></b></td><td><a href="/BXSY">Bexil Investment Trust</a></td><td><a href="/insider/Winmill---Co.-Inc/52234" title="204,030 direct shares
+2255 Buffalo Road
+Rochester, NY 14624">Winmill & Co. Inc</a></td><td>See "Explanation of Responses"</td><td>P - Purchase</td><td align=right>$13.54</td><td align=right>+20,000</td><td align=right>204,030</td><td align=right>+11%</td><td align=right>+$270,770</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fdfffd"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1072627/000112760225019261/xslF345X03/form4.xml" title="SEC Form 4" target="_blank">2025-07-16 16:04:46</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/KFS" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=KFS&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">KFS</a></b></td><td><a href="/KFS">Kingsway Financial Services Inc</a></td><td><a href="/insider/Hansen-Kent-A/1686017" title="135,356 direct shares
+10 S. Riverside Plaza
+Suite 1520
+Chicago, IL 60606">Hansen Kent A</a></td><td>CFO, EVP</td><td>P - Purchase</td><td align=right>$14.49</td><td align=right>+108</td><td align=right>135,356</td><td align=right>0%</td><td align=right>+$1,565</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fbfffb"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1072627/000112760225019260/xslF345X03/form4.xml" title="SEC Form 4" target="_blank">2025-07-16 16:03:49</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/KFS" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=KFS&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">KFS</a></b></td><td><a href="/KFS">Kingsway Financial Services Inc</a></td><td><a href="/insider/Fitzgerald-John-Taylor-Maloney/1584349" title="1,590,048 direct shares
+10 S. Riverside Plaza
+Suite 1520
+Chicago, IL 60606">Fitzgerald John Taylor Maloney</a></td><td>Pres, CEO</td><td>P - Purchase</td><td align=right>$14.49</td><td align=right>+172</td><td align=right>1,590,048</td><td align=right>0%</td><td align=right>+$2,492</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f7fff7"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/779336/000110465925068297/xslF345X03/tm2521011-1_4seq1.xml" title="SEC Form 4" target="_blank">2025-07-16 14:15:52</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/IAF" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=IAF&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">IAF</a></b></td><td><a href="/IAF">Abrdn Australia Equity Fund, Inc.</a></td><td><a href="/insider/Porter-Rahn-K/1185778" title="2,918 direct shares
+C/O Abrdn
+1900 Market Street, Suite 200
+Philadelphia, PA 19103">Porter Rahn K</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$4.48</td><td align=right>+1,800</td><td align=right>2,918</td><td align=right>+161%</td><td align=right>+$8,061</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f5fff5"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1534133/000141588925019822/xslF345X03/form4-07162025_040730.xml" title="SEC Form 4" target="_blank">2025-07-16 12:58:34</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/CALC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CALC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CALC</a></b></td><td><a href="/CALC">Calcimedica, Inc.</a></td><td><a href="/insider/Roberts-Eric-W/1576244" title="1,008,910 indirect shares
+C/O Calcimedica, Inc.
+505 Coast Blvd. S. #307
+La Jolla, CA 92037">Roberts Eric W</a></td><td>CHIEF BUSINESS OFFICER, 10%</td><td>P - Purchase</td><td align=right>$2.43</td><td align=right>+6,500</td><td align=right>1,008,910</td><td align=right>+1%</td><td align=right>+$15,810</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e2ffe2"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1474627/000137647425000618/xslF345X03/filing.xml" title="SEC Form 4" target="_blank">2025-07-16 12:51:19</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/NEGG" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=NEGG&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">NEGG</a></b></td><td><a href="/NEGG">Newegg Commerce, Inc.</a></td><td><a href="/insider/Galkin-Vladimir/2020621" title="2,555,555 direct shares
+10900 N.W. 97Th. Street, Suite #102
+Miami, FL 33178">Galkin Vladimir</a></td><td>10%</td><td>P - Purchase</td><td align=right>$29.56</td><td align=right>+111,111</td><td align=right>2,555,555</td><td align=right>+5%</td><td align=right>+$3,284,700</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f6fff6"><td align=right>A</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1098151/000143774925022798/xslF345X03/rdgdoc.xml" title="SEC Form 4/A" target="_blank">2025-07-16 12:15:48</a></div></td><td align=right><div>2025-07-03</div></td><td><b> <a href="/FDBC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=FDBC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">FDBC</a></b></td><td><a href="/FDBC">Fidelity D &amp; D Bancorp Inc</a></td><td><a href="/insider/Cali-Brian-J/1249639" title="414,367 direct shares
+1241 December Drive
+Dunmore, PA 18521">Cali Brian J</a></td><td>COB</td><td>P - Purchase</td><td align=right>$44.19</td><td align=right>+281</td><td align=right>414,367</td><td align=right>0%</td><td align=right>+$12,426</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fefffe"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1811074/000143774925022792/xslF345X03/rdgdoc.xml" title="SEC Form 4" target="_blank">2025-07-16 11:31:04</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/TPL" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=TPL&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">TPL</a></b></td><td><a href="/TPL">Texas Pacific Land Corp</a></td><td><a href="/insider/Horizon-Kinetics-Asset-Management-LLC/1056823" title="1,163,953 direct shares
+470 Park Avenue South
+4Th Floor South
+New York, NY 10016">Horizon Kinetics Asset Management LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$1,014.80</td><td align=right>+1</td><td align=right>1,163,953</td><td align=right>0%</td><td align=right>+$1,015</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fbfffb"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/919567/000143774925022788/xslF345X03/rdgdoc.xml" title="SEC Form 4" target="_blank">2025-07-16 10:38:05</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/RCG" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RCG&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RCG</a></b></td><td><a href="/RCG">Renn Fund, Inc.</a></td><td><a href="/insider/Stahl-Murray/1207097" title="869,322 indirect shares
+470 Park Avenue South
+4Th Floor South
+New York, NY 10016">Stahl Murray</a></td><td>Pres, Co-Portfolio Manager, 10%</td><td>P - Purchase</td><td align=right>$2.65</td><td align=right>+1,130</td><td align=right>869,322</td><td align=right>0%</td><td align=right>+$2,995</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f8fff8"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1534133/000141588925019816/xslF345X03/form4-07162025_010710.xml" title="SEC Form 4" target="_blank">2025-07-15 21:29:14</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/CALC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CALC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CALC</a></b></td><td><a href="/CALC">Calcimedica, Inc.</a></td><td><a href="/insider/Leheny-A.-Rachel/1484729" title="873,752 indirect shares
+C/O Calcimedica, Inc.
+505 Coast Blvd. S. #307
+La Jolla, CA 92037">Leheny A. Rachel</a></td><td>CEO, 10%</td><td>P - Purchase</td><td align=right>$2.47</td><td align=right>+2,500</td><td align=right>873,752</td><td align=right>0%</td><td align=right>+$6,175</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1934642/000164117225019805/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 21:02:05</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/MDBH" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=MDBH&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">MDBH</a></b></td><td><a href="/MDBH">Mdb Capital Holdings, LLC</a></td><td><a href="/insider/Marlett-Christopher-A/897744" title="144,379 indirect shares
+14135 Midway Road, Suite G-150
+Addison,, TX 75001">Marlett Christopher A</a></td><td>Co-Founder, 10%</td><td>P - Purchase</td><td align=right>$4.42</td><td align=right>+100</td><td align=right>144,379</td><td align=right>0%</td><td align=right>+$442</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ecffec"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/916789/000091678925000044/xslF345X03/wk-form4_1752619106.xml" title="SEC Form 4" target="_blank">2025-07-15 18:38:30</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/HELE" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=HELE&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">HELE</a></b></td><td><a href="/HELE">Helen of Troy Ltd</a></td><td><a href="/insider/Grass-Brian/1606522" title="135,932 direct shares
+201 E. Main Street
+Suite 300
+El Paso, TX 79901">Grass Brian</a></td><td>CEO</td><td>P - Purchase</td><td align=right>$21.47</td><td align=right>+10,000</td><td align=right>135,932</td><td align=right>+8%</td><td align=right>+$214,700</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ecffec"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/916789/000091678925000043/xslF345X03/wk-form4_1752619081.xml" title="SEC Form 4" target="_blank">2025-07-15 18:38:05</a></div></td><td align=right><div>2025-07-15</div></td><td><b> <a href="/HELE" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=HELE&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">HELE</a></b></td><td><a href="/HELE">Helen of Troy Ltd</a></td><td><a href="/insider/Scheuerman-Tracy/2070699" title="33,041 direct shares
+201 E. Main Street
+Suite 300
+El Paso, TX 79901">Scheuerman Tracy</a></td><td>CFO</td><td>P - Purchase</td><td align=right>$20.13</td><td align=right>+10,000</td><td align=right>33,041</td><td align=right>+43%</td><td align=right>+$201,300</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e7ffe7"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1818794/000095017025095929/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 17:11:40</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/DYN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=DYN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">DYN</a></b></td><td><a href="/DYN">Dyne Therapeutics, Inc.</a></td><td><a href="/insider/Cox-John/1498428" title="274,179 direct shares
+C/O Dyne Therapeutics, Inc.
+1560 Trapelo Road
+Waltham, MA 02451">Cox John</a></td><td>CEO, Pres</td><td>P - Purchase</td><td align=right>$9.11</td><td align=right>+100,000</td><td align=right>274,179</td><td align=right>+57%</td><td align=right>+$911,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f2fff2"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/910068/000091485125000114/xslF345X03/wk-form4_1752613442.xml" title="SEC Form 4" target="_blank">2025-07-15 17:04:07</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/HIO" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=HIO&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">HIO</a></b></td><td><a href="/HIO">Western Asset High Income Opportunity Fund Inc.</a></td><td><a href="/insider/Mason-Peter-Daniel-Charles/2045505" title="10,000 direct shares
+C/O Franklin Templeton
+280 Park Avenue, 8Th Floor
+New York, NY 10017">Mason Peter Daniel Charles</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$4.02</td><td align=right>+10,000</td><td align=right>10,000</td><td align=right>New</td><td align=right>+$40,183</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f2fff2"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1270131/000091485125000112/xslF345X03/wk-form4_1752613060.xml" title="SEC Form 4" target="_blank">2025-07-15 16:57:45</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/SCD" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=SCD&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">SCD</a></b></td><td><a href="/SCD">Lmp Capital &amp; Income Fund Inc.</a></td><td><a href="/insider/Mason-Peter-Daniel-Charles/2045505" title="2,580 direct shares
+C/O Franklin Templeton
+280 Park Avenue, 8Th Floor
+New York, NY 10017">Mason Peter Daniel Charles</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$15.59</td><td align=right>+2,580</td><td align=right>2,580</td><td align=right>New</td><td align=right>+$40,221</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e0ffe0"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1477720/000147772025000146/xslF345X03/wk-form4_1752612744.xml" title="SEC Form 4" target="_blank">2025-07-15 16:52:29</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/ASAN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=ASAN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">ASAN</a></b></td><td><a href="/ASAN">Asana, Inc.</a></td><td><a href="/insider/Moskovitz-Dustin-A./1549917" title="56,980,138 direct shares
+C/O Asana, Inc.
+633 Folsom Street, Suite 100
+San Francisco, CA 94107">Moskovitz Dustin A.</a></td><td>Pres, CEO, Chair, 10%</td><td>P - Purchase</td><td align=right>$14.20</td><td align=right>+447,684</td><td align=right>56,980,138</td><td align=right>+1%</td><td align=right>+$6,357,458</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e9ffe9"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/354963/000164117225019734/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 16:30:31</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/SHEN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=SHEN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">SHEN</a></b></td><td><a href="/SHEN">Shenandoah Telecommunications Co/Va/</a></td><td><a href="/insider/Ecp-Fiber-Holdings-Gp--LLC/2032452" title="2,822,152 indirect shares
+40 Beechwood Road
+Summit, NJ 07901">Ecp Fiber Holdings Gp, LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$15.14</td><td align=right>+29,137</td><td align=right>2,822,152</td><td align=right>+1%</td><td align=right>+$441,005</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e9ffe9"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/354963/000164117225019732/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 16:30:29</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/SHEN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=SHEN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">SHEN</a></b></td><td><a href="/SHEN">Shenandoah Telecommunications Co/Va/</a></td><td><a href="/insider/Ecp-Controlco--LLC/1707921" title="2,822,152 indirect shares
+40 Beechwood Road
+Summit,, NJ 07901">Ecp Controlco, LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$15.14</td><td align=right>+29,137</td><td align=right>2,822,152</td><td align=right>+1%</td><td align=right>+$441,005</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f2fff2"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1976685/000201442025000001/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-15 15:09:40</a></div></td><td align=right><div>2025-06-02</div></td><td><b> <a href="/XIVYX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=XIVYX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">XIVYX</a></b></td><td><a href="/XIVYX">Institutional Investment Strategy Fund</a></td><td><a href="/insider/Potti-Bharath/2014420" title="3,478 direct shares
+2261 Market Street
+#5190
+San Francisco, CA 94114">Potti Bharath</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$11.15</td><td align=right>+3,478</td><td align=right>3,478</td><td align=right>New</td><td align=right>+$38,785</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f5fff5"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/751365/000162828025034959/xslF345X03/wk-form4_1752605430.xml" title="SEC Form 4" target="_blank">2025-07-15 14:50:37</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/VIRC" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=VIRC&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">VIRC</a></b></td><td><a href="/VIRC">Virco Mfg Corporation</a></td><td><a href="/insider/Virtue-Robert-A/1238433" title="488,324 direct shares
+C/O Virco Mfg. Corporation
+2027 Harpers Way
+Torrance, CA 90501">Virtue Robert A</a></td><td>CEO</td><td>P - Purchase</td><td align=right>$8.15</td><td align=right>+2,000</td><td align=right>488,324</td><td align=right>0%</td><td align=right>+$16,300</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f0fff0"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1039280/000164117225019686/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 14:42:45</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/NTWK" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=NTWK&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">NTWK</a></b></td><td><a href="/NTWK">Netsol Technologies Inc</a></td><td><a href="/insider/Ghauri-Naeem/1115428" title="459,853 direct shares
+C/O Netsol Technologies, Inc.
+16000 Ventura Blvd., Suite 770
+Encino,, CA 91436">Ghauri Naeem</a></td><td>Pres</td><td>P - Purchase</td><td align=right>$3.85</td><td align=right>+18,279</td><td align=right>459,853</td><td align=right>+4%</td><td align=right>+$70,374</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/944745/000095017025095841/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 14:37:12</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/CIVB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CIVB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CIVB</a></b></td><td><a href="/CIVB">Civista Bancshares, Inc.</a></td><td><a href="/insider/Shaffer-Dennis-G/1509681" title="46,166 direct shares
+2141 Bailiwick Drive
+Marblehead, OH 43440">Shaffer Dennis G</a></td><td>CEO, Pres</td><td>P - Purchase</td><td align=right>$21.25</td><td align=right>+1,000</td><td align=right>46,166</td><td align=right>+2%</td><td align=right>+$21,250</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/944745/000095017025095838/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 14:30:26</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/CIVB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CIVB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CIVB</a></b></td><td><a href="/CIVB">Civista Bancshares, Inc.</a></td><td><a href="/insider/Parcher-Charles-A./1672984" title="24,790 direct shares
+3602 Turfside Circle
+Huron, OH 44839">Parcher Charles A.</a></td><td>SVP</td><td>P - Purchase</td><td align=right>$21.25</td><td align=right>+1,000</td><td align=right>24,790</td><td align=right>+4%</td><td align=right>+$21,250</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#efffef"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/944745/000095017025095833/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 14:22:10</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/CIVB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CIVB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CIVB</a></b></td><td><a href="/CIVB">Civista Bancshares, Inc.</a></td><td><a href="/insider/Dutton-Richard-J/1255208" title="35,853 indirect shares
+325 Countryside Dr
+Troy, OH 45373-4561">Dutton Richard J</a></td><td>SVP</td><td>P - Purchase</td><td align=right>$21.25</td><td align=right>+4,000</td><td align=right>35,853</td><td align=right>+13%</td><td align=right>+$85,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f5fff5"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/944745/000095017025095831/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 14:12:17</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/CIVB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CIVB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CIVB</a></b></td><td><a href="/CIVB">Civista Bancshares, Inc.</a></td><td><a href="/insider/Macioce-Mark-J./1974623" title="3,556 direct shares
+10585 Wyndtree Drive
+Concord Township, OH 44077">Macioce Mark J.</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$21.25</td><td align=right>+640</td><td align=right>3,556</td><td align=right>+22%</td><td align=right>+$13,600</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/944745/000095017025095827/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 14:05:25</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/CIVB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CIVB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CIVB</a></b></td><td><a href="/CIVB">Civista Bancshares, Inc.</a></td><td><a href="/insider/Morrison-Lance-A./1578652" title="7,012 direct shares
+3803 Windsor Bridge Court
+Huron, OH 44839">Morrison Lance A.</a></td><td>SVP, Legal Counsel</td><td>P - Purchase</td><td align=right>$21.25</td><td align=right>+1,000</td><td align=right>7,012</td><td align=right>+17%</td><td align=right>+$21,250</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#ffffff"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1976685/000200439725000005/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-15 13:59:50</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/XIVYX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=XIVYX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">XIVYX</a></b></td><td><a href="/XIVYX">Institutional Investment Strategy Fund</a></td><td><a href="/insider/Ghodoosi-Arash/2004397" title="40,914 direct shares
+2261 Market Street
+#5190
+San Francisco, CA 094114">Ghodoosi Arash</a></td><td>Pres, Principal Exec</td><td>P - Purchase</td><td align=right>$11.52</td><td align=right>+9</td><td align=right>40,914</td><td align=right>0%</td><td align=right>+$100</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/944745/000095017025095823/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 13:53:04</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/CIVB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CIVB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CIVB</a></b></td><td><a href="/CIVB">Civista Bancshares, Inc.</a></td><td><a href="/insider/Mulford-Michael-D./1519530" title="5,004 direct shares
+929 Jennison Drive
+Rossford, OH 43460">Mulford Michael D.</a></td><td>SVP</td><td>P - Purchase</td><td align=right>$21.25</td><td align=right>+1,000</td><td align=right>5,004</td><td align=right>+25%</td><td align=right>+$21,250</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fafffa"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1855066/000103398425000014/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-15 13:51:34</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/MEGI" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=MEGI&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">MEGI</a></b></td><td><a href="/MEGI">Nyli Cbre Global Infrastructure Megatrends Term Fund</a></td><td><a href="/insider/Anagnos-Jeremy/1892539" title="27,750 direct shares
+555 East Lancaster Avenue
+Suite 120
+Radnor, PA 19087">Anagnos Jeremy</a></td><td>Portfolio Manager</td><td>P - Purchase</td><td align=right>$14.10</td><td align=right>+250</td><td align=right>27,750</td><td align=right>+1%</td><td align=right>+$3,525</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fefffe"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1811074/000143774925022702/xslF345X03/rdgdoc.xml" title="SEC Form 4" target="_blank">2025-07-15 13:41:57</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/TPL" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=TPL&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">TPL</a></b></td><td><a href="/TPL">Texas Pacific Land Corp</a></td><td><a href="/insider/Horizon-Kinetics-Asset-Management-LLC/1056823" title="1,163,952 direct shares
+470 Park Avenue South
+4Th Floor South
+New York, NY 10016">Horizon Kinetics Asset Management LLC</a></td><td>10%</td><td>P - Purchase</td><td align=right>$1,033.53</td><td align=right>+1</td><td align=right>1,163,952</td><td align=right>0%</td><td align=right>+$1,034</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f3fff3"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/944745/000095017025095816/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 13:38:12</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/CIVB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CIVB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CIVB</a></b></td><td><a href="/CIVB">Civista Bancshares, Inc.</a></td><td><a href="/insider/Congrove-Darci-L/1974772" title="4,902 direct shares
+756 Jaeger Street
+Columbus, OH 43206">Congrove Darci L</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$21.25</td><td align=right>+1,250</td><td align=right>4,902</td><td align=right>+34%</td><td align=right>+$26,563</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f1fff1"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/944745/000095017025095805/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 13:25:02</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/CIVB" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CIVB&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CIVB</a></b></td><td><a href="/CIVB">Civista Bancshares, Inc.</a></td><td><a href="/insider/Perfect-Clyde-A-Jr/1925608" title="12,742 direct shares
+20760 Mount Pleasant Road
+Lawrenceburg, IN 47025">Perfect Clyde A Jr</a></td><td>Subsidiary Director</td><td>P - Purchase</td><td align=right>$21.25</td><td align=right>+2,352</td><td align=right>12,742</td><td align=right>+23%</td><td align=right>+$49,980</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f9fff9"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/946563/000141588925019764/xslF345X03/form4-07152025_040722.xml" title="SEC Form 4" target="_blank">2025-07-15 12:49:26</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/RVP" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RVP&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RVP</a></b></td><td><a href="/RVP">Retractable Technologies Inc</a></td><td><a href="/insider/Shaw-Thomas-J/1174567" title="16,290,730 direct shares
+511 Lobo Lane
+Little Elm, TX 75068">Shaw Thomas J</a></td><td>Pres, CEO, 10%</td><td>P - Purchase</td><td align=right>$0.65</td><td align=right>+8,536</td><td align=right>16,290,730</td><td align=right>0%</td><td align=right>+$5,574</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#dfffdf"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1474627/000137647425000606/xslF345X03/filing.xml" title="SEC Form 4" target="_blank">2025-07-15 12:15:15</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/NEGG" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=NEGG&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">NEGG</a></b></td><td><a href="/NEGG">Newegg Commerce, Inc.</a></td><td><a href="/insider/Galkin-Vladimir/2020621" title="2,444,444 direct shares
+10900 N.W. 97Th. Street, Suite #102
+Miami, FL 33178">Galkin Vladimir</a></td><td>10%</td><td>P - Purchase</td><td align=right>$41.14</td><td align=right>+222,222</td><td align=right>2,444,444</td><td align=right>+10%</td><td align=right>+$9,141,745</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f9fff9"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1282224/000107997325001149/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 11:32:13</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/DLPN" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=DLPN&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">DLPN</a></b></td><td><a href="/DLPN">Dolphin Entertainment, Inc.</a></td><td><a href="/insider/O%27Dowd-William-IV/1520776" title="364,620 direct shares
+C/O Dolphin Entertainment, Inc.
+150 Alhambra Circle, Suite 1200
+Coral Gables, FL 33134">O'Dowd William IV</a></td><td>CEO</td><td>P - Purchase</td><td align=right>$1.28</td><td align=right>+3,900</td><td align=right>364,620</td><td align=right>+1%</td><td align=right>+$4,984</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#fbfffb"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/919567/000143774925022693/xslF345X03/rdgdoc.xml" title="SEC Form 4" target="_blank">2025-07-15 11:16:44</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/RCG" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=RCG&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">RCG</a></b></td><td><a href="/RCG">Renn Fund, Inc.</a></td><td><a href="/insider/Stahl-Murray/1207097" title="868,192 indirect shares
+470 Park Avenue South
+4Th Floor South
+New York, NY 10016">Stahl Murray</a></td><td>Pres, Co-Portfolio Manager, 10%</td><td>P - Purchase</td><td align=right>$2.65</td><td align=right>+1,130</td><td align=right>868,192</td><td align=right>0%</td><td align=right>+$2,995</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f1fff1"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1391437/000151028125000384/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-15 10:34:17</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/GRX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=GRX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">GRX</a></b></td><td><a href="/GRX">Gabelli Healthcare &amp; Wellnessrx Trust</a></td><td><a href="/insider/Saba-Capital-Management--L.P./1510281" title="1,993,801 indirect shares
+405 Lexington Avenue
+58Th Floor
+New York, NY 10174">Saba Capital Management, L.P.</a></td><td>10%</td><td>P - Purchase</td><td align=right>$9.35</td><td align=right>+6,080</td><td align=right>1,993,801</td><td align=right>0%</td><td align=right>+$56,848</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f4fff4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1039280/000164117225019593/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 06:06:16</a></div></td><td align=right><div>2025-07-14</div></td><td><b> <a href="/NTWK" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=NTWK&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">NTWK</a></b></td><td><a href="/NTWK">Netsol Technologies Inc</a></td><td><a href="/insider/Ghauri-Najeeb/1135216" title="923,338 direct shares
+C/O Netsol Technologies, Inc.
+16000 Ventura Blvd., Suite 770
+Encino,, CA 91436">Ghauri Najeeb</a></td><td>CEO</td><td>P - Purchase</td><td align=right>$3.69</td><td align=right>+5,025</td><td align=right>923,338</td><td align=right>+1%</td><td align=right>+$18,543</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f3fff3"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/715446/000164117225019587/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-15 06:03:41</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/ANIX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=ANIX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">ANIX</a></b></td><td><a href="/ANIX">Anixa Biosciences Inc</a></td><td><a href="/insider/Titterton-Lewis-H-Jr/1499254" title="943,334 direct shares
+C/o Anixa Biosciences, Inc.
+3150 Almaden Expressway, Suite 250
+San Jose,, CA 95118">Titterton Lewis H Jr</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$3.14</td><td align=right>+10,000</td><td align=right>943,334</td><td align=right>+1%</td><td align=right>+$31,400</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e4ffe4"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1474627/000137647425000602/xslF345X03/filing.xml" title="SEC Form 4" target="_blank">2025-07-14 19:14:38</a></div></td><td align=right><div>2025-07-08</div></td><td><b> <a href="/NEGG" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=NEGG&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">NEGG</a></b></td><td><a href="/NEGG">Newegg Commerce, Inc.</a></td><td><a href="/insider/Galkin-Vladimir/2020621" title="2,222,222 indirect shares
+10900 N.W. 97Th. Street, Suite #102
+Miami, FL 33178">Galkin Vladimir</a></td><td>10%</td><td>P - Purchase</td><td align=right>$19.84</td><td align=right>+122,119</td><td align=right>2,222,222</td><td align=right>+6%</td><td align=right>+$2,422,920</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e2ffe2"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1842754/000110465925067819/xslF345X03/tm2520875-3_4seq1.xml" title="SEC Form 4" target="_blank">2025-07-14 18:16:58</a></div></td><td align=right><div>2025-07-10</div></td><td><b> <a href="/CELFX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CELFX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CELFX</a></b></td><td><a href="/CELFX">Cliffwater Enhanced Lending Fund</a></td><td><a href="/insider/Nesbitt-Stephen-Lane/1754658" title="4,232,720 indirect shares
+C/O Umb Fund Services, Inc
+235 West Galena Street
+Milwaukee, WI 53212">Nesbitt Stephen Lane</a></td><td>Pres, Interested Trustee</td><td>P - Purchase</td><td align=right>$10.88</td><td align=right>+321,691</td><td align=right>4,232,720</td><td align=right>+8%</td><td align=right>+$3,500,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e2ffe2"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1735964/000110465925067817/xslF345X03/tm2520875-2_4seq1.xml" title="SEC Form 4" target="_blank">2025-07-14 18:15:56</a></div></td><td align=right><div>2025-07-10</div></td><td><b> <a href="/CCLFX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CCLFX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CCLFX</a></b></td><td><a href="/CCLFX">Cliffwater Corporate Lending Fund</a></td><td><a href="/insider/Nesbitt-Stephen-Lane/1754658" title="9,718,426 indirect shares
+C/O Umb Fund Services, Inc
+235 West Galena Street
+Milwaukee, WI 53212">Nesbitt Stephen Lane</a></td><td>Pres, Interested Trustee</td><td>P - Purchase</td><td align=right>$10.58</td><td align=right>+330,813</td><td align=right>9,718,426</td><td align=right>+4%</td><td align=right>+$3,500,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e7ffe7"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1864609/000110465925067816/xslF345X03/tm2520875-1_4seq1.xml" title="SEC Form 4" target="_blank">2025-07-14 18:14:37</a></div></td><td align=right><div>2025-07-10</div></td><td><b> <a href="/CPEFX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=CPEFX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">CPEFX</a></b></td><td><a href="/CPEFX">Cascade Private Capital Fund</a></td><td><a href="/insider/Nesbitt-Stephen-Lane/1754658" title="893,848 indirect shares
+C/O Umb Fund Services, Inc
+235 West Galena Street
+Milwaukee, WI 53212">Nesbitt Stephen Lane</a></td><td>Pres, Interested Trustee</td><td>P - Purchase</td><td align=right>$18.98</td><td align=right>+52,687</td><td align=right>893,848</td><td align=right>+6%</td><td align=right>+$1,000,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#e4ffe4"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1829311/000164117225019536/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-14 17:02:53</a></div></td><td align=right><div>2025-07-09</div></td><td><b> <a href="/BMNR" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=BMNR&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">BMNR</a></b></td><td><a href="/BMNR">Bitmine Immersion Technologies, Inc.</a></td><td><a href="/insider/Lee-Thomas-Jong/1858492" title="444,444 indirect shares
+10845 Griffith Peak Drive #2
+Las Vegas, NV 89135">Lee Thomas Jong</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$4.50</td><td align=right>+444,444</td><td align=right>444,444</td><td align=right>New</td><td align=right>+$1,999,998</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#edffed"><td align=right>M</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1059213/000005223425000003/xslF345X03/primary_doc.xml" title="SEC Form 4" target="_blank">2025-07-14 16:33:08</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/BXSY" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=BXSY&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">BXSY</a></b></td><td><a href="/BXSY">Bexil Investment Trust</a></td><td><a href="/insider/Winmill---Co.-Inc/52234" title="184,030 direct shares
+2255 Buffalo Road
+Rochester, NY 14624">Winmill & Co. Inc</a></td><td>See "Explanation of Responses"</td><td>P - Purchase</td><td align=right>$13.59</td><td align=right>+12,982</td><td align=right>184,030</td><td align=right>+8%</td><td align=right>+$176,393</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#dfffdf"><td align=right></td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/1622229/000110465925067758/xslF345X03/tm2520886-1_4seq1.xml" title="SEC Form 4" target="_blank">2025-07-14 16:30:37</a></div></td><td align=right><div>2025-07-10</div></td><td><b> <a href="/COGT" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=COGT&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">COGT</a></b></td><td><a href="/COGT">Cogent Biosciences, Inc.</a></td><td><a href="/insider/Fairmount-Funds-Management-LLC/1802528" title="9,003,418 indirect shares
+200 Barr Harbor Drive
+Suite 400
+West Conshohocken, PA 19428">Fairmount Funds Management LLC</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$9.00</td><td align=right>+2,777,777</td><td align=right>9,003,418</td><td align=right>+45%</td><td align=right>+$24,999,993</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+<tr style="background:#f3fff3"><td align=right>D</td><td align=right><div><a href="http://www.sec.gov/Archives/edgar/data/797542/000164117225019520/xslF345X03/ownership.xml" title="SEC Form 4" target="_blank">2025-07-14 16:30:26</a></div></td><td align=right><div>2025-07-11</div></td><td><b> <a href="/VBIX" onmouseover="Tip('<img src=\'https://www.profitspi.com/stock/stock-charts.ashx?chart=VBIX&v=stock-chart&vs=637453390322078326\' alt=\'\' width=\'360px\' height=\'280px\'>', DELAY, 1)" onmouseout="UnTip()">VBIX</a></b></td><td><a href="/VBIX">Viewbix Inc.</a></td><td><a href="/insider/Yoresh-Eliyahu/1939392" title="10,635 direct shares
+5 Rabin Street
+Kiryat Ono, L3 5551010">Yoresh Eliyahu</a></td><td>Dir</td><td>P - Purchase</td><td align=right>$4.86</td><td align=right>+5,144</td><td align=right>10,635</td><td align=right>+94%</td><td align=right>+$25,000</td><td align=right></td><td align=right></td><td align=right></td><td align=right></td></tr>
+</tbody></table><center>
+<br>
+<div>
+	<table cellpadding="4" cellspacing="4" border="0">
+		<tr><td>A</td><td>Amended filing</td></tr>
+		<tr><td>D</td><td>Derivative transaction in filing (usually option exercise)</td></tr>
+		<tr><td>E</td><td>Error detected in filing</td></tr>
+		<tr><td>M</td><td>Multiple transactions in filing; earliest reported transaction date and weighted average transaction price</td></tr>
+	</table>
+	<table>
+	<tr style="background:#ffefef"><td>S - Sale</td><td>Sale of securities on an exchange or to another person</td></tr><tr style="background:#ffffdf"><td>S - Sale+OE</td><td>Sale of securities on an exchange or to another person (after option exercise)</td></tr><tr style="background:#efefff"><td>F - Tax</td><td>Payment of exercise price or tax liability using portion of securities received from the company</td></tr><tr style="background:#efffef"><td>P - Purchase</td><td>Purchase of securities on an exchange or from another person</td></tr>	</table>
+</div>
+<a href="#">Return to top</a><br><br>
+<div id="footer">Data provided by sec.gov 6:00-22:00 ET Mon-Fri except federal holidays.<br>Copyright &copy; 2011-2021 openinsider.com. All rights reserved. <a href="/terms.txt">Terms</a> - <a href="/privacy.txt">Privacy</a> - <a href="/contact">Contact</a></div>
+</center>
+<br>
+</div>
+</div>
+
+<link href="/js/jquery.datepick/jquery.datepick.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.datepick/jquery.plugin.js"></script>
+<script src="/js/jquery.datepick/jquery.datepick.js"></script>
+<script>
+$(function() {
+	$('#textboxFD').datepick({rangeSelect: true, showTrigger: '#calImg'});
+	$('#textboxTD').datepick({rangeSelect: true, showTrigger: '#calImg'});
+});
+</script>
+<script type="text/javascript" src="/js/wz_tooltip.js"></script>
+
+</body>
+</html>
+
