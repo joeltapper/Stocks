@@ -1,10 +1,8 @@
 import streamlit as st
 import pandas as pd
 import cloudscraper
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+from twilio.rest import Client
 
 # Streamlit setup
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
@@ -27,6 +25,24 @@ FEEDS = {
     "Sales > $100 K":            "insider-sells?pfl=100",
     "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
 }
+
+# Twilio SMS function
+def send_sms_twilio(to_number, message_body):
+    account_sid = "AC28cd05798605e588"
+    auth_token = "82a46e98999e9435e222087701eb1767"  # replace with full token
+    twilio_number = "+18774148304"
+
+    client = Client(account_sid, auth_token)
+
+    try:
+        message = client.messages.create(
+            body=message_body,
+            from_=twilio_number,
+            to=to_number
+        )
+        st.success(f"✅ Twilio SMS sent! SID: {message.sid}")
+    except Exception as e:
+        st.error(f"❌ Twilio SMS failed: {e}")
 
 # Helper functions
 def normalize_cols(cols):
@@ -74,32 +90,6 @@ def calculate_signal_strength(row):
 
     return score
 
-def send_sms_via_email(phone_number, carrier, message):
-    gateways = {
-        'att':    f"{phone_number}@txt.att.net",
-        'verizon': f"{phone_number}@vtext.com",
-        'tmobile': f"{phone_number}@tmomail.net",
-        'sprint': f"{phone_number}@messaging.sprintpcs.com"
-    }
-    to_number = gateways.get(carrier.lower())
-    if not to_number:
-        print("Unsupported carrier")
-        return
-
-    email = "sms.insidertrading@gmail.com"
-    app_password = "qkwg otpz vzfq uksr"
-
-    msg = MIMEMultipart()
-    msg['From'] = email
-    msg['To'] = to_number
-    msg['Subject'] = "Top Insider Buy Signal"
-    msg.attach(MIMEText(message, 'plain'))
-
-    with smtplib.SMTP("smtp.gmail.com", 587) as server:
-        server.starttls()
-        server.login(email, app_password)
-        server.sendmail(email, to_number, msg.as_string())
-
 # Streamlit UI
 feeds = st.multiselect(
     "Select OpenInsider feeds to include",
@@ -107,7 +97,7 @@ feeds = st.multiselect(
     default=["Latest Insider Purchases"],
 )
 
-# 📤 Manual SMS Test Section (placed BEFORE refresh button block)
+# 📤 Manual SMS Test Section
 st.markdown("---")
 st.subheader("📤 Test SMS Alert")
 
@@ -117,8 +107,7 @@ if st.button("Send Test SMS"):
         f"CEO John Doe bought 1,000,000 shares of TEST at $2.00\n"
         f"Score: 95/100"
     )
-    send_sms_via_email("9198848184", "att", test_message)
-    st.success("✅ Test SMS sent to 9198848184 (ATT)")
+    send_sms_twilio("+19198848184", test_message)
 
 # 🔄 Refresh Data Button and Logic
 if st.button("🔄 Refresh Data"):
@@ -192,7 +181,7 @@ if st.button("🔄 Refresh Data"):
         f"Score: {top.SignalStrength}/100"
     )
 
-    send_sms_via_email("9198848184", "att", message)
+    send_sms_twilio("+19198848184", message)
 
     # Display in dashboard
     c1, c2 = st.columns((2, 1))
