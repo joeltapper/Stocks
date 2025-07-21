@@ -1,14 +1,17 @@
-name: Run Scheduler Twice Daily
+name: Run Scheduler
 
 on:
   schedule:
-    - cron: '30 13 * * 1-5'  # 9:30 AM EST (13:30 UTC)
-    - cron: '0 20 * * 1-5'   # 4:00 PM EST (20:00 UTC)
+    # Run at 9:30 AM ET (13:30 UTC)
+    - cron: '30 13 * * 1-5'
+    # Run at 4:30 PM ET (20:30 UTC)
+    - cron: '30 20 * * 1-5'
   workflow_dispatch:
 
 jobs:
   run-scheduler:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -19,10 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas cloudscraper python-dotenv
+          pip install -r requirements.txt
 
       - name: Run scheduler.py
-        run: python scheduler.py
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scheduler.py
