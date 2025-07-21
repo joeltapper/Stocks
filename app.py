@@ -102,6 +102,8 @@ def detect_clusters(df, days_window=7, min_insiders=3):
     return pd.DataFrame(clusters)
 
 # Fetch price data from Alpha Vantage
+# Returns empty df if API error or missing data
+
 def fetch_price_data(symbol):
     url = 'https://www.alphavantage.co/query'
     params = {
@@ -111,13 +113,31 @@ def fetch_price_data(symbol):
         'apikey': ALPHA_VANTAGE_KEY
     }
     r = requests.get(url, params=params)
-    data = r.json().get('Time Series (Daily)', {})
+    result = r.json()
+    data = result.get('Time Series (Daily)', {})
     df = pd.DataFrame.from_dict(data, orient='index')
+    if df.empty or '5. adjusted close' not in df.columns:
+        return pd.DataFrame()
     df.index = pd.to_datetime(df.index)
     df = df.rename(columns={'5. adjusted close': 'AdjClose'})
     return df[['AdjClose']].sort_index()
 
 # Sidebar controls
+st.sidebar.markdown(
+    """
+    ### How to Use This Dashboard
+    - **Select OpenInsider feeds**: Choose which insider-trading feeds to fetch (e.g., all purchases, sales, or filtered by amount).
+    - **Min insiders for cluster**: Set the minimum number of unique insiders in a time window to define a cluster.
+    - **Cluster window days**: Define the rolling time frame (in days) to group insider trades into clusters.
+    - **Refresh Data**: Click to fetch the latest insider trades (up to ~300 entries per feed) and update the tables and charts.
+    """,
+    unsafe_allow_html=True
+)
+feeds = st.sidebar.multiselect(
+    "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
+)
+min_insiders = st.sidebar.number_input("Min insiders for cluster", min_value=2, max_value=10, value=3)
+days_window = st.sidebar.number_input("Cluster window days", min_value=1, max_value=30, value=7)
 feeds = st.sidebar.multiselect(
     "Select OpenInsider feeds to include", list(FEEDS), default=["Latest Insider Purchases"]
 )
@@ -133,7 +153,6 @@ if st.sidebar.button("🔄 Refresh Data"):
     for name in feeds:
         endpoint = FEEDS[name]
         feed_dfs = []
-        # paginate offsets: 0,100,200 to get ~300 rows
         for offset in [0, 100, 200]:
             sep = '&' if '?' in endpoint else '?'
             url = f"http://openinsider.com/{endpoint}{sep}o={offset}"
@@ -194,7 +213,7 @@ with col2:
     st.markdown("### 🏆 Top 5 by Signal Strength")
     st.dataframe(data.nlargest(5,'SignalStrength')[['Ticker','InsiderName','Shares','Price','SignalStrength','Source']], use_container_width=True)
 
-# Cluster detection and visualization remains the same
+# Cluster detection and visualization
 clusters = detect_clusters(data, days_window=days_window, min_insiders=min_insiders)
 if not clusters.empty:
     st.markdown("---")
@@ -202,21 +221,26 @@ if not clusters.empty:
     st.dataframe(clusters.sort_values('ClusterScore', ascending=False), use_container_width=True)
     ticker_choice = st.selectbox("Select ticker for cluster visualization", options=clusters['Ticker'].unique())
     price_df = fetch_price_data(ticker_choice)
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=price_df.index, y=price_df['AdjClose'], mode='lines', name='Adj Close'))
-    for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
-        fig.add_trace(go.Scatter(
-            x=[cl['EndDate']],
-            y=[price_df.loc[cl['EndDate'],'AdjClose'] if cl['EndDate'] in price_df.index else None],
-            mode='markers', marker=dict(size=10+cl['NumInsiders']*3, opacity=0.7),
-            name=f"Cluster {cl['NumInsiders']} insiders"
-        ))
-    st.plotly_chart(fig, use_container_width=True)
-    sel = clusters.sort_values('ClusterScore', ascending=False).iloc[0]
-    st.markdown(
-        f"**Top Cluster**: {sel['Ticker']} from {sel['WindowStart'].date()} to {sel['EndDate'].date()} - "  
-        f"Insiders: {sel['NumInsiders']}, Shares: {sel['TotalShares']:,}, Score: {sel['ClusterScore']}"
-    )
+    if price_df.empty:
+        st.warning(f"No price data available for {ticker_choice}.")
+    else:
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=price_df.index, y=price_df['AdjClose'], mode='lines', name='Adj Close'))
+        for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
+            point = cl['EndDate']
+            close_val = price_df['AdjClose'].get(point)
+            fig.add_trace(go.Scatter(
+                x=[point],
+                y=[close_val],
+                mode='markers', marker=dict(size=10+cl['NumInsiders']*3, opacity=0.7),
+                name=f"Cluster {cl['NumInsiders']} insiders"
+            ))
+        st.plotly_chart(fig, use_container_width=True)
+        sel = clusters.sort_values('ClusterScore', ascending=False).iloc[0]
+        st.markdown(
+            f"**Top Cluster**: {sel['Ticker']} from {sel['WindowStart'].date()} to {sel['EndDate'].date()} - "  
+            f"Insiders: {sel['NumInsiders']}, Shares: {sel['TotalShares']:,}, Score: {sel['ClusterScore']}"
+        )
 
 # Test Telegram notification unchanged
 if st.button("Send Test Notification"):
