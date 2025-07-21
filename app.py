@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import cloudscraper
 import requests
+from io import StringIO
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
 
@@ -33,7 +34,8 @@ FEEDS = {
 
 # Helper functions
 
-def normalize_cols(cols): return [str(c).replace("\xa0", " ").strip() for c in cols]
+def normalize_cols(cols):
+    return [str(c).replace("\xa0", " ").strip() for c in cols]
 
 def find_table_with_filing(tables):
     for tbl in tables:
@@ -43,7 +45,7 @@ def find_table_with_filing(tables):
             return tbl
     return None
 
-def find_col(cols,*keywords):
+def find_col(cols, *keywords):
     for c in cols:
         low = c.lower()
         for kw in keywords:
@@ -55,16 +57,25 @@ def find_col(cols,*keywords):
 
 def calculate_signal_strength(row):
     score = 0
-    if row['Shares'] >= 1_000_000: score += 35
-    elif row['Shares'] >= 500_000: score += 25
-    elif row['Shares'] >= 100_000: score += 15
-    elif row['Shares'] >= 25_000: score += 5
+    if row['Shares'] >= 1_000_000:
+        score += 35
+    elif row['Shares'] >= 500_000:
+        score += 25
+    elif row['Shares'] >= 100_000:
+        score += 15
+    elif row['Shares'] >= 25_000:
+        score += 5
     title = row['Title'].lower()
-    if 'ceo' in title: score += 30
-    elif 'cfo' in title: score += 20
-    elif 'director' in title or 'officer' in title: score += 10
-    if row['Price'] <= 2: score += 10
-    elif row['Price'] <= 5: score += 5
+    if 'ceo' in title:
+        score += 30
+    elif 'cfo' in title:
+        score += 20
+    elif 'director' in title or 'officer' in title:
+        score += 10
+    if row['Price'] <= 2:
+        score += 10
+    elif row['Price'] <= 5:
+        score += 5
     return score
 
 # Cluster detection
@@ -106,7 +117,7 @@ def fetch_price_data(symbol):
     df = df.rename(columns={'5. adjusted close': 'AdjClose'})
     return df[['AdjClose']].sort_index()
 
-# Fetch intraday OHLCV data
+# Fetch intraday OHLCV data with full history, extended hours & error handling
 
 def fetch_intraday_data(symbol, interval='5min'):
     params = {
@@ -114,17 +125,27 @@ def fetch_intraday_data(symbol, interval='5min'):
         'symbol': symbol,
         'interval': interval,
         'apikey': ALPHA_VANTAGE_KEY,
-        'outputsize': 'compact'
+        'outputsize': 'full',          # full 30 days of bars
+        'adjusted': 'true',            # split/dividend adjusted
+        'extended_hours': 'true',      # include pre/post-market
+        'datatype': 'csv'              # CSV for easier parsing
     }
-    r = requests.get('https://www.alphavantage.co/query', params=params).json()
-    key = f'Time Series ({interval})'
-    data = r.get(key, {})
-    df = pd.DataFrame.from_dict(data, orient='index')
-    if df.empty:
-        return pd.DataFrame()
-    df.index = pd.to_datetime(df.index)
-    df.columns = [c.split('. ')[1] for c in df.columns]
-    return df.rename(columns={'close': 'AdjClose'}).sort_index()
+    resp = requests.get('https://www.alphavantage.co/query', params=params)
+    # first try JSON to catch rate-limit or bad-key errors
+    try:
+        j = resp.json()
+        if isinstance(j, dict):
+            if 'Note' in j:
+                st.error("⏱️ Alpha Vantage rate limit hit—please wait and retry.")
+            elif 'Error Message' in j:
+                st.error(f"❌ Alpha Vantage error: {j['Error Message']}")
+            return pd.DataFrame()
+    except ValueError:
+        pass
+
+    # otherwise parse the CSV payload
+    df = pd.read_csv(StringIO(resp.text), parse_dates=['timestamp'], index_col='timestamp')
+    return df.sort_index()
 
 # Sidebar controls
 feeds = st.sidebar.multiselect(
@@ -132,7 +153,6 @@ feeds = st.sidebar.multiselect(
 )
 min_insiders = st.sidebar.number_input("Min insiders for cluster", 2, 10, 3)
 days_window = st.sidebar.number_input("Cluster window days", 1, 30, 7)
-# Default intraday 5min
 interval = '5min'
 refresh = st.sidebar.button("🔄 Refresh Data")
 st.sidebar.markdown("---")
@@ -140,7 +160,7 @@ st.sidebar.markdown(
     """
     ### How to Use This Dashboard
     - Select feeds and cluster settings.
-    - Chart shows 5‑min intraday candlesticks by default.
+    - Chart shows 5-min intraday candlesticks by default.
     - Enter buy/sell prices below to simulate returns.
     - Click Refresh to fetch data.
     """,
@@ -164,22 +184,27 @@ if refresh:
             if df0 is None:
                 continue
             cols = df0.columns.tolist()
-            mapping = {k: find_col(cols, *v) for k,v in {
-                'FilingDate':['filing date'], 'TradeDate':['trade date'], 'Ticker':['ticker'],
-                'InsiderName':['insider name'], 'Title':['title'], 'TradeType':['trade type'],
-                'Shares':['qty','share'], 'Price':['price']
+            mapping = {k: find_col(cols, *v) for k, v in {
+                'FilingDate': ['filing date'],
+                'TradeDate':  ['trade date'],
+                'Ticker':     ['ticker'],
+                'InsiderName':['insider name'],
+                'Title':      ['title'],
+                'TradeType':  ['trade type'],
+                'Shares':     ['qty','share'],
+                'Price':      ['price']
             }.items()}
             if any(v is None for v in mapping.values()):
                 continue
             d = pd.DataFrame({
-                'FilingDate': df0[mapping['FilingDate']],
-                'TradeDate': pd.to_datetime(df0[mapping['TradeDate']]),
-                'Ticker': df0[mapping['Ticker']],
+                'FilingDate':  df0[mapping['FilingDate']],
+                'TradeDate':   pd.to_datetime(df0[mapping['TradeDate']]),
+                'Ticker':      df0[mapping['Ticker']],
                 'InsiderName': df0[mapping['InsiderName']],
-                'Title': df0[mapping['Title']],
-                'TradeType': df0[mapping['TradeType']],
-                'Shares': df0[mapping['Shares']].astype(str).replace(r"[+,]","",regex=True).astype(int),
-                'Price': df0[mapping['Price']].astype(str).replace(r"[\$,]","",regex=True).astype(float),
+                'Title':       df0[mapping['Title']],
+                'TradeType':   df0[mapping['TradeType']],
+                'Shares':      df0[mapping['Shares']].astype(str).replace(r"[+,]","",regex=True).astype(int),
+                'Price':       df0[mapping['Price']].astype(str).replace(r"[\$,]","",regex=True).astype(float),
             })
             d = d[d['TradeType'].str.contains('purchase', case=False, na=False)]
             d['SignalStrength'] = d.apply(calculate_signal_strength, axis=1)
@@ -199,9 +224,15 @@ if data.empty:
 # Display tables
 col1, col2 = st.columns((2,1))
 col1.markdown("### 📋 All Insider Buys")
-col1.dataframe(data[['FilingDate','TradeDate','Ticker','InsiderName','Title','Shares','Price','SignalStrength']], use_container_width=True)
+col1.dataframe(
+    data[['FilingDate','TradeDate','Ticker','InsiderName','Title','Shares','Price','SignalStrength']],
+    use_container_width=True
+)
 col2.markdown("### 🏆 Top 5 by Signal Strength")
-col2.dataframe(data.nlargest(5,'SignalStrength')[['Ticker','InsiderName','Shares','Price','SignalStrength']], use_container_width=True)
+col2.dataframe(
+    data.nlargest(5,'SignalStrength')[['Ticker','InsiderName','Shares','Price','SignalStrength']],
+    use_container_width=True
+)
 
 # Cluster analysis & price chart
 clusters = detect_clusters(data, days_window=days_window, min_insiders=min_insiders)
@@ -210,10 +241,10 @@ if not clusters.empty:
     st.markdown("## 🔍 Clustered Insider Trading Analysis")
     st.dataframe(clusters.sort_values('ClusterScore', ascending=False), use_container_width=True)
     ticker_choice = st.selectbox("Select ticker for price chart", clusters['Ticker'].unique())
+
     # Fetch intraday data
     price_df = fetch_intraday_data(ticker_choice, interval)
-    # Guard missing data
-    if price_df.empty or 'AdjClose' not in price_df.columns:
+    if price_df.empty:
         st.warning(f"No price data available for {ticker_choice}.")
     else:
         fig = go.Figure()
@@ -221,12 +252,12 @@ if not clusters.empty:
         fig.add_trace(go.Candlestick(
             x=price_df.index,
             open=price_df['open'], high=price_df['high'],
-            low=price_df['low'], close=price_df['AdjClose'],
+            low=price_df['low'], close=price_df['close'],
             name='Intraday'
         ))
         # Overlay clusters
         for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
-            val = price_df['AdjClose'].get(cl['EndDate'])
+            val = price_df['close'].asof(cl['EndDate'])
             fig.add_trace(go.Scatter(
                 x=[cl['EndDate']], y=[val], mode='markers',
                 marker=dict(size=8+cl['NumInsiders']*2), name='Cluster'
@@ -234,11 +265,12 @@ if not clusters.empty:
         # Buy/sell simulation
         buy_price = st.number_input(f"Enter BUY price for {ticker_choice}", min_value=0.0, step=0.01)
         sell_price = st.number_input(f"Enter SELL price for {ticker_choice}", min_value=0.0, step=0.01)
-        if buy_price>0 and sell_price>0:
-            ret = (sell_price - buy_price)/buy_price*100
+        if buy_price > 0 and sell_price > 0:
+            ret = (sell_price - buy_price) / buy_price * 100
             st.metric("Simulated Net Return", f"{ret:.2f}%")
             fig.add_hline(y=buy_price, line_dash='dash', annotation_text='BUY At', line_color='green')
             fig.add_hline(y=sell_price, line_dash='dash', annotation_text='SELL At', line_color='red')
+
         st.plotly_chart(fig, use_container_width=True)
 
 # Test Telegram notification unchanged
@@ -247,7 +279,10 @@ if st.button("Send Test Notification"):
     try:
         token = st.secrets['telegram']['bot_token']
         chat_id = st.secrets['telegram']['chat_id']
-        requests.post(f"https://api.telegram.org/bot{token}/sendMessage", json={"chat_id":chat_id, "text":msg, "parse_mode":"Markdown"})
+        requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            json={"chat_id": chat_id, "text": msg, "parse_mode": "Markdown"}
+        )
         st.success("✅ Telegram test sent!")
     except Exception as e:
         st.error(f"❌ Telegram error: {e}")
