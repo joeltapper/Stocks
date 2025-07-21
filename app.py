@@ -12,6 +12,15 @@ ALPHA_VANTAGE_KEY = st.secrets.alpha_vantage.key
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
 st.title("📈 Insider Trading Dashboard")
 
+# Intro blurb explaining platform
+st.markdown(
+    """
+    This dashboard aggregates insider trading data from OpenInsider and overlays it with price charts, helping you spot significant buy/sell clusters and signals.
+    Use the controls on the left to customize feeds, cluster criteria, and price data views.
+    """,
+    unsafe_allow_html=True
+)
+
 # Feed definitions
 FEEDS = {
     "Latest Insider Purchases":  "insider-purchases",
