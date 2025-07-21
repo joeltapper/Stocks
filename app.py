@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import cloudscraper
 from datetime import datetime
-from twilio.rest import Client
+import requests  # 👈 for TextBelt
 
 # Streamlit setup
 st.set_page_config(page_title="Insider Trading Dashboard", layout="wide")
@@ -25,23 +25,23 @@ FEEDS = {
     "Sales > $100 K":            "insider-sells?pfl=100",
     "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
 }
-# ✅ Twilio SMS function using flat secrets (your current setup)
-def send_sms_twilio(to_number, message_body):
+
+# ✅ TextBelt SMS function (free version)
+def send_sms_textbelt(to_number, message_body):
     try:
-        client = Client(
-            st.secrets["TWILIO_ACCOUNT_SID"],
-            st.secrets["TWILIO_AUTH_TOKEN"]
-        )
-        message = client.messages.create(
-            body=message_body,
-            from_=st.secrets["TWILIO_PHONE_NUMBER"],
-            to=to_number
-        )
-        st.success(f"✅ Twilio SMS sent! SID: {message.sid}")
+        resp = requests.post('https://textbelt.com/text', {
+            'phone': to_number,
+            'message': message_body,
+            'key': 'textbelt',  # free plan = 1 text/day
+        })
+
+        result = resp.json()
+        if result.get("success"):
+            st.success("✅ SMS sent successfully!")
+        else:
+            st.error(f"❌ Failed to send: {result.get('error')}")
     except Exception as e:
-        st.error(f"❌ Twilio SMS failed: {e}")
-
-
+        st.error(f"⚠️ SMS send error: {e}")
 
 # Helper functions
 def normalize_cols(cols):
@@ -106,7 +106,7 @@ if st.button("Send Test SMS"):
         f"CEO John Doe bought 1,000,000 shares of TEST at $2.00\n"
         f"Score: 95/100"
     )
-    send_sms_twilio("+19198848184", test_message)
+    send_sms_textbelt("+19198848184", test_message)
 
 # 🔄 Refresh Data Button and Logic
 if st.button("🔄 Refresh Data"):
@@ -180,7 +180,7 @@ if st.button("🔄 Refresh Data"):
         f"Score: {top.SignalStrength}/100"
     )
 
-    send_sms_twilio("+19198848184", message)
+    send_sms_textbelt("+19198848184", message)
 
     # Display in dashboard
     c1, c2 = st.columns((2, 1))

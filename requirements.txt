@@ -4,3 +4,4 @@ cloudscraper
 beautifulsoup4
 html5lib
 twilio
+requests
