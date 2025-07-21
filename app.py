@@ -26,18 +26,16 @@ FEEDS = {
     "CEO/CFO Purchases > $25 K": "insider-purchases?plm=25&pft=CEO,CFO",
 }
 
-# Twilio SMS function
+# ✅ Twilio SMS function using secrets
 def send_sms_twilio(to_number, message_body):
-    account_sid = "AC28cd05798605e588"
-    auth_token = "82a46e98999e9435e222087701eb1767"  # replace with full token
-    twilio_number = "+18774148304"
-
-    client = Client(account_sid, auth_token)
-
     try:
+        client = Client(
+            st.secrets["TWILIO_ACCOUNT_SID"],
+            st.secrets["TWILIO_AUTH_TOKEN"]
+        )
         message = client.messages.create(
             body=message_body,
-            from_=twilio_number,
+            from_=st.secrets["TWILIO_PHONE_NUMBER"],
             to=to_number
         )
         st.success(f"✅ Twilio SMS sent! SID: {message.sid}")
