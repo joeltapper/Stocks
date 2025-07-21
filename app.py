@@ -228,23 +228,34 @@ if not clusters.empty:
     st.markdown("## Clustered Insider Trading Analysis")
     st.dataframe(clusters.sort_values('ClusterScore', ascending=False), use_container_width=True)
     ticker_choice = st.selectbox("Select ticker for price chart", options=clusters['Ticker'].unique())
+        # Fetch price data
     if use_intraday:
         price_df = fetch_intraday_data(ticker_choice, interval)
-        fig = go.Figure()
-        fig.add_trace(Candlestick(
-            x=price_df.index,
-            open=price_df['open'], high=price_df['high'],
-            low=price_df['low'], close=price_df['AdjClose'],
-            name='Intraday'
-        ))
+        chart_type = 'intraday'
     else:
         price_df = fetch_price_data(ticker_choice)
+        chart_type = 'daily'
+
+    # Handle missing price data
+    if price_df.empty or 'AdjClose' not in price_df.columns:
+        st.warning(f"No price data available for {ticker_choice}.")
+    else:
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=price_df.index, y=price_df['AdjClose'], mode='lines', name='Adj Close'))
-    # Overlay clusters
-    for _, cl in clusters[clusters['Ticker'] == ticker_choice].iterrows():
-        val = price_df['AdjClose'].get(cl['EndDate'])
-        fig.add_trace(go.Scatter(
-            x=[cl['EndDate']], y=[val], mode='markers', marker=dict(size=8 + cl['NumInsiders'] * 2), name='Cluster'
-        ))
-    st.plotly_chart(fig, use_container_width=True)
+        if chart_type == 'intraday':
+            fig.add_trace(Candlestick(
+                x=price_df.index,
+                open=price_df['open'], high=price_df['high'],
+                low=price_df['low'], close=price_df['AdjClose'],
+                name='Intraday'
+            ))
+        else:
+            fig.add_trace(go.Scatter(
+                x=price_df.index, y=price_df['AdjClose'], mode='lines', name='Adj Close'
+            ))
+        # Overlay clusters
+        for _, cl in clusters[clusters['Ticker'] == ticker_choice].iterrows():
+            val = price_df['AdjClose'].get(cl['EndDate'])
+            fig.add_trace(go.Scatter(
+                x=[cl['EndDate']], y=[val], mode='markers', marker=dict(size=8 + cl['NumInsiders'] * 2), name='Cluster'
+            ))
+        st.plotly_chart(fig, use_container_width=True)(fig, use_container_width=True)
