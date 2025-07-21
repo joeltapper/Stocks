@@ -124,23 +124,23 @@ if st.button("🔄 Refresh Data"):
         unsafe_allow_html=True
     )
 
-   c1, c2 = st.columns((2,1))
+       c1, c2 = st.columns((2,1))
 
-with c1:
-    st.markdown("### 📋 All Insider Buys")
-    st.dataframe(
-        data[[
-            "FilingDate","TradeDate","Ticker","InsiderName",
-            "Title","Shares","Price","Source"
-        ]],
-        use_container_width=True
-    )
+    with c1:
+        st.markdown("### 📋 All Insider Buys")
+        st.dataframe(
+            data[[
+                "FilingDate","TradeDate","Ticker","InsiderName",
+                "Title","Shares","Price","Source"
+            ]],
+            use_container_width=True
+        )
 
-with c2:
-    st.markdown("### 🏆 Top 5 by Shares Purchased")
-    st.dataframe(
-        data.nlargest(5,"Shares")[
-            ["Ticker","InsiderName","Shares","Price","Source"]
-        ],
-        use_container_width=True
-    )
+    with c2:
+        st.markdown("### 🏆 Top 5 by Shares Purchased")
+        st.dataframe(
+            data.nlargest(5,"Shares")[
+                ["Ticker","InsiderName","Shares","Price","Source"]
+            ],
+            use_container_width=True
+        )
