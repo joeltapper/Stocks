@@ -289,27 +289,9 @@ if st.button("Send Test Notification"):
 
 # === AI Prompt Generator Section ===
 
-# === Prompt Output Section ===
-st.markdown("---")
-st.subheader("🧠 Copy Daily AI Research Prompt")
-
-ai_prompt = build_ai_prompt(data)
-st.code(ai_prompt, language="text")
-
-st.download_button("📄 Download Prompt as .txt", ai_prompt, file_name="daily_prompt.txt", mime="text/plain")
-
-if st.button("📋 Copy Prompt to Clipboard"):
-    st.success("Prompt copied! If not, manually copy from above.")
-    st.markdown(
-        f"""
-        <script>
-        navigator.clipboard.writeText(`{ai_prompt}`);
-        </script>
-        """,
-        unsafe_allow_html=True
-    )
 from datetime import datetime
 import io
+import base64
 
 def build_ai_prompt(df):
     today_str = datetime.now().strftime("%B %d, %Y")
@@ -327,8 +309,7 @@ def build_ai_prompt(df):
 
     trade_text = "\n".join(trade_lines)
 
-    prompt = f"""
-You're an elite financial analyst with expertise in insider trading signals, company fundamentals, and swing trading setups.
+    prompt = f"""You're an elite financial analyst with expertise in insider trading signals, company fundamentals, and swing trading setups.
 
 Below is a list of recent insider purchases reported on OpenInsider as of {today_str}:
 
@@ -360,5 +341,33 @@ Format like this:
   - Entry: $X–$Y | Target: $Z | Stop: $W
   - Why: [brief reasoning]
 
-Make sure recommendations reflect current market conditions. Prioritize real conviction setups. Use precise financial language.
-"""
+Make sure recommendations reflect current market conditions. Prioritize real conviction setups. Use precise financial language."""
+    return prompt
+
+# Generate and display the prompt
+ai_prompt = build_ai_prompt(data)
+st.markdown("### 🧠 Analyst AI Prompt")
+st.code(ai_prompt, language="markdown")
+
+# Clipboard copy (JS-based)
+st.markdown(
+    f"""
+    <button onclick="navigator.clipboard.writeText(`{ai_prompt.replace("`", "\\`")}`)" style="margin:8px 0 12px;padding:6px 12px;border:none;border-radius:4px;background:#4CAF50;color:white;font-weight:600;cursor:pointer;">
+        📋 Copy Prompt
+    </button>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Download button
+buffer = io.StringIO()
+buffer.write(ai_prompt)
+b64 = base64.b64encode(buffer.getvalue().encode()).decode()
+st.markdown(
+    f"""
+    <a href="data:text/plain;base64,{b64}" download="insider_prompt.txt">
+        📄 Download Prompt as .txt
+    </a>
+    """,
+    unsafe_allow_html=True,
+)
