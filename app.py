@@ -7,7 +7,6 @@ from datetime import datetime, timedelta
 import plotly.graph_objects as go
 import streamlit.components.v1 as components
 
-
 # Alpha Vantage API Key
 ALPHA_VANTAGE_KEY = st.secrets.alpha_vantage.key
 
@@ -35,7 +34,6 @@ FEEDS = {
 }
 
 # Helper functions
-
 def normalize_cols(cols):
     return [str(c).replace("\xa0", " ").strip() for c in cols]
 
@@ -56,7 +54,6 @@ def find_col(cols, *keywords):
     return None
 
 # Signal strength calculation
-
 def calculate_signal_strength(row):
     score = 0
     if row['Shares'] >= 1_000_000:
@@ -81,7 +78,6 @@ def calculate_signal_strength(row):
     return score
 
 # Cluster detection
-
 def detect_clusters(df, days_window=7, min_insiders=3):
     clusters = []
     for ticker, grp in df.groupby('Ticker'):
@@ -102,7 +98,6 @@ def detect_clusters(df, days_window=7, min_insiders=3):
     return pd.DataFrame(clusters)
 
 # Fetch daily adjusted close data
-
 def fetch_price_data(symbol):
     params = {
         'function': 'TIME_SERIES_DAILY_ADJUSTED',
@@ -120,20 +115,18 @@ def fetch_price_data(symbol):
     return df[['AdjClose']].sort_index()
 
 # Fetch intraday OHLCV data with full history, extended hours & error handling
-
 def fetch_intraday_data(symbol, interval='5min'):
     params = {
         'function': 'TIME_SERIES_INTRADAY',
         'symbol': symbol,
         'interval': interval,
         'apikey': ALPHA_VANTAGE_KEY,
-        'outputsize': 'full',          # full 30 days of bars
-        'adjusted': 'true',            # split/dividend adjusted
-        'extended_hours': 'true',      # include pre/post-market
-        'datatype': 'csv'              # CSV for easier parsing
+        'outputsize': 'full',
+        'adjusted': 'true',
+        'extended_hours': 'true',
+        'datatype': 'csv'
     }
     resp = requests.get('https://www.alphavantage.co/query', params=params)
-    # first try JSON to catch rate-limit or bad-key errors
     try:
         j = resp.json()
         if isinstance(j, dict):
@@ -144,8 +137,6 @@ def fetch_intraday_data(symbol, interval='5min'):
             return pd.DataFrame()
     except ValueError:
         pass
-
-    # otherwise parse the CSV payload
     df = pd.read_csv(StringIO(resp.text), parse_dates=['timestamp'], index_col='timestamp')
     return df.sort_index()
 
@@ -250,21 +241,18 @@ if not clusters.empty:
         st.warning(f"No price data available for {ticker_choice}.")
     else:
         fig = go.Figure()
-        # intraday candlesticks
         fig.add_trace(go.Candlestick(
             x=price_df.index,
             open=price_df['open'], high=price_df['high'],
             low=price_df['low'], close=price_df['close'],
             name='Intraday'
         ))
-        # Overlay clusters
         for _, cl in clusters[clusters['Ticker']==ticker_choice].iterrows():
             val = price_df['close'].asof(cl['EndDate'])
             fig.add_trace(go.Scatter(
                 x=[cl['EndDate']], y=[val], mode='markers',
                 marker=dict(size=8+cl['NumInsiders']*2), name='Cluster'
             ))
-        # Buy/sell simulation
         buy_price = st.number_input(f"Enter BUY price for {ticker_choice}", min_value=0.0, step=0.01)
         sell_price = st.number_input(f"Enter SELL price for {ticker_choice}", min_value=0.0, step=0.01)
         if buy_price > 0 and sell_price > 0:
@@ -272,7 +260,6 @@ if not clusters.empty:
             st.metric("Simulated Net Return", f"{ret:.2f}%")
             fig.add_hline(y=buy_price, line_dash='dash', annotation_text='BUY At', line_color='green')
             fig.add_hline(y=sell_price, line_dash='dash', annotation_text='SELL At', line_color='red')
-
         st.plotly_chart(fig, use_container_width=True)
 
 # Test Telegram notification unchanged
@@ -289,28 +276,39 @@ if st.button("Send Test Notification"):
     except Exception as e:
         st.error(f"❌ Telegram error: {e}")
 
-from datetime import datetime
 # --- IMPORT the prompt builder function from ai_prompt.py ---
 from ai_prompt import build_ai_prompt
 
 # --- Button to generate and display AI analysis prompt ---
 if st.button("🧠 Generate AI Analysis Prompt"):
     try:
+        # build the prompt
         prompt = build_ai_prompt(data)
+
+        # display it
         st.markdown("## 📝 AI Equity Research Prompt")
         st.code(prompt, language="markdown")
 
-components.html(f"""
-    <script>
-    function copyToClipboard(text) {{
-        navigator.clipboard.writeText(text);
-        alert("Copied to clipboard!");
-    }}
-    </script>
-    <button onclick="copyToClipboard(`{prompt}`)" 
-        style="background-color:#28a745;color:white;padding:8px 16px;border:none;border-radius:4px;font-weight:bold;cursor:pointer;margin-top:10px;">
-        📋 Copy Prompt
-    </button>
-""", height=70)
+        # copy-to-clipboard button (supports backticks and multiline text)
+        components.html(f"""
+            <script>
+            function copyToClipboard(text) {{
+                navigator.clipboard.writeText(text);
+                alert("Copied to clipboard!");
+            }}
+            </script>
+            <button onclick="copyToClipboard(`{prompt}`)" 
+                style="background-color:#28a745;
+                       color:white;
+                       padding:8px 16px;
+                       border:none;
+                       border-radius:4px;
+                       font-weight:bold;
+                       cursor:pointer;
+                       margin-top:10px;">
+                📋 Copy Prompt
+            </button>
+        """, height=100)
+
     except Exception as e:
         st.error(f"❌ Failed to generate AI prompt: {e}")
