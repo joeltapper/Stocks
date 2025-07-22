@@ -363,11 +363,75 @@ st.markdown(
 buffer = io.StringIO()
 buffer.write(ai_prompt)
 b64 = base64.b64encode(buffer.getvalue().encode()).decode()
-st.markdown(
-    f"""
-    <a href="data:text/plain;base64,{b64}" download="insider_prompt.txt">
-        📄 Download Prompt as .txt
-    </a>
-    """,
-    unsafe_allow_html=True,
-)
+def build_ai_prompt(df):
+    from datetime import datetime, timedelta
+
+    today_str = datetime.now().strftime("%B %d, %Y")
+    today_date = datetime.now().date()
+    df["TradeDate"] = pd.to_datetime(df["TradeDate"]).dt.date
+
+    # Try today's trades
+    today_trades = df[df["TradeDate"] == today_date]
+
+    # If empty, fallback to most recent date
+    if today_trades.empty:
+        recent_date = df["TradeDate"].max()
+        today_trades = df[df["TradeDate"] == recent_date]
+
+        if today_trades.empty:
+            return f"No insider trades found as of {today_str}."
+
+        today_str = recent_date.strftime("%B %d, %Y")
+
+    # Cluster by most active tickers
+    top_tickers = today_trades["Ticker"].value_counts().head(5).index.tolist()
+
+    prompt_sections = []
+
+    for ticker in top_tickers:
+        subset = today_trades[today_trades["Ticker"] == ticker]
+        execs = ", ".join(subset["InsiderName"].unique())
+        titles = ", ".join(subset["Title"].unique())
+        total_val = (subset["Shares"] * subset["Price"]).sum()
+        avg_price = subset["Price"].mean()
+        num_trades = len(subset)
+        trade_dates = sorted(subset["TradeDate"].unique())
+
+        section = f"""
+---
+### 📌 {ticker}
+
+**Executives Involved**: {execs}  
+**Titles**: {titles}  
+**Number of Trades**: {num_trades}  
+**Trade Dates**: {', '.join([d.strftime('%b %d') for d in trade_dates])}  
+**Average Purchase Price**: ${avg_price:,.2f}  
+**Total Trade Value**: ${total_val:,.0f}
+
+**Instructions for AI:**
+1. Start by providing a concise but informative overview of {ticker}'s business model and core products or services. Include sector and industry.
+2. Determine if the company has upcoming catalysts such as **earnings reports, product launches, or regulatory approvals**.
+3. Use technical indicators (RSI, MACD, Moving Averages, Volume Trends) to evaluate entry and exit opportunities for this stock.
+4. Assess overall sentiment in the sector and broader macroeconomic conditions that could influence the stock.
+5. Based on insider purchase size, clustering, and exec rank, evaluate whether this trade signals undervaluation or insider confidence.
+6. Conclude with a recommendation:
+   - **Entry Price Range**
+   - **Exit/Profit Target**
+   - **Risk level (Low, Medium, High)**
+
+Use fundamental and chart-based analysis. Focus on realistic time horizons (swing or medium-term).
+"""
+        prompt_sections.append(section.strip())
+
+    header = f"""
+🧠 You are a top-tier AI financial analyst with access to real-time trading patterns, macro data, and advanced charting tools.
+
+Your task is to analyze insider buying activity and recommend actionable trades.
+
+📅 **Date of Trade Cluster**: {today_str}  
+🎯 **Priority**: Stocks with high clustering, large $ value, and CEO/CFO involvement
+
+---
+"""
+
+    return header + "\n\n".join(prompt_sections)
