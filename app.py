@@ -286,3 +286,38 @@ if st.button("Send Test Notification"):
         st.success("✅ Telegram test sent!")
     except Exception as e:
         st.error(f"❌ Telegram error: {e}")
+
+# === AI Prompt Generator Section ===
+from datetime import datetime
+import io
+
+def build_ai_prompt(df):
+    today_str = datetime.now().strftime("%B %d, %Y")
+    today_date = datetime.now().date()
+    today_trades = df[df["TradeDate"].dt.date == today_date]
+
+    if today_trades.empty:
+        return f"No insider trades found for {today_str}."
+
+    trade_lines = []
+    for _, row in today_trades.iterrows():
+        trade_lines.append(
+            f"- {row['TradeDate'].strftime('%b %d, %Y')}: {row['Title']} at {row['Ticker']} bought {row['Shares']:,} shares at ${row['Price']:.2f}"
+        )
+
+    trade_text = "\n".join(trade_lines)
+
+    prompt = f"""
+You're an elite financial analyst with expertise in insider trading signals, company fundamentals, and swing trading setups.
+
+Below is a list of recent insider purchases reported on OpenInsider as of {today_str}:
+
+{trade_text}
+
+TASK:
+For **each ticker**, do the following:
+1. Provide a 1-line summary of what the company does (sector + product/service)
+2. State the company’s **market cap** and whether it's large-cap, mid-cap, or small-cap
+3. Look up the **next earnings report d**
+4. Brefily research the company and why there could be insiders traiding in this window
+
