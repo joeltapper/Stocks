@@ -287,39 +287,38 @@ if st.button("Send Test Notification"):
     except Exception as e:
         st.error(f"❌ Telegram error: {e}")
 
-# === AI Prompt Generator Section ===
-
 from datetime import datetime
-import io
-import base64
 
 def build_ai_prompt(df):
-    from datetime import datetime
-
     today = datetime.now().date()
     today_str = today.strftime("%B %d, %Y")
+
+    # Step 1: Try pulling today's trades
     today_trades = df[df["TradeDate"].dt.date == today]
 
-    # If no trades today, fall back to most clustered recent day
+    # Step 2: If none, find fallback — the most clustered recent date
     if not today_trades.empty:
         selected_trades = today_trades
         header_date = today_str
         fallback_note = ""
     else:
-        # Find most clustered recent date
+        # Sort by most recent and count clusters
         df_sorted = df.sort_values("TradeDate", ascending=False)
         most_common_date = df_sorted["TradeDate"].dt.date.value_counts().idxmax()
         selected_trades = df[df["TradeDate"].dt.date == most_common_date]
         header_date = most_common_date.strftime("%B %d, %Y")
         fallback_note = f"\n📌 *Note: No insider trades were found for {today_str}. Falling back to the most prominent recent cluster on {header_date}.*\n"
 
+    # Step 3: Still nothing? Return graceful error message
     if selected_trades.empty:
-        return f"No insider trades found recently."
+        return f"""⚠️ No insider trade data available to generate an AI prompt.
+Check your OpenInsider feed, date filters, or refresh the dataset."""
 
+    # Step 4: Begin constructing the AI prompt
     prompt = f"""You are a top-tier equity research analyst at a major hedge fund. Today’s task is to generate a deep-dive investment memo from insider trading data for {header_date}.{fallback_note}
 
 Your job is to take each of the insider purchases below and:
-- Explain what the company does in 2-3 sentences.
+- Explain what the company does in 2–3 sentences.
 - Find the next earnings date. Highlight it if it is within 3 weeks.
 - Determine if the insider has made similar purchases in the past and what happened to the stock after.
 - Analyze the technicals: RSI, 50-day and 200-day MAs, MACD if relevant.
@@ -330,6 +329,7 @@ Your job is to take each of the insider purchases below and:
 
 Insider trade summary:"""
 
+    # Step 5: Loop through each selected trade and format its section
     for _, row in selected_trades.iterrows():
         ticker = row["Ticker"]
         insider = row["Insider"]
@@ -360,5 +360,4 @@ Insider trade summary:"""
 """
 
     prompt += f"""\nPlease return a bullet-point summary for each stock with cited data and a bolded final investment opinion: **Buy**, **Watch**, or **Avoid**."""
-
     return prompt
