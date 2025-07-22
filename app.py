@@ -294,144 +294,71 @@ import io
 import base64
 
 def build_ai_prompt(df):
-    today_str = datetime.now().strftime("%B %d, %Y")
-    today_date = datetime.now().date()
-    today_trades = df[df["TradeDate"].dt.date == today_date]
+    from datetime import datetime
 
-    if today_trades.empty:
-        return f"No insider trades found for {today_str}."
+    today = datetime.now().date()
+    today_str = today.strftime("%B %d, %Y")
+    today_trades = df[df["TradeDate"].dt.date == today]
 
-    trade_lines = []
-    for _, row in today_trades.iterrows():
-        trade_lines.append(
-            f"- {row['TradeDate'].strftime('%b %d, %Y')}: {row['Title']} at {row['Ticker']} bought {row['Shares']:,} shares at ${row['Price']:.2f}"
-        )
+    # If no trades today, fall back to most clustered recent day
+    if not today_trades.empty:
+        selected_trades = today_trades
+        header_date = today_str
+        fallback_note = ""
+    else:
+        # Find most clustered recent date
+        df_sorted = df.sort_values("TradeDate", ascending=False)
+        most_common_date = df_sorted["TradeDate"].dt.date.value_counts().idxmax()
+        selected_trades = df[df["TradeDate"].dt.date == most_common_date]
+        header_date = most_common_date.strftime("%B %d, %Y")
+        fallback_note = f"\n📌 *Note: No insider trades were found for {today_str}. Falling back to the most prominent recent cluster on {header_date}.*\n"
 
-    trade_text = "\n".join(trade_lines)
+    if selected_trades.empty:
+        return f"No insider trades found recently."
 
-    prompt = f"""You're an elite financial analyst with expertise in insider trading signals, company fundamentals, and swing trading setups.
+    prompt = f"""You are a top-tier equity research analyst at a major hedge fund. Today’s task is to generate a deep-dive investment memo from insider trading data for {header_date}.{fallback_note}
 
-Below is a list of recent insider purchases reported on OpenInsider as of {today_str}:
+Your job is to take each of the insider purchases below and:
+- Explain what the company does in 2-3 sentences.
+- Find the next earnings date. Highlight it if it is within 3 weeks.
+- Determine if the insider has made similar purchases in the past and what happened to the stock after.
+- Analyze the technicals: RSI, 50-day and 200-day MAs, MACD if relevant.
+- Evaluate the conviction behind the trade based on role (e.g., CEO vs Director), size, and price paid.
+- Suggest **entry and exit points** for a swing trade or long-term position.
+- Comment on any significant price/volume patterns in the last month.
+- Use precise financial language, no fluff.
 
-{trade_text}
+Insider trade summary:"""
 
-TASK:
-For **each ticker**, do the following:
-1. Provide a 1-line summary of what the company does (sector + product/service)
-2. State the company’s **market cap** and whether it's large-cap, mid-cap, or small-cap
-3. Look up the **next earnings report date** and flag it if it's within 3 weeks
-4. Briefly research the company and why there could be insider trading in this window
+    for _, row in selected_trades.iterrows():
+        ticker = row["Ticker"]
+        insider = row["Insider"]
+        title = row["Title"]
+        shares = int(row["Shares"])
+        price = float(row["Price"])
+        total_value = round(shares * price, 2)
+        trade_date = row["TradeDate"].strftime("%B %d, %Y")
 
-INSTRUCTIONS:
-- For each **Buy**, include:
-  - ✅ Entry price range
-  - 🎯 Short-term price target (1–6 week swing)
-  - 🛑 Stop-loss recommendation
-  - Clear financial reasoning
+        prompt += f"""
 
-- For **Avoid or Short** calls, explain the red flags.
+---
+📈 **{ticker}**
+- 🗓️ **Trade Date:** {trade_date}
+- 🧑‍💼 **Insider:** {insider} — *{title}*
+- 💵 **Shares Purchased:** {shares:,} @ ${price:.2f}
+- 🧾 **Total Trade Value:** ${total_value:,.2f}
 
-Format like this:
-- 📌 **[Ticker]** — [Company Name]
-  - What they do:
-  - Market Cap:
-  - Next Earnings:
-  - Insider Activity Summary:
-  - Recommendation: ✅ Buy / ❌ Avoid / 📉 Consider Shorting
-  - Entry: $X–$Y | Target: $Z | Stop: $W
-  - Why: [brief reasoning]
+🔬 Analysis Instructions for {ticker}:
+1. What does this company do? Summarize in 2–3 lines.
+2. When is the next earnings call? If within 21 days, flag it.
+3. Has this insider made any recent trades? If yes, how did the stock respond?
+4. Review 6-month price chart. Are there any technical patterns (breakouts, consolidations, gaps)?
+5. Evaluate conviction: role, trade size, and whether it was above/below current price.
+6. Check RSI, 50-day, 200-day moving averages. Mention if it's overbought/oversold or showing a crossover.
+7. Recommend a **good entry price** and a **target exit price** based on current momentum, valuation, and technical levels.
 
-Make sure recommendations reflect current market conditions. Prioritize real conviction setups. Use precise financial language."""
+"""
+
+    prompt += f"""\nPlease return a bullet-point summary for each stock with cited data and a bolded final investment opinion: **Buy**, **Watch**, or **Avoid**."""
+
     return prompt
-
-# Generate and display the prompt
-ai_prompt = build_ai_prompt(data)
-st.markdown("### 🧠 Analyst AI Prompt")
-st.code(ai_prompt, language="markdown")
-
-# Clipboard copy (JS-based)
-st.markdown(
-    f"""
-    <button onclick="navigator.clipboard.writeText(`{ai_prompt.replace("`", "\\`")}`)" style="margin:8px 0 12px;padding:6px 12px;border:none;border-radius:4px;background:#4CAF50;color:white;font-weight:600;cursor:pointer;">
-        📋 Copy Prompt
-    </button>
-    """,
-    unsafe_allow_html=True,
-)
-
-# Download button
-buffer = io.StringIO()
-buffer.write(ai_prompt)
-b64 = base64.b64encode(buffer.getvalue().encode()).decode()
-def build_ai_prompt(df):
-    from datetime import datetime, timedelta
-
-    today_str = datetime.now().strftime("%B %d, %Y")
-    today_date = datetime.now().date()
-    df["TradeDate"] = pd.to_datetime(df["TradeDate"]).dt.date
-
-    # Try today's trades
-    today_trades = df[df["TradeDate"] == today_date]
-
-    # If empty, fallback to most recent date
-    if today_trades.empty:
-        recent_date = df["TradeDate"].max()
-        today_trades = df[df["TradeDate"] == recent_date]
-
-        if today_trades.empty:
-            return f"No insider trades found as of {today_str}."
-
-        today_str = recent_date.strftime("%B %d, %Y")
-
-    # Cluster by most active tickers
-    top_tickers = today_trades["Ticker"].value_counts().head(5).index.tolist()
-
-    prompt_sections = []
-
-    for ticker in top_tickers:
-        subset = today_trades[today_trades["Ticker"] == ticker]
-        execs = ", ".join(subset["InsiderName"].unique())
-        titles = ", ".join(subset["Title"].unique())
-        total_val = (subset["Shares"] * subset["Price"]).sum()
-        avg_price = subset["Price"].mean()
-        num_trades = len(subset)
-        trade_dates = sorted(subset["TradeDate"].unique())
-
-        section = f"""
----
-### 📌 {ticker}
-
-**Executives Involved**: {execs}  
-**Titles**: {titles}  
-**Number of Trades**: {num_trades}  
-**Trade Dates**: {', '.join([d.strftime('%b %d') for d in trade_dates])}  
-**Average Purchase Price**: ${avg_price:,.2f}  
-**Total Trade Value**: ${total_val:,.0f}
-
-**Instructions for AI:**
-1. Start by providing a concise but informative overview of {ticker}'s business model and core products or services. Include sector and industry.
-2. Determine if the company has upcoming catalysts such as **earnings reports, product launches, or regulatory approvals**.
-3. Use technical indicators (RSI, MACD, Moving Averages, Volume Trends) to evaluate entry and exit opportunities for this stock.
-4. Assess overall sentiment in the sector and broader macroeconomic conditions that could influence the stock.
-5. Based on insider purchase size, clustering, and exec rank, evaluate whether this trade signals undervaluation or insider confidence.
-6. Conclude with a recommendation:
-   - **Entry Price Range**
-   - **Exit/Profit Target**
-   - **Risk level (Low, Medium, High)**
-
-Use fundamental and chart-based analysis. Focus on realistic time horizons (swing or medium-term).
-"""
-        prompt_sections.append(section.strip())
-
-    header = f"""
-🧠 You are a top-tier AI financial analyst with access to real-time trading patterns, macro data, and advanced charting tools.
-
-Your task is to analyze insider buying activity and recommend actionable trades.
-
-📅 **Date of Trade Cluster**: {today_str}  
-🎯 **Priority**: Stocks with high clustering, large $ value, and CEO/CFO involvement
-
----
-"""
-
-    return header + "\n\n".join(prompt_sections)
