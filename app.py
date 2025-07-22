@@ -5,6 +5,8 @@ import requests
 from io import StringIO
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
+import streamlit.components.v1 as components
+
 
 # Alpha Vantage API Key
 ALPHA_VANTAGE_KEY = st.secrets.alpha_vantage.key
@@ -288,76 +290,27 @@ if st.button("Send Test Notification"):
         st.error(f"❌ Telegram error: {e}")
 
 from datetime import datetime
+# --- IMPORT the prompt builder function from ai_prompt.py ---
+from ai_prompt import build_ai_prompt
 
-def build_ai_prompt(df):
-    today = datetime.now().date()
-    today_str = today.strftime("%B %d, %Y")
+# --- Button to generate and display AI analysis prompt ---
+if st.button("🧠 Generate AI Analysis Prompt"):
+    try:
+        prompt = build_ai_prompt(data)
+        st.markdown("## 📝 AI Equity Research Prompt")
+        st.code(prompt, language="markdown")
 
-    # Step 1: Try pulling today's trades
-    today_trades = df[df["TradeDate"].dt.date == today]
-
-    # Step 2: If none, find fallback — the most clustered recent date
-    if not today_trades.empty:
-        selected_trades = today_trades
-        header_date = today_str
-        fallback_note = ""
-    else:
-        # Sort by most recent and count clusters
-        df_sorted = df.sort_values("TradeDate", ascending=False)
-        most_common_date = df_sorted["TradeDate"].dt.date.value_counts().idxmax()
-        selected_trades = df[df["TradeDate"].dt.date == most_common_date]
-        header_date = most_common_date.strftime("%B %d, %Y")
-        fallback_note = f"\n📌 *Note: No insider trades were found for {today_str}. Falling back to the most prominent recent cluster on {header_date}.*\n"
-
-    # Step 3: Still nothing? Return graceful error message
-    if selected_trades.empty:
-        return f"""⚠️ No insider trade data available to generate an AI prompt.
-Check your OpenInsider feed, date filters, or refresh the dataset."""
-
-    # Step 4: Begin constructing the AI prompt
-    prompt = f"""You are a top-tier equity research analyst at a major hedge fund. Today’s task is to generate a deep-dive investment memo from insider trading data for {header_date}.{fallback_note}
-
-Your job is to take each of the insider purchases below and:
-- Explain what the company does in 2–3 sentences.
-- Find the next earnings date. Highlight it if it is within 3 weeks.
-- Determine if the insider has made similar purchases in the past and what happened to the stock after.
-- Analyze the technicals: RSI, 50-day and 200-day MAs, MACD if relevant.
-- Evaluate the conviction behind the trade based on role (e.g., CEO vs Director), size, and price paid.
-- Suggest **entry and exit points** for a swing trade or long-term position.
-- Comment on any significant price/volume patterns in the last month.
-- Use precise financial language, no fluff.
-
-Insider trade summary:"""
-
-    # Step 5: Loop through each selected trade and format its section
-    for _, row in selected_trades.iterrows():
-        ticker = row["Ticker"]
-        insider = row["Insider"]
-        title = row["Title"]
-        shares = int(row["Shares"])
-        price = float(row["Price"])
-        total_value = round(shares * price, 2)
-        trade_date = row["TradeDate"].strftime("%B %d, %Y")
-
-        prompt += f"""
-
----
-📈 **{ticker}**
-- 🗓️ **Trade Date:** {trade_date}
-- 🧑‍💼 **Insider:** {insider} — *{title}*
-- 💵 **Shares Purchased:** {shares:,} @ ${price:.2f}
-- 🧾 **Total Trade Value:** ${total_value:,.2f}
-
-🔬 Analysis Instructions for {ticker}:
-1. What does this company do? Summarize in 2–3 lines.
-2. When is the next earnings call? If within 21 days, flag it.
-3. Has this insider made any recent trades? If yes, how did the stock respond?
-4. Review 6-month price chart. Are there any technical patterns (breakouts, consolidations, gaps)?
-5. Evaluate conviction: role, trade size, and whether it was above/below current price.
-6. Check RSI, 50-day, 200-day moving averages. Mention if it's overbought/oversold or showing a crossover.
-7. Recommend a **good entry price** and a **target exit price** based on current momentum, valuation, and technical levels.
-
-"""
-
-    prompt += f"""\nPlease return a bullet-point summary for each stock with cited data and a bolded final investment opinion: **Buy**, **Watch**, or **Avoid**."""
-    return prompt
+components.html(f"""
+    <script>
+    function copyToClipboard(text) {{
+        navigator.clipboard.writeText(text);
+        alert("Copied to clipboard!");
+    }}
+    </script>
+    <button onclick="copyToClipboard(`{prompt}`)" 
+        style="background-color:#28a745;color:white;padding:8px 16px;border:none;border-radius:4px;font-weight:bold;cursor:pointer;margin-top:10px;">
+        📋 Copy Prompt
+    </button>
+""", height=70)
+    except Exception as e:
+        st.error(f"❌ Failed to generate AI prompt: {e}")
