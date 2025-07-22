@@ -38,7 +38,7 @@ Insider trade summary:"""
 
     for _, row in selected_trades.iterrows():
         ticker = row["Ticker"]
-        insider = row["Insider"]
+        insider = row["InsiderName"]
         title = row["Title"]
         shares = int(row["Shares"])
         price = float(row["Price"])
