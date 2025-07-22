@@ -288,6 +288,26 @@ if st.button("Send Test Notification"):
         st.error(f"❌ Telegram error: {e}")
 
 # === AI Prompt Generator Section ===
+
+# === Prompt Output Section ===
+st.markdown("---")
+st.subheader("🧠 Copy Daily AI Research Prompt")
+
+ai_prompt = build_ai_prompt(data)
+st.code(ai_prompt, language="text")
+
+st.download_button("📄 Download Prompt as .txt", ai_prompt, file_name="daily_prompt.txt", mime="text/plain")
+
+if st.button("📋 Copy Prompt to Clipboard"):
+    st.success("Prompt copied! If not, manually copy from above.")
+    st.markdown(
+        f"""
+        <script>
+        navigator.clipboard.writeText(`{ai_prompt}`);
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
 from datetime import datetime
 import io
 
@@ -318,6 +338,27 @@ TASK:
 For **each ticker**, do the following:
 1. Provide a 1-line summary of what the company does (sector + product/service)
 2. State the company’s **market cap** and whether it's large-cap, mid-cap, or small-cap
-3. Look up the **next earnings report d**
-4. Brefily research the company and why there could be insiders traiding in this window
+3. Look up the **next earnings report date** and flag it if it's within 3 weeks
+4. Briefly research the company and why there could be insider trading in this window
 
+INSTRUCTIONS:
+- For each **Buy**, include:
+  - ✅ Entry price range
+  - 🎯 Short-term price target (1–6 week swing)
+  - 🛑 Stop-loss recommendation
+  - Clear financial reasoning
+
+- For **Avoid or Short** calls, explain the red flags.
+
+Format like this:
+- 📌 **[Ticker]** — [Company Name]
+  - What they do:
+  - Market Cap:
+  - Next Earnings:
+  - Insider Activity Summary:
+  - Recommendation: ✅ Buy / ❌ Avoid / 📉 Consider Shorting
+  - Entry: $X–$Y | Target: $Z | Stop: $W
+  - Why: [brief reasoning]
+
+Make sure recommendations reflect current market conditions. Prioritize real conviction setups. Use precise financial language.
+"""
